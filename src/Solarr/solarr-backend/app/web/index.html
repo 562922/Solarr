@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Solarr</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js" crossorigin referrerpolicy="no-referrer"></script>
+<style>
+  /* legibility fallback so the page is readable even if Tailwind's CDN is blocked */
+  html, body { background:#0b1120; color:#e5e7eb; font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif; }
+  a { color:#818cf8; }
+  ::-webkit-scrollbar { height:8px; width:8px; }
+  ::-webkit-scrollbar-thumb { background:#374151; border-radius:8px; }
+  select option { background:#1f2937; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useMemo, useRef } = React;
+
+/* =========================================================================
+   Icons (inline SVG so the page is fully self-contained)
+   ========================================================================= */
+const PATHS = {
+  compass: '<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
+  film: '<rect x="2" y="3" width="20" height="18" rx="2"/><path d="M7 3v18M17 3v18M2 8h5M2 16h5M17 8h5M17 16h5"/>',
+  tv: '<rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/>',
+  gamepad: '<line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><rect x="2" y="6" width="20" height="12" rx="2"/>',
+  inbox: '<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
+  dashboard: '<rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/>',
+  logout: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>',
+  search: '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
+  plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+  pencil: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+  trash: '<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+  check: '<polyline points="20 6 9 17 4 12"/>',
+  x: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+  cleft: '<polyline points="15 18 9 12 15 6"/>',
+  cright: '<polyline points="9 18 15 12 9 6"/>',
+  cdown: '<polyline points="6 9 12 15 18 9"/>',
+  rss: '<path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/>',
+  download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>',
+  sliders: '<line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>',
+  folder: '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/>',
+  tag: '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>',
+  filter: '<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>',
+  sort: '<path d="M11 5h10M11 9h7M11 13h4M3 17l3 3 3-3M6 18V4"/>',
+  reset: '<polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>',
+  calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
+  list: '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>',
+  shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+  star: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  server: '<rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>',
+  clap: '<path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z"/><path d="m6.2 5.3 3.1 3.9M12.4 3.4l3.1 4M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>',
+};
+function Icon({ name, size = 18, className = "" }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}
+    dangerouslySetInnerHTML={{ __html: PATHS[name] || "" }} />;
+}
+
+/* =========================================================================
+   API layer — always talks to the Flask backend
+   ========================================================================= */
+const api = {
+  async req(method, path, body) {
+    const opt = { method, credentials: "same-origin", headers: {} };
+    if (body !== undefined) { opt.headers["Content-Type"] = "application/json"; opt.body = JSON.stringify(body); }
+    const r = await fetch(path, opt);
+    const txt = await r.text();
+    const data = txt ? JSON.parse(txt) : {};
+    if (!r.ok) throw Object.assign(new Error(data.message || data.error || ("HTTP " + r.status)), { status: r.status, data });
+    return data;
+  },
+  get(p) { return this.req("GET", p); },
+  post(p, b) { return this.req("POST", p, b === undefined ? {} : b); },
+  put(p, b) { return this.req("PUT", p, b); },
+  del(p) { return this.req("DELETE", p); },
+};
+
+/* =========================================================================
+   Primitives
+   ========================================================================= */
+const cx = (...a) => a.filter(Boolean).join(" ");
+const BADGE = { available: ["Available", "bg-green-600"], requested: ["Requested", "bg-amber-600"], downloading: ["Downloading", "bg-blue-600"], not_owned: ["Not owned", "bg-gray-600"] };
+
+function posterStyle(title) {
+  let h = 0; for (let i = 0; i < (title || "").length; i++) h = (h * 31 + title.charCodeAt(i)) % 360;
+  return { backgroundImage: `linear-gradient(150deg, hsl(${h} 55% 32%), hsl(${(h + 40) % 360} 50% 18%))` };
+}
+
+function Field({ label, value, onChange, type = "text", placeholder = "" }) {
+  return <div className="mb-3.5">
+    {label && <label className="block text-xs text-gray-400 mb-1.5">{label}</label>}
+    <input type={type} value={value ?? ""} placeholder={placeholder} onChange={e => onChange(e.target.value)}
+      className="w-full px-3 py-2.5 rounded-lg bg-gray-900 border border-gray-700 text-gray-100 text-sm focus:border-indigo-500 focus:outline-none" />
+  </div>;
+}
+function Select({ label, value, onChange, options }) {
+  return <div className="mb-3.5">
+    {label && <label className="block text-xs text-gray-400 mb-1.5">{label}</label>}
+    <select value={value} onChange={e => onChange(e.target.value)}
+      className="w-full px-3 py-2.5 rounded-lg bg-gray-900 border border-gray-700 text-gray-100 text-sm focus:border-indigo-500 focus:outline-none">
+      {options.map(o => <option key={o} value={o}>{o}</option>)}
+    </select>
+  </div>;
+}
+function Toggle({ label, on, onChange }) {
+  return <button type="button" onClick={() => onChange(!on)} className="flex items-center gap-3 py-1.5 text-sm text-gray-200">
+    <span className={cx("w-9 h-5 rounded-full relative transition-colors", on ? "bg-indigo-500" : "bg-gray-600")}>
+      <span className="absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all" style={{ left: on ? "18px" : "2px" }} />
+    </span>{label}
+  </button>;
+}
+function Btn({ children, onClick, variant = "primary", className = "", disabled }) {
+  const s = { primary: "bg-indigo-600 hover:bg-indigo-500 text-white", secondary: "border border-gray-600 text-gray-200 hover:bg-gray-700", danger: "border border-red-500/50 text-red-400 hover:bg-red-500/10" };
+  return <button onClick={onClick} disabled={disabled} className={cx("inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm disabled:opacity-40 disabled:cursor-not-allowed", s[variant], className)}>{children}</button>;
+}
+function SectionHead({ title, desc }) {
+  return <div className="mb-5"><h2 className="text-lg font-semibold text-gray-100">{title}</h2>{desc && <p className="text-gray-400 text-sm mt-0.5">{desc}</p>}</div>;
+}
+function Modal({ title, onClose, children, footer }) {
+  return <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,.6)" }} onClick={onClose}>
+    <div className="w-full max-w-lg bg-gray-800 rounded-xl border border-gray-700 flex flex-col" style={{ maxHeight: "90vh" }} onClick={e => e.stopPropagation()}>
+      <div className="flex items-center justify-between px-5 py-4 border-b border-gray-700"><h3 className="text-gray-100 font-semibold">{title}</h3><button onClick={onClose} className="text-gray-400 hover:text-gray-200"><Icon name="x" /></button></div>
+      <div className="p-5 overflow-y-auto">{children}</div>
+      {footer && <div className="px-5 py-4 border-t border-gray-700 flex justify-end gap-2">{footer}</div>}
+    </div>
+  </div>;
+}
+function RangeSlider({ min, max, step = 1, value, onChange, format }) {
+  const ref = useRef(null); const [lo, hi] = value; const span = (max - min) || 1;
+  const pct = v => ((v - min) / span) * 100; const fmt = format || (v => v);
+  const at = x => { const r = ref.current.getBoundingClientRect(); let t = (x - r.left) / r.width; t = Math.max(0, Math.min(1, t)); return Math.round((min + t * span) / step) * step; };
+  const grab = e => e.currentTarget.setPointerCapture(e.pointerId);
+  return <div>
+    <div ref={ref} className="relative h-6 select-none" style={{ touchAction: "none" }}>
+      <div className="absolute left-0 right-0 top-1/2 h-1 rounded bg-gray-600" style={{ transform: "translateY(-50%)" }} />
+      <div className="absolute top-1/2 h-1 rounded bg-indigo-500" style={{ left: pct(lo) + "%", width: (pct(hi) - pct(lo)) + "%", transform: "translateY(-50%)" }} />
+      <button onPointerDown={grab} onPointerMove={e => { if (e.buttons === 1) onChange([Math.min(at(e.clientX), hi), hi]); }} className="absolute top-1/2 w-4 h-4 rounded-full bg-white border-2 border-indigo-500" style={{ left: pct(lo) + "%", transform: "translate(-50%,-50%)" }} />
+      <button onPointerDown={grab} onPointerMove={e => { if (e.buttons === 1) onChange([lo, Math.max(at(e.clientX), lo)]); }} className="absolute top-1/2 w-4 h-4 rounded-full bg-white border-2 border-indigo-500" style={{ left: pct(hi) + "%", transform: "translate(-50%,-50%)" }} />
+    </div>
+    <div className="flex justify-between text-[11px] text-gray-400 mt-0.5"><span>{fmt(lo)}</span><span>{fmt(hi)}</span></div>
+  </div>;
+}
+
+/* =========================================================================
+   Cards / rows
+   ========================================================================= */
+const TYPE_ICON = { movie: "film", show: "tv", anime: "star", game: "gamepad" };
+function Poster({ item }) {
+  const b = BADGE[item.status];
+  return <div className="relative w-full h-full rounded-lg overflow-hidden" style={item.cover_url ? { backgroundImage: `url(${item.cover_url})`, backgroundSize: "cover", backgroundPosition: "center" } : posterStyle(item.title)}>
+    {!item.cover_url && <div className="absolute inset-0 flex items-end p-2"><span className="text-white/90 text-xs font-semibold drop-shadow">{item.title}</span></div>}
+    {b && <span className={cx("absolute top-1.5 right-1.5 text-white text-[9px] font-semibold uppercase px-1.5 py-0.5 rounded", b[1])}>{b[0]}</span>}
+  </div>;
+}
+function Card({ item, onOpen }) {
+  return <button onClick={() => onOpen(item)} className="group w-40 shrink-0 text-left">
+    <div className="w-40 h-56 transition-transform group-hover:scale-[1.04]"><Poster item={item} /></div>
+    <div className="mt-2 text-[13px] text-gray-200 truncate">{item.title}</div>
+    <div className="text-[11px] text-gray-500 flex items-center gap-1"><Icon name={TYPE_ICON[item.media_type] || "film"} size={11} /> {item.year || ""}</div>
+  </button>;
+}
+function Chip({ label, count }) {
+  return <div className="w-40 h-56 shrink-0 rounded-lg bg-gray-800 border border-gray-700 flex flex-col items-center justify-center gap-1 hover:border-indigo-500"><span className="text-gray-100 text-sm font-semibold text-center px-3">{label}</span><span className="text-gray-500 text-xs">{count}</span></div>;
+}
+function Row({ title, children, seeAll, onSeeAll }) {
+  const ref = useRef(null); const scroll = d => ref.current.scrollBy({ left: d * 400, behavior: "smooth" });
+  return <section className="mt-8">
+    <div className="flex items-center justify-between">
+      <h2 className="text-[17px] font-semibold text-gray-100">{title}</h2>
+      <div className="flex items-center gap-3">
+        {seeAll && <button onClick={onSeeAll} className="text-indigo-400 text-[13px] hover:text-indigo-300">See all →</button>}
+        <div className="hidden sm:flex gap-1"><button onClick={() => scroll(-1)} className="p-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-300"><Icon name="cleft" size={16} /></button><button onClick={() => scroll(1)} className="p-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-300"><Icon name="cright" size={16} /></button></div>
+      </div>
+    </div>
+    <div ref={ref} className="flex gap-4 overflow-x-auto pt-4 pb-2">{children}</div>
+  </section>;
+}
+
+/* =========================================================================
+   Auth + Setup wizard
+   ========================================================================= */
+function Login({ onLogin }) {
+  const [u, setU] = useState(""); const [p, setP] = useState(""); const [err, setErr] = useState("");
+  const submit = async () => { try { const r = await api.post("/api/login", { username: u, password: p }); if (r.ok) onLogin(); } catch (e) { setErr(e.message); } };
+  return <div className="min-h-screen flex items-center justify-center"><div className="w-full max-w-sm bg-gray-800 rounded-2xl p-9">
+    <h1 className="text-xl font-semibold text-gray-100 mb-1 flex items-center gap-2"><Icon name="clap" size={22} /> Solarr</h1>
+    <p className="text-gray-400 text-sm mb-6">Sign in to continue</p>
+    {err && <div className="text-red-400 text-sm mb-3">{err}</div>}
+    <Field label="Username" value={u} onChange={setU} /><Field label="Password" type="password" value={p} onChange={setP} />
+    <Btn className="w-full justify-center" onClick={submit}>Sign in</Btn>
+  </div></div>;
+}
+
+function ServiceList({ items, cols, onAdd, onDelete, addLabel }) {
+  return <div>
+    {items.length === 0 ? <div className="text-gray-500 text-sm border border-dashed border-gray-700 rounded-lg p-6 text-center mb-3">Nothing added yet.</div>
+      : <div className="space-y-2 mb-3">{items.map((it, i) => <div key={i} className="flex items-center justify-between bg-gray-800 border border-gray-700 rounded-lg px-4 py-3">
+        <div><div className="text-sm text-gray-100">{cols(it)}</div></div>
+        {onDelete && <button onClick={() => onDelete(it)} className="text-red-400 text-xs hover:text-red-300 flex items-center gap-1"><Icon name="trash" size={13} /> Remove</button>}
+      </div>)}</div>}
+    <Btn variant="secondary" onClick={onAdd}><Icon name="plus" size={15} /> {addLabel}</Btn>
+  </div>;
+}
+
+function SetupWizard({ onDone }) {
+  const [step, setStep] = useState(1);
+  const [account, setAccount] = useState({ username: "", password: "" });
+  const [roots, setRoots] = useState([]);
+  const [prow, setProw] = useState({ url: "", apiKey: "" });
+  const [modal, setModal] = useState(null); const [draft, setDraft] = useState({});
+  const steps = ["Account", "Prowlarr", "Libraries"];
+
+  const openModal = () => { setDraft({ path: "", media: {} }); setModal("root"); };
+  const saveModal = () => {
+    if (modal === "root") setRoots([...roots, draft]);
+    setModal(null);
+  };
+  const finish = async () => {
+    await api.post("/api/setup/complete", { account, mediaServers: [], downloadClients: [], rootFolders: roots, prowlarr: { ...prow, connected: true } });
+    onDone();
+  };
+
+  return <div className="min-h-screen flex items-center justify-center p-4"><div className="w-full max-w-2xl bg-gray-800 rounded-2xl p-8">
+    <div className="flex items-center gap-2 mb-1 text-gray-100 font-bold text-lg"><Icon name="clap" size={20} /> Solarr setup</div>
+    <p className="text-gray-400 text-sm mb-4">Step {step} of {steps.length} — {steps[step - 1]}</p>
+    <div className="flex gap-1.5 mb-6">{steps.map((_, i) => <div key={i} className={cx("h-1 flex-1 rounded", i < step ? "bg-indigo-500" : "bg-gray-700")} />)}</div>
+
+    {step === 1 && <div className="max-w-md"><SectionHead title="Create admin account" /><Field label="Username" value={account.username} onChange={v => setAccount({ ...account, username: v })} /><Field label="Password" type="password" value={account.password} onChange={v => setAccount({ ...account, password: v })} /></div>}
+    {step === 2 && <div className="max-w-md"><SectionHead title="Connect Prowlarr" desc="Solarr reads indexers from Prowlarr rather than managing them itself." /><Field label="Prowlarr URL" value={prow.url} onChange={v => setProw({ ...prow, url: v })} placeholder="http://prowlarr:9696" /><Field label="API key" type="password" value={prow.apiKey} onChange={v => setProw({ ...prow, apiKey: v })} /></div>}
+    {step === 3 && <div><SectionHead title="Add libraries" desc="Add root folders and choose which media each holds." /><ServiceList items={roots} addLabel="Add root folder" onAdd={openModal} onDelete={it => setRoots(roots.filter(x => x !== it))} cols={it => `${it.path} — ${["movies", "shows", "games"].filter(m => it.media && it.media[m]).join(", ") || "unassigned"}`} /></div>}
+
+    <div className="flex justify-between mt-8">
+      <Btn variant="secondary" onClick={() => setStep(Math.max(1, step - 1))} disabled={step === 1}>Back</Btn>
+      {step < steps.length ? <Btn onClick={() => setStep(step + 1)} disabled={step === 1 && (!account.username || !account.password)}>Continue <Icon name="cright" size={15} /></Btn>
+        : <Btn onClick={finish}>Finish setup <Icon name="check" size={15} /></Btn>}
+    </div>
+
+    {modal && <Modal title="Add root folder" onClose={() => setModal(null)}
+      footer={<><Btn variant="secondary" onClick={() => setModal(null)}>Cancel</Btn><Btn onClick={saveModal}>Save</Btn></>}>
+      <Field label="Path" value={draft.path} onChange={v => setDraft({ ...draft, path: v })} placeholder="/library1/movies" />
+      <div className="flex gap-5 mt-1">{["movies", "shows", "games"].map(m => <label key={m} className="flex items-center gap-2 text-sm text-gray-200 capitalize"><input type="checkbox" checked={!!(draft.media && draft.media[m])} onChange={e => setDraft({ ...draft, media: { ...draft.media, [m]: e.target.checked } })} />{m}</label>)}</div>
+    </Modal>}
+  </div></div>;
+}
+
+/* =========================================================================
+   Discover / library / detail / requests
+   ========================================================================= */
+function useAsync(fn, deps) {
+  const [data, setData] = useState(null); const [err, setErr] = useState(null);
+  useEffect(() => { let ok = true; fn().then(d => ok && setData(d)).catch(e => ok && setErr(e)); return () => { ok = false; }; }, deps);
+  return [data, err];
+}
+
+function Discover({ onOpen, setPage }) {
+  const [d] = useAsync(() => api.get("/api/discover"), []);
+  if (!d) return <Loading />;
+
+  // Card key: use external_id since live results may not have a db id
+  const cardKey = (m, i) => m.external_id ? `${m.media_type}-${m.external_id}` : `item-${i}`;
+
+  const Row3 = ({ title, items, emptyMsg, seeAllPage }) => (
+    <Row title={title} seeAll={!!seeAllPage} onSeeAll={() => seeAllPage && setPage(seeAllPage)}>
+      {(items || []).length
+        ? items.map((m, i) => <Card key={cardKey(m, i)} item={m} onOpen={onOpen} />)
+        : <Empty>{emptyMsg || "Nothing yet."}</Empty>}
+    </Row>
+  );
+
+  const block = (t, label) => {
+    const sec = d[t] || {};
+    const trending = sec.trending || [];
+    const popular  = sec.popular  || [];
+    const upcoming = sec.upcoming  || [];
+    const hasTrending = trending.length > 0;
+    const hasPopular  = popular.length  > 0;
+    const hasUpcoming = upcoming.length > 0;
+    if (!hasTrending && !hasPopular && !hasUpcoming) return null;
+    return <div className="mt-10">
+      <div className="flex items-center gap-2 border-b border-gray-800 pb-2 mb-1">
+        <Icon name={TYPE_ICON[t]} size={20} className="text-indigo-400" />
+        <h2 className="text-xl font-bold text-gray-100">{label}</h2>
+        <button onClick={() => setPage(t)} className="ml-auto text-indigo-400 text-[13px]">Browse all →</button>
+      </div>
+      {hasTrending && <Row3 title="Trending" items={trending} seeAllPage={t} />}
+      {hasPopular  && <Row3 title="Popular"  items={popular}  seeAllPage={t} />}
+      {hasUpcoming && <Row3 title="Upcoming" items={upcoming} seeAllPage={t} />}
+    </div>;
+  };
+
+  return <div className="px-8 py-6">
+    <h1 className="text-2xl font-bold text-gray-100 mb-4">Discover</h1>
+    {d.recentlyAdded.length > 0 &&
+      <Row3 title="Recently Added" items={d.recentlyAdded} seeAllPage="movie" />}
+    {d.requests.length > 0 &&
+      <Row title="Recent Requests" seeAll onSeeAll={() => setPage("requests")}>
+        {d.requests.map((m, i) => <Card key={"r" + m.id} item={{ ...m, id: "r" + m.id }} onOpen={() => setPage("requests")} />)}
+      </Row>}
+    {block("movie", "Movies")}
+    {block("show",  "Shows")}
+    {block("anime", "Anime")}
+    {block("game",  "Games")}
+  </div>;
+}
+}
+
+const SORTS = [["title_az", "Title A–Z"], ["title_za", "Title Z–A"], ["rel_desc", "Release newest"], ["rel_asc", "Release oldest"], ["score_desc", "Rating high→low"], ["q_desc", "Quality high→low"], ["status", "Status"]];
+function Library({ type, title, onOpen }) {
+  const [items] = useAsync(() => api.get("/api/library/" + type), [type]);
+  const [sort, setSort] = useState("title_az"); const [show, setShow] = useState(false);
+  const [f, setF] = useState({ yearFrom: "", yearTo: "", studio: "", status: "Any", genres: [], score: [0, 100] });
+  if (!items) return <Loading />;
+  const allGenres = [...new Set(items.flatMap(m => m.genres || []))].sort();
+  const toggleG = g => setF(s => ({ ...s, genres: s.genres.includes(g) ? s.genres.filter(x => x !== g) : [...s.genres, g] }));
+  let shown = items.filter(m => {
+    if (f.yearFrom && (m.year || 0) < +f.yearFrom) return false;
+    if (f.yearTo && (m.year || 9999) > +f.yearTo) return false;
+    if (f.studio) { const s = ((m.studio || "") + " " + (m.platform || "")).toLowerCase(); if (!s.includes(f.studio.toLowerCase())) return false; }
+    if (f.status !== "Any" && m.status !== f.status) return false;
+    if (f.genres.length && !f.genres.every(g => (m.genres || []).includes(g))) return false;
+    if ((f.score[0] > 0 || f.score[1] < 100) && m.score != null) { if (m.score < f.score[0] || m.score > f.score[1]) return false; }
+    return true;
+  });
+  const cmp = { title_az: (a, b) => a.title.localeCompare(b.title), title_za: (a, b) => b.title.localeCompare(a.title), rel_desc: (a, b) => (b.year || 0) - (a.year || 0), rel_asc: (a, b) => (a.year || 0) - (b.year || 0), score_desc: (a, b) => (b.score || 0) - (a.score || 0), q_desc: (a, b) => (b.quality_rank || 0) - (a.quality_rank || 0), status: (a, b) => (a.status || "").localeCompare(b.status || "") };
+  shown = [...shown].sort(cmp[sort]);
+  const active = (f.yearFrom || f.yearTo ? 1 : 0) + (f.studio ? 1 : 0) + (f.status !== "Any" ? 1 : 0) + (f.genres.length ? 1 : 0) + (f.score[0] > 0 || f.score[1] < 100 ? 1 : 0);
+  return <div className="px-8 py-6">
+    <div className="flex items-center justify-between gap-4 flex-wrap">
+      <h1 className="text-2xl font-bold text-gray-100">{title}</h1>
+      <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 bg-gray-800 border border-gray-700 rounded-lg px-3 py-1.5"><Icon name="sort" size={15} className="text-gray-400" /><select value={sort} onChange={e => setSort(e.target.value)} className="bg-transparent text-sm text-gray-100 focus:outline-none">{SORTS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select></div>
+        <Btn variant={show || active ? "primary" : "secondary"} onClick={() => setShow(s => !s)}><Icon name="filter" size={15} /> Filters{active ? ` (${active})` : ""}</Btn>
+      </div>
+    </div>
+    {show && <div className="mt-4 bg-gray-800/60 border border-gray-700 rounded-xl p-5">
+      <div className="grid gap-x-8 gap-y-4" style={{ gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))" }}>
+        <div><label className="block text-xs text-gray-400 mb-1.5">Release year</label><div className="flex items-center gap-2"><input value={f.yearFrom} onChange={e => setF({ ...f, yearFrom: e.target.value })} placeholder="From" className="w-full px-2.5 py-2 rounded-lg bg-gray-900 border border-gray-700 text-gray-100 text-sm" /><span className="text-gray-500">–</span><input value={f.yearTo} onChange={e => setF({ ...f, yearTo: e.target.value })} placeholder="To" className="w-full px-2.5 py-2 rounded-lg bg-gray-900 border border-gray-700 text-gray-100 text-sm" /></div></div>
+        <div><label className="block text-xs text-gray-400 mb-1.5">{type === "game" ? "Studio or platform" : "Studio"}</label><input value={f.studio} onChange={e => setF({ ...f, studio: e.target.value })} placeholder="Search..." className="w-full px-3 py-2 rounded-lg bg-gray-900 border border-gray-700 text-gray-100 text-sm" /></div>
+        <div><label className="block text-xs text-gray-400 mb-1.5">Status</label><select value={f.status} onChange={e => setF({ ...f, status: e.target.value })} className="w-full px-3 py-2 rounded-lg bg-gray-900 border border-gray-700 text-gray-100 text-sm">{["Any", "available", "requested", "downloading", "not_owned"].map(s => <option key={s} value={s}>{s}</option>)}</select></div>
+        <div><label className="block text-xs text-gray-400 mb-1.5">Rating (0–100)</label><RangeSlider min={0} max={100} value={f.score} onChange={v => setF({ ...f, score: v })} /></div>
+      </div>
+      {allGenres.length > 0 && <div className="mt-4"><label className="block text-xs text-gray-400 mb-2">Genres</label><div className="flex flex-wrap gap-2">{allGenres.map(g => <button key={g} onClick={() => toggleG(g)} className={cx("text-xs rounded-full px-3 py-1 border", f.genres.includes(g) ? "bg-indigo-600 border-indigo-500 text-white" : "border-gray-600 text-gray-300 hover:bg-gray-700")}>{g}</button>)}</div></div>}
+      <div className="mt-4"><Btn variant="secondary" onClick={() => setF({ yearFrom: "", yearTo: "", studio: "", status: "Any", genres: [], score: [0, 100] })}><Icon name="reset" size={14} /> Reset</Btn></div>
+    </div>}
+    <div className="text-sm text-gray-400 mt-4">{shown.length} of {items.length} titles</div>
+    {shown.length === 0 ? <Empty>No titles match.</Empty> :
+      <div className="grid gap-5 mt-3" style={{ gridTemplateColumns: "repeat(auto-fill,minmax(160px,1fr))" }}>{shown.map(m => <Card key={m.id} item={m} onOpen={onOpen} />)}</div>}
+  </div>;
+}
+
+function ReleasePicker({ item, title, onClose }) {
+  const [rows, setRows] = useState(null); const [msg, setMsg] = useState("");
+  useEffect(() => { api.get(`/api/releases?type=${item.media_type}&title=${encodeURIComponent(title)}`).then(setRows).catch(() => setRows([])); }, []);
+  const grab = async (r) => {
+    setMsg("Grabbing " + r.title + "…");
+    try { const res = await api.post("/api/grab-release", { media_type: item.media_type, title, link: r.link, release_title: r.title, quality: r.quality, cf_score: r.cf_score, rank: r.rank, external_id: item.external_id, platform: item.platform }); setMsg(res.ok ? "Grabbed — sent to download client." : (res.message || "Failed")); }
+    catch (e) { setMsg(e.message); }
+  };
+  return <Modal title={"Releases — " + title} onClose={onClose}>
+    {!rows ? <Loading /> : rows.length === 0 ? <Empty>No releases found on your indexers.</Empty> :
+      <div className="space-y-2">{rows.map((r, i) => <div key={i} className={cx("border rounded-lg px-3 py-2.5", r.accepted ? "border-gray-700 bg-gray-900" : "border-gray-800 opacity-60")}>
+        <div className="flex items-center gap-2"><span className="text-sm text-gray-100 flex-1 break-all">{r.title}</span>{r.blocklisted && <span className="text-[10px] text-red-400 border border-red-500/40 rounded px-1">blocklisted</span>}</div>
+        <div className="flex items-center gap-3 mt-1.5 text-[11px] text-gray-400">
+          <span className="text-gray-200">{r.quality}</span>
+          <span className={r.cf_score >= 0 ? "text-green-400" : "text-red-400"}>CF {r.cf_score >= 0 ? "+" : ""}{r.cf_score}</span>
+          <span>{r.seeders} seeders</span><span>{(r.size / 1e9).toFixed(1)} GB</span><span>{r.indexer}</span>
+          <span className={cx("ml-auto flex items-center gap-1", r.accepted ? "text-green-400" : "text-red-400")}><Icon name={r.accepted ? "check" : "x"} size={12} />{r.accepted ? "passes profile" : r.reason}</span>
+          <button onClick={() => grab(r)} disabled={r.blocklisted} className="ml-2 px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] disabled:opacity-40"><Icon name="download" size={12} /></button>
+        </div>
+      </div>)}</div>}
+    {msg && <div className="text-gray-300 text-sm mt-3">{msg}</div>}
+  </Modal>;
+}
+
+const EP_COLOR = { available: "text-green-400", downloading: "text-blue-400", missing: "text-gray-500" };
+function SeriesEpisodes({ seriesId }) {
+  const [seasons, setSeasons] = useState(null);
+  const load = () => api.get(`/api/series/${seriesId}/seasons`).then(setSeasons).catch(() => setSeasons([]));
+  useEffect(() => { load(); }, [seriesId]);
+  if (!seasons) return <Loading />;
+  if (seasons.length === 0) return null;
+  const toggleSeason = async (s) => { await api.put(`/api/series/${seriesId}/season/${s.season_number}/monitor`, { monitored: !s.monitored }); load(); };
+  const searchEp = async (ep) => { await api.post(`/api/episode/${ep.id}/search`, {}); load(); };
+  return <div className="mt-8">
+    <h2 className="text-lg font-semibold text-gray-100 mb-3">Seasons & episodes</h2>
+    {seasons.map(s => <div key={s.id} className="mb-4 border border-gray-700 rounded-lg overflow-hidden">
+      <div className="flex items-center gap-2 bg-gray-800 px-4 py-2.5"><span className="text-sm font-medium text-gray-100">Season {s.season_number}</span><span className="text-xs text-gray-500">{s.episodes.length} episodes</span><div className="ml-auto"><Toggle label="Monitored" on={!!s.monitored} onChange={() => toggleSeason(s)} /></div></div>
+      <div>{s.episodes.map(ep => <div key={ep.id} className="flex items-center gap-3 px-4 py-2 border-t border-gray-800 text-sm">
+        <span className="text-gray-500 w-14">S{String(s.season_number).padStart(2, "0")}E{String(ep.episode_number).padStart(2, "0")}</span>
+        <span className="text-gray-200 flex-1 truncate">{ep.title || "Episode " + ep.episode_number}</span>
+        <span className="text-gray-500 text-xs w-24">{ep.air_date || ""}</span>
+        <span className={cx("text-xs w-20", EP_COLOR[ep.status] || "text-gray-500")}>{ep.status}</span>
+        {ep.status === "missing" && <button onClick={() => searchEp(ep)} className="text-indigo-400 text-xs flex items-center gap-1"><Icon name="search" size={12} /> Search</button>}
+      </div>)}</div>
+    </div>)}
+  </div>;
+}
+
+function Detail({ item, onBack }) {
+  const [d] = useAsync(() => item.external_id ? api.get(`/api/detail/${item.media_type}/${item.external_id}`) : Promise.resolve(item), [item]);
+  const [status, setStatus] = useState(item.status || "not_owned"); const [msg, setMsg] = useState(""); const [picker, setPicker] = useState(false);
+  const info = d || item;
+  const request = async () => {
+    setStatus("requested"); setMsg("Requesting...");
+    try { const r = await api.post("/api/request", { media_type: item.media_type, title: info.title, external_id: item.external_id, platform: item.platform, cover_url: info.cover_url }); setMsg(r.ok ? (r.episodes_grabbed != null ? `${r.episodes_grabbed} episode(s) grabbed` : `Grabbed: ${r.release || ""}`) : (r.message || "Failed")); setStatus(r.ok ? "downloading" : "not_owned"); }
+    catch (e) { setMsg(e.message); setStatus("not_owned"); }
+  };
+  const b = BADGE[status];
+  const hasSeries = item.media_type === "show" && typeof item.id === "number";
+  return <div className="px-8 py-6">
+    <button onClick={onBack} className="text-indigo-400 text-sm flex items-center gap-1 mb-4"><Icon name="cleft" size={16} /> Back</button>
+    <div className="flex flex-col md:flex-row gap-8">
+      <div className="w-56 h-72 shrink-0"><Poster item={{ title: info.title, status, cover_url: info.cover_url }} /></div>
+      <div className="flex-1">
+        <div className="flex items-center gap-3 flex-wrap"><h1 className="text-2xl font-bold text-gray-100">{info.title}</h1><span className={cx("text-white text-[11px] font-semibold uppercase px-2 py-0.5 rounded", b[1])}>{b[0]}</span>{info.content_rating && <span className="text-[11px] border border-gray-600 text-gray-300 rounded px-1.5 py-0.5">{info.content_rating}</span>}{info.score != null && <span className="text-[12px] text-amber-400 flex items-center gap-1"><Icon name="star" size={12} /> {info.score}</span>}</div>
+        <div className="text-gray-400 text-sm mt-2">{(info.genres || []).join(", ")}{info.year ? ` · ${info.year}` : ""}{info.studio ? ` · ${info.studio}` : ""}{info.platform ? ` · ${info.platform}` : ""}{info.runtime ? ` · ${info.runtime} min` : ""}</div>
+        <p className="text-gray-300 text-sm leading-relaxed mt-4 max-w-2xl">{info.overview || "No description available."}</p>
+        <div className="flex items-center gap-3 mt-6">
+          <button onClick={request} disabled={status !== "not_owned"} className={cx("px-6 py-2.5 rounded-lg text-white text-sm", status === "not_owned" ? "bg-indigo-600 hover:bg-indigo-500" : "bg-gray-700")}>{status === "available" ? "In library" : status === "downloading" ? "Requested ✓" : status === "requested" ? "Requested ✓" : "Request"}</button>
+          {item.media_type !== "show" && <Btn variant="secondary" onClick={() => setPicker(true)}><Icon name="sliders" size={15} /> Choose release</Btn>}
+        </div>
+        {msg && <div className="text-gray-400 text-sm mt-3">{msg}</div>}
+      </div>
+    </div>
+    {hasSeries && <SeriesEpisodes seriesId={item.id} />}
+    {picker && <ReleasePicker item={item} title={info.title} onClose={() => setPicker(false)} />}
+  </div>;
+}
+
+const STATUS_COLOR = { Available: "bg-green-600", Downloading: "bg-blue-600", Importing: "bg-indigo-600", Searching: "bg-amber-600", Wanted: "bg-amber-600", Pending: "bg-purple-600", Declined: "bg-gray-600", Failed: "bg-red-600" };
+function Requests({ isAdmin }) {
+  const [rows, setRows] = useState(null); const [busy, setBusy] = useState(null);
+  const load = () => api.get("/api/requests").then(setRows);
+  useEffect(() => { load(); }, []);
+  if (!rows) return <Loading />;
+  const act = async (r, kind) => { setBusy(r.id); try { await api.post(`/api/requests/${r.id}/${kind}`); } catch (e) {} setBusy(null); load(); };
+  const pending = rows.filter(r => r.status === "Pending");
+  return <div className="px-8 py-6"><h1 className="text-2xl font-bold text-gray-100 mb-4">Requests</h1>
+    {isAdmin && pending.length > 0 && <div className="mb-6">
+      <div className="text-sm font-semibold text-purple-300 mb-2">Pending approval ({pending.length})</div>
+      <div className="space-y-2">{pending.map(r => <div key={r.id} className="flex items-center gap-3 bg-gray-800 border border-purple-500/30 rounded-lg px-4 py-3">
+        <Icon name={TYPE_ICON[r.media_type] || "film"} size={16} className="text-gray-400" />
+        <span className="text-sm text-gray-100">{r.title}</span>
+        <span className="text-[11px] text-gray-500">requested by {r.requested_by}</span>
+        <div className="ml-auto flex gap-2">
+          <button onClick={() => act(r, "approve")} disabled={busy === r.id} className="px-3 py-1.5 rounded-lg bg-green-600 hover:bg-green-500 text-white text-xs flex items-center gap-1 disabled:opacity-40"><Icon name="check" size={13} /> Approve</button>
+          <button onClick={() => act(r, "decline")} disabled={busy === r.id} className="px-3 py-1.5 rounded-lg border border-red-500/50 text-red-400 hover:bg-red-500/10 text-xs flex items-center gap-1 disabled:opacity-40"><Icon name="x" size={13} /> Decline</button>
+        </div>
+      </div>)}</div>
+    </div>}
+    {rows.length === 0 ? <Empty>No requests yet.</Empty> :
+      <div className="overflow-hidden rounded-lg border border-gray-700"><table className="w-full text-sm">
+        <thead className="bg-gray-800 text-gray-400 text-xs uppercase"><tr><th className="text-left px-4 py-2">Title</th><th className="text-left px-4 py-2">Type</th><th className="text-left px-4 py-2">By</th><th className="text-left px-4 py-2">Quality</th><th className="text-left px-4 py-2">Status</th><th className="text-left px-4 py-2">Detail</th></tr></thead>
+        <tbody>{rows.map(r => <tr key={r.id} className="border-t border-gray-700 text-gray-200"><td className="px-4 py-2.5">{r.title}</td><td className="px-4 py-2.5 capitalize">{r.media_type}</td><td className="px-4 py-2.5 text-gray-400">{r.requested_by || "—"}</td><td className="px-4 py-2.5">{r.quality || "—"}</td><td className="px-4 py-2.5"><span className={cx("text-white text-[11px] px-2 py-0.5 rounded", STATUS_COLOR[r.status] || "bg-gray-600")}>{r.status}</span></td><td className="px-4 py-2.5 text-gray-400">{r.message || ""}</td></tr>)}</tbody>
+      </table></div>}
+  </div>;
+}
+
+/* =========================================================================
+   Dashboard settings
+   ========================================================================= */
+function Loading() { return <div className="px-8 py-10 text-gray-500 text-sm">Loading…</div>; }
+function Empty({ children }) { return <div className="text-gray-500 text-sm py-4">{children}</div>; }
+
+function Indexers() {
+  const [state, setState] = useState(null); const [test, setTest] = useState("");
+  const load = () => api.get("/api/settings/prowlarr").then(setState);
+  useEffect(() => { load(); }, []);
+  if (!state) return <Loading />;
+  const p = state.prowlarr;
+  const connect = async () => { setTest("..."); try { const r = await api.post("/api/settings/prowlarr", { url: p.url, apiKey: p.apiKey }); setTest(r.ok ? "ok" : "fail"); load(); } catch { setTest("fail"); } };
+  const set = (k, v) => setState({ ...state, prowlarr: { ...p, [k]: v } });
+  return <div>
+    <SectionHead title="Indexers" desc="Solarr reads indexers from Prowlarr rather than managing them itself." />
+    <div className="bg-gray-800 border border-gray-700 rounded-lg p-5 max-w-xl mb-6">
+      <div className="flex items-center gap-2 mb-3"><Icon name="rss" size={16} className="text-indigo-400" /><span className="text-sm font-medium text-gray-100">Prowlarr connection</span><span className={cx("ml-auto text-xs flex items-center gap-1.5", p.connected ? "text-green-400" : "text-gray-500")}><span className={cx("w-2 h-2 rounded-full", p.connected ? "bg-green-500" : "bg-gray-600")} />{p.connected ? "Connected" : "Not connected"}</span></div>
+      <Field label="Prowlarr URL" value={p.url} onChange={v => set("url", v)} placeholder="http://prowlarr:9696" />
+      <Field label="API key" type="password" value={p.apiKey} onChange={v => set("apiKey", v)} />
+      <div className="flex gap-2">{!p.connected ? <Btn onClick={connect}>{test === "..." ? "Connecting…" : "Connect & sync"}</Btn> : <><Btn variant="secondary" onClick={connect}>Refresh</Btn><Btn variant="danger" onClick={async () => { await api.post("/api/settings/prowlarr/disconnect"); load(); }}>Disconnect</Btn></>}</div>
+    </div>
+    {state.indexers.length > 0 && <div className="overflow-hidden rounded-lg border border-gray-700"><table className="w-full text-sm">
+      <thead className="bg-gray-800 text-gray-400 text-xs uppercase"><tr><th className="text-left px-4 py-2">Indexer</th><th className="text-left px-4 py-2">Protocol</th><th className="text-left px-4 py-2">Privacy</th><th className="text-left px-4 py-2">Categories</th><th className="text-left px-4 py-2">Status</th></tr></thead>
+      <tbody>{state.indexers.map((ix, i) => <tr key={i} className="border-t border-gray-700 text-gray-200"><td className="px-4 py-2.5 font-medium">{ix.name}</td><td className="px-4 py-2.5">{ix.protocol}</td><td className="px-4 py-2.5">{ix.privacy}</td><td className="px-4 py-2.5 text-gray-400">{ix.categories}</td><td className="px-4 py-2.5"><span className={cx("inline-flex items-center gap-1.5 text-xs", ix.enabled ? "text-green-400" : "text-gray-500")}><span className={cx("w-2 h-2 rounded-full", ix.enabled ? "bg-green-500" : "bg-gray-600")} />{ix.enabled ? "Enabled" : "Disabled"}</span></td></tr>)}</tbody>
+    </table><p className="text-[12px] text-gray-500 mt-3 px-1">Managed in Prowlarr — read-only here.</p></div>}
+  </div>;
+}
+
+function DownloadClients() {
+  const [rows, setRows] = useState(null); const [edit, setEdit] = useState(null); const [d, setD] = useState({}); const [test, setTest] = useState("");
+  const load = () => api.get("/api/settings/download-clients").then(setRows);
+  useEffect(() => { load(); }, []);
+  if (!rows) return <Loading />;
+  const openEdit = r => { setD({ ...r, catMovie: r.cat_movie, catShow: r.cat_show, catGame: r.cat_game, enabled: !!r.enabled, forMovies: !!r.for_movies, forShows: !!r.for_shows, forGames: !!r.for_games }); setTest(""); setEdit(r.id); };
+  const save = async () => { if (edit === "new") await api.post("/api/settings/download-clients", d); else await api.put("/api/settings/download-clients/" + edit, d); setEdit(null); load(); };
+  const doTest = async () => { setTest("..."); const r = await api.post("/api/settings/download-clients/test", { host: d.host, port: d.port, username: d.username, password: d.password }); setTest(r.ok ? "ok" : "fail"); };
+  const set = (k, v) => setD({ ...d, [k]: v });
+  return <div>
+    <div className="flex items-start justify-between"><SectionHead title="Download Clients" desc="Shared across Movies, Shows and Games." /></div>
+    {rows.length === 0 ? <Empty>None configured.</Empty> :
+      <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fill,minmax(230px,1fr))" }}>{rows.map(r => <div key={r.id} className="bg-gray-800 border border-gray-700 rounded-lg p-4">
+        <div className="flex items-center justify-between"><div className="font-medium text-gray-100">{r.name}</div><span className={cx("w-2 h-2 rounded-full", r.enabled ? "bg-green-500" : "bg-gray-600")} /></div>
+        <div className="text-xs text-gray-400 mt-1">{r.type} · {r.host}:{r.port}</div>
+        <div className="flex gap-3 mt-3"><button onClick={() => openEdit(r)} className="text-indigo-400 text-xs flex items-center gap-1"><Icon name="pencil" size={13} /> Edit</button><button onClick={async () => { await api.del("/api/settings/download-clients/" + r.id); load(); }} className="text-red-400 text-xs flex items-center gap-1"><Icon name="trash" size={13} /> Delete</button></div>
+      </div>)}</div>}
+    {edit !== null && <Modal title={edit === "new" ? "Add download client" : "Edit download client"} onClose={() => setEdit(null)}
+      footer={<><Btn variant="secondary" onClick={doTest}>{test === "..." ? "Testing…" : "Test"}</Btn><Btn variant="secondary" onClick={() => setEdit(null)}>Cancel</Btn><Btn onClick={save}>Save</Btn></>}>
+      <Field label="Name" value={d.name} onChange={v => set("name", v)} />
+      <Select label="Type" value={d.type} onChange={v => set("type", v)} options={["qBittorrent", "Transmission", "Deluge", "SABnzbd", "NZBGet"]} />
+      <Field label="Host" value={d.host} onChange={v => set("host", v)} /><Field label="Port" value={d.port} onChange={v => set("port", v)} />
+      <Field label="Username" value={d.username} onChange={v => set("username", v)} /><Field label="Password" type="password" value={d.password} onChange={v => set("password", v)} />
+      <div className="flex gap-3"><div className="flex-1"><Field label="Movie category" value={d.catMovie} onChange={v => set("catMovie", v)} /></div><div className="flex-1"><Field label="Show category" value={d.catShow} onChange={v => set("catShow", v)} /></div><div className="flex-1"><Field label="Game category" value={d.catGame} onChange={v => set("catGame", v)} /></div></div>
+      <label className="block text-xs text-gray-400 mb-1.5">Enable for</label>
+      <div className="flex gap-5 mb-2">{["Movies", "Shows", "Games"].map(m => <label key={m} className="flex items-center gap-2 text-sm text-gray-200"><input type="checkbox" checked={!!d["for" + m]} onChange={e => set("for" + m, e.target.checked)} />{m}</label>)}</div>
+      <Toggle label="Enabled" on={!!d.enabled} onChange={v => set("enabled", v)} />
+      {test === "ok" && <div className="text-green-400 text-sm mt-2 flex items-center gap-1"><Icon name="check" size={14} /> Connected</div>}
+      {test === "fail" && <div className="text-red-400 text-sm mt-2 flex items-center gap-1"><Icon name="x" size={14} /> Failed</div>}
+    </Modal>}
+  </div>;
+}
+
+function RootFolders() {
+  const [rows, setRows] = useState(null); const [modal, setModal] = useState(false); const [d, setD] = useState({ path: "", media: {} });
+  const load = () => api.get("/api/settings/root-folders").then(setRows);
+  useEffect(() => { load(); }, []);
+  if (!rows) return <Loading />;
+  const save = async () => { await api.post("/api/settings/root-folders", d); setModal(false); load(); };
+  return <div>
+    <div className="flex items-center justify-between mb-3"><div className="text-sm text-gray-300">Libraries / root folders</div><Btn onClick={() => { setD({ path: "", media: {} }); setModal(true); }}><Icon name="folder" size={15} /> Add root folder</Btn></div>
+    {rows.length === 0 ? <Empty>No libraries yet.</Empty> :
+      <div className="space-y-2">{rows.map(r => <div key={r.id} className="flex items-center justify-between bg-gray-800 border border-gray-700 rounded-lg px-4 py-3"><div><div className="text-sm text-gray-100 font-mono">{r.path}</div><div className="text-[11px] text-gray-500 capitalize">{["movies", "shows", "anime", "games"].filter(m => r["for_" + m]).join(" · ") || "unassigned"}</div></div><button onClick={async () => { await api.del("/api/settings/root-folders/" + r.id); load(); }} className="text-red-400 text-xs flex items-center gap-1"><Icon name="trash" size={13} /> Delete</button></div>)}</div>}
+    {modal && <Modal title="Add root folder" onClose={() => setModal(false)} footer={<><Btn variant="secondary" onClick={() => setModal(false)}>Cancel</Btn><Btn onClick={save}>Save</Btn></>}>
+      <Field label="Path (inside the container)" value={d.path} onChange={v => setD({ ...d, path: v })} placeholder="/library1/movies" />
+      <label className="block text-xs text-gray-400 mb-1.5">Holds</label>
+      <div className="flex gap-5">{["movies", "shows", "anime", "games"].map(m => <label key={m} className="flex items-center gap-2 text-sm text-gray-200 capitalize"><input type="checkbox" checked={!!d.media[m]} onChange={e => setD({ ...d, media: { ...d.media, [m]: e.target.checked } })} />{m}</label>)}</div>
+    </Modal>}
+  </div>;
+}
+
+function Profiles({ app }) {
+  const [rows, setRows] = useState(null); const [defs, setDefs] = useState([]); const [edit, setEdit] = useState(null); const [d, setD] = useState(null);
+  const load = () => Promise.all([api.get(`/api/settings/${app}/profiles`), api.get(`/api/settings/${app}/quality-definitions`)]).then(([p, q]) => { setRows(p); setDefs(q); });
+  useEffect(() => { load(); }, [app]);
+  if (!rows) return <Loading />;
+  const names = defs.map(q => q.name);
+  const openNew = () => { setD({ name: "", cutoff: names[0] || "", allowed: [], upgradeAllowed: true, minFormatScore: 0, cutoffFormatScore: 0 }); setEdit("new"); };
+  const openEdit = p => { setD({ id: p.id, name: p.name, cutoff: p.cutoff, allowed: p.allowed || [], upgradeAllowed: !!p.upgrade_allowed, minFormatScore: p.min_format_score, cutoffFormatScore: p.cutoff_format_score }); setEdit(p.id); };
+  const save = async () => { if (edit === "new") await api.post(`/api/settings/${app}/profiles`, d); else await api.put("/api/settings/profiles/" + d.id, d); setEdit(null); load(); };
+  const toggleQ = q => setD({ ...d, allowed: d.allowed.includes(q) ? d.allowed.filter(x => x !== q) : [...d.allowed, q] });
+  return <div>
+    <div className="flex items-start justify-between"><SectionHead title={`Profiles — ${appLabel(app)}`} desc="Quality profiles decide which releases are grabbed and upgraded." /><Btn onClick={openNew}><Icon name="plus" size={15} /> Add profile</Btn></div>
+    <div className="space-y-2">{rows.map(p => <div key={p.id} className="flex items-center justify-between bg-gray-800 border border-gray-700 rounded-lg px-4 py-3">
+      <div><div className="text-sm text-gray-100">{p.name}</div><div className="text-[11px] text-gray-500">Cutoff: {p.cutoff} · {(p.allowed || []).length} qualities · upgrades {p.upgrade_allowed ? "on" : "off"} · min CF {p.min_format_score}</div></div>
+      <div className="flex gap-3"><button onClick={() => openEdit(p)} className="text-indigo-400 text-xs flex items-center gap-1"><Icon name="pencil" size={13} /> Edit</button><button onClick={async () => { await api.del("/api/settings/profiles/" + p.id); load(); }} className="text-red-400 text-xs flex items-center gap-1"><Icon name="trash" size={13} /> Delete</button></div>
+    </div>)}</div>
+    {edit !== null && d && <Modal title={edit === "new" ? "Add profile" : "Edit profile"} onClose={() => setEdit(null)} footer={<><Btn variant="secondary" onClick={() => setEdit(null)}>Cancel</Btn><Btn onClick={save}>Save</Btn></>}>
+      <Field label="Name" value={d.name} onChange={v => setD({ ...d, name: v })} />
+      <label className="block text-xs text-gray-400 mb-1.5">Allowed qualities (best first)</label>
+      <div className="border border-gray-700 rounded-lg p-2 mb-3 max-h-52 overflow-y-auto">{defs.map(q => <label key={q.id} className="flex items-center gap-2 text-sm text-gray-200 py-1"><input type="checkbox" checked={d.allowed.includes(q.name)} onChange={() => toggleQ(q.name)} />{q.name}</label>)}</div>
+      <Select label="Cutoff (stop upgrading here)" value={d.cutoff} onChange={v => setD({ ...d, cutoff: v })} options={names} />
+      <Toggle label="Allow upgrades" on={d.upgradeAllowed} onChange={v => setD({ ...d, upgradeAllowed: v })} />
+      <div className="flex gap-3 mt-2"><div className="flex-1"><Field label="Minimum custom-format score" value={d.minFormatScore} onChange={v => setD({ ...d, minFormatScore: +v || 0 })} /></div><div className="flex-1"><Field label="Upgrade-until CF score" value={d.cutoffFormatScore} onChange={v => setD({ ...d, cutoffFormatScore: +v || 0 })} /></div></div>
+    </Modal>}
+  </div>;
+}
+
+function QualityDefs({ app }) {
+  const [rows] = useAsync(() => api.get(`/api/settings/${app}/quality-definitions`), [app]);
+  if (!rows) return <Loading />;
+  return <div><SectionHead title={`Quality — ${appLabel(app)}`} desc="Quality tiers and their rank (higher = preferred). Size limits are editable in the backend." />
+    <div className="overflow-hidden rounded-lg border border-gray-700"><table className="w-full text-sm"><thead className="bg-gray-800 text-gray-400 text-xs uppercase"><tr><th className="text-left px-4 py-2">Quality</th><th className="text-left px-4 py-2">Rank</th><th className="text-left px-4 py-2">Min size (MB)</th><th className="text-left px-4 py-2">Max size (MB)</th></tr></thead>
+      <tbody>{rows.map(q => <tr key={q.id} className="border-t border-gray-700 text-gray-200"><td className="px-4 py-2.5">{q.name}</td><td className="px-4 py-2.5">{q.rank}</td><td className="px-4 py-2.5">{q.min_size_mb || "—"}</td><td className="px-4 py-2.5">{q.max_size_mb || "∞"}</td></tr>)}</tbody></table></div>
+  </div>;
+}
+
+const SPEC_TYPES = ["title", "group", "resolution", "source", "codec", "hdr"];
+function CustomFormats({ app }) {
+  const [rows, setRows] = useState(null); const [edit, setEdit] = useState(null); const [d, setD] = useState(null);
+  const [profId, setProfId] = useState(null); const [testTitle, setTestTitle] = useState(""); const [testRes, setTestRes] = useState(null); const [profs, setProfs] = useState([]);
+  const load = () => Promise.all([api.get(`/api/settings/${app}/custom-formats`), api.get(`/api/settings/${app}/profiles`)]).then(([c, p]) => { setRows(c); setProfs(p); if (p[0]) setProfId(p[0].id); });
+  useEffect(() => { load(); }, [app]);
+  if (!rows) return <Loading />;
+  const openNew = () => { setD({ name: "", score: 0, specs: [{ type: "title", value: "", negate: false }] }); setEdit("new"); };
+  const openEdit = f => { setD({ id: f.id, name: f.name, score: f.score, specs: (f.specs || []).map(s => ({ type: s.type, value: s.value, negate: !!s.negate })) }); setEdit(f.id); };
+  const save = async () => { if (edit === "new") await api.post(`/api/settings/${app}/custom-formats`, d); else await api.put("/api/settings/custom-formats/" + d.id, d); setEdit(null); load(); };
+  const runTest = async () => { const r = await api.post(`/api/settings/${app}/evaluate`, { title: testTitle, profileId: profId }); setTestRes(r); };
+  return <div>
+    <div className="flex items-start justify-between"><SectionHead title={`Custom Formats — ${appLabel(app)}`} desc="Score releases by attributes; profiles use these scores to choose and upgrade." /><Btn onClick={openNew}><Icon name="plus" size={15} /> Add custom format</Btn></div>
+    <div className="space-y-2 mb-6">{rows.map(f => <div key={f.id} className="flex items-center justify-between bg-gray-800 border border-gray-700 rounded-lg px-4 py-3">
+      <div><div className="text-sm text-gray-100">{f.name} <span className={cx("ml-1 text-xs", f.score >= 0 ? "text-green-400" : "text-red-400")}>{f.score >= 0 ? "+" : ""}{f.score}</span></div><div className="text-[11px] text-gray-500">{(f.specs || []).map(s => `${s.negate ? "not " : ""}${s.type}:${s.value}`).join(", ")}</div></div>
+      <div className="flex gap-3"><button onClick={() => openEdit(f)} className="text-indigo-400 text-xs flex items-center gap-1"><Icon name="pencil" size={13} /> Edit</button><button onClick={async () => { await api.del("/api/settings/custom-formats/" + f.id); load(); }} className="text-red-400 text-xs flex items-center gap-1"><Icon name="trash" size={13} /> Delete</button></div>
+    </div>)}</div>
+
+    <div className="bg-gray-800/60 border border-gray-700 rounded-xl p-5 max-w-2xl">
+      <div className="text-sm font-medium text-gray-100 mb-1">Test a release against the engine</div>
+      <p className="text-[12px] text-gray-500 mb-3">Enter a release title to see how the parser + custom formats + profile evaluate it.</p>
+      <div className="flex gap-2 items-end">
+        <div className="flex-1"><Field label="Release title" value={testTitle} onChange={setTestTitle} placeholder={app === "games" ? "Celeste [FitGirl Repack]" : "Movie 2024 2160p BluRay REMUX HDR x265-GROUP"} /></div>
+        {profs.length > 0 && <div style={{ minWidth: 160 }}><Select label="Profile" value={profId} onChange={v => setProfId(+v)} options={profs.map(p => String(p.id))} /></div>}
+        <Btn className="mb-3.5" onClick={runTest}>Evaluate</Btn>
+      </div>
+      {testRes && <div className="mt-1 text-sm">
+        <div className="text-gray-300">Parsed quality: <span className="text-gray-100 font-medium">{testRes.parsed.quality}</span> · custom-format score: <span className="text-gray-100 font-medium">{testRes.decision.cf_score}</span>{(testRes.decision.matched_formats || []).length ? ` (${testRes.decision.matched_formats.join(", ")})` : ""}</div>
+        <div className={cx("mt-1 flex items-center gap-1.5", testRes.decision.accepted ? "text-green-400" : "text-red-400")}><Icon name={testRes.decision.accepted ? "check" : "x"} size={14} />{testRes.decision.accepted ? `Accepted under profile "${testRes.profile}"` : `Rejected: ${testRes.decision.reason}`}</div>
+      </div>}
+    </div>
+
+    {edit !== null && d && <Modal title={edit === "new" ? "Add custom format" : "Edit custom format"} onClose={() => setEdit(null)} footer={<><Btn variant="secondary" onClick={() => setEdit(null)}>Cancel</Btn><Btn onClick={save}>Save</Btn></>}>
+      <div className="flex gap-3"><div className="flex-1"><Field label="Name" value={d.name} onChange={v => setD({ ...d, name: v })} /></div><div style={{ width: 110 }}><Field label="Score" value={d.score} onChange={v => setD({ ...d, score: +v || 0 })} /></div></div>
+      <label className="block text-xs text-gray-400 mb-1.5">Specifications (all must match)</label>
+      {d.specs.map((s, i) => <div key={i} className="flex gap-2 mb-2 items-center">
+        <select value={s.type} onChange={e => { const sp = [...d.specs]; sp[i] = { ...s, type: e.target.value }; setD({ ...d, specs: sp }); }} className="px-2 py-2 rounded-lg bg-gray-900 border border-gray-700 text-gray-100 text-sm">{SPEC_TYPES.map(t => <option key={t} value={t}>{t}</option>)}</select>
+        <input value={s.value} onChange={e => { const sp = [...d.specs]; sp[i] = { ...s, value: e.target.value }; setD({ ...d, specs: sp }); }} placeholder="regex / value" className="flex-1 px-3 py-2 rounded-lg bg-gray-900 border border-gray-700 text-gray-100 text-sm" />
+        <label className="flex items-center gap-1 text-xs text-gray-400"><input type="checkbox" checked={s.negate} onChange={e => { const sp = [...d.specs]; sp[i] = { ...s, negate: e.target.checked }; setD({ ...d, specs: sp }); }} />not</label>
+        <button onClick={() => setD({ ...d, specs: d.specs.filter((_, j) => j !== i) })} className="text-red-400"><Icon name="x" size={15} /></button>
+      </div>)}
+      <Btn variant="secondary" className="mt-1" onClick={() => setD({ ...d, specs: [...d.specs, { type: "title", value: "", negate: false }] })}><Icon name="plus" size={14} /> Add specification</Btn>
+    </Modal>}
+  </div>;
+}
+
+function TagList({ app }) {
+  const [rows, setRows] = useState(null); const [val, setVal] = useState("");
+  const load = () => api.get(`/api/settings/${app}/tags`).then(setRows);
+  useEffect(() => { load(); }, [app]);
+  if (!rows) return <Loading />;
+  const add = async () => { if (!val.trim()) return; await api.post(`/api/settings/${app}/tags`, { label: val.trim() }); setVal(""); load(); };
+  return <div><SectionHead title={`Tags — ${appLabel(app)}`} desc="Tags group items and target indexers, lists, and connections." />
+    <div className="flex flex-wrap gap-2 mb-4">{rows.length === 0 && <Empty>No tags yet.</Empty>}{rows.map(t => <span key={t.id} className="inline-flex items-center gap-1.5 bg-gray-700 text-gray-100 text-sm rounded-full pl-3 pr-2 py-1"><Icon name="tag" size={12} /> {t.label}<button onClick={async () => { await api.del("/api/settings/tags/" + t.id); load(); }} className="text-gray-400 hover:text-red-400"><Icon name="x" size={13} /></button></span>)}</div>
+    <div className="flex gap-2 items-end max-w-md"><div className="flex-1"><Field label="New tag" value={val} onChange={setVal} /></div><Btn className="mb-3.5" onClick={add}><Icon name="plus" size={15} /> Add</Btn></div>
+  </div>;
+}
+
+function Connections({ app }) {
+  const [rows, setRows] = useState(null); const [modal, setModal] = useState(false); const [d, setD] = useState({});
+  const load = () => api.get(`/api/settings/${app}/connections`).then(setRows);
+  useEffect(() => { load(); }, [app]);
+  if (!rows) return <Loading />;
+  const save = async () => { await api.post(`/api/settings/${app}/connections`, d); setModal(false); load(); };
+  return <div><div className="flex items-start justify-between"><SectionHead title={`Connect — ${appLabel(app)}`} desc="Fire notifications on grab / import events." /><Btn onClick={() => { setD({ type: "Discord", onGrab: true, onImport: true }); setModal(true); }}><Icon name="plus" size={15} /> Add connection</Btn></div>
+    {rows.length === 0 ? <Empty>No connections.</Empty> : <div className="space-y-2">{rows.map(c => <div key={c.id} className="flex items-center justify-between bg-gray-800 border border-gray-700 rounded-lg px-4 py-3"><div><div className="text-sm text-gray-100">{c.name || c.type}</div><div className="text-[11px] text-gray-500">{c.type} · {c.url}</div></div><button onClick={async () => { await api.del("/api/settings/connections/" + c.id); load(); }} className="text-red-400 text-xs flex items-center gap-1"><Icon name="trash" size={13} /> Delete</button></div>)}</div>}
+    {modal && <Modal title="Add connection" onClose={() => setModal(false)} footer={<><Btn variant="secondary" onClick={() => setModal(false)}>Cancel</Btn><Btn onClick={save}>Save</Btn></>}>
+      <Field label="Name" value={d.name} onChange={v => setD({ ...d, name: v })} /><Select label="Type" value={d.type} onChange={v => setD({ ...d, type: v })} options={["Discord", "Telegram", "Webhook", "Custom Script", "Email"]} /><Field label="Webhook / host URL" value={d.url} onChange={v => setD({ ...d, url: v })} />
+      <Toggle label="Notify on grab" on={d.onGrab} onChange={v => setD({ ...d, onGrab: v })} /><Toggle label="Notify on import" on={d.onImport} onChange={v => setD({ ...d, onImport: v })} />
+    </Modal>}
+  </div>;
+}
+
+function General() {
+  const [g, setG] = useState(null); const [saved, setSaved] = useState(false);
+  useEffect(() => { api.get("/api/settings/general").then(setG); }, []);
+  if (!g) return <Loading />;
+  const save = async () => { await api.post("/api/settings/general", g); setSaved(true); setTimeout(() => setSaved(false), 1500); };
+  const f = (k, v) => setG({ ...g, [k]: v });
+  return <div><SectionHead title="General" desc="Core settings for your Solarr instance." />
+    <div className="max-w-lg space-y-1">
+      <Field label="Application title" value={g.app_title} onChange={v => f("app_title", v)} placeholder="Solarr" />
+      <Field label="Application URL" value={g.app_url} onChange={v => f("app_url", v)} placeholder="http://localhost:5000" />
+      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 mt-3">
+        <Toggle label="Hide already-available titles on Discover" on={g.hide_available === "1" || g.hide_available === true} onChange={v => f("hide_available", v ? "1" : "0")} />
+      </div>
+    </div>
+    <Btn onClick={save} className="mt-4">{saved ? "Saved ✓" : "Save changes"}</Btn>
+  </div>;
+}
+
+function MetadataSettings() {
+  const [g, setG] = useState(null); const [saved, setSaved] = useState(false);
+  useEffect(() => { api.get("/api/settings/general").then(setG); }, []);
+  if (!g) return <Loading />;
+  const save = async () => { await api.post("/api/settings/general", g); setSaved(true); setTimeout(() => setSaved(false), 1500); };
+  const f = (k, v) => setG({ ...g, [k]: v });
+  return <div><SectionHead title="Metadata" desc="Discovery metadata providers for the request UI." />
+    <div className="max-w-md"><Field label="TMDb API key (movies & shows)" type="password" value={g.tmdb_api_key} onChange={v => f("tmdb_api_key", v)} /><Field label="IGDB client ID (games)" value={g.igdb_client_id} onChange={v => f("igdb_client_id", v)} /><Field label="IGDB client secret" type="password" value={g.igdb_client_secret} onChange={v => f("igdb_client_secret", v)} /></div>
+    <Btn onClick={save} className="mt-3">{saved ? "Saved ✓" : "Save changes"}</Btn>
+  </div>;
+}
+
+function MediaServer({ kind, title, desc }) {
+  const [rows, setRows] = useState(null); const [modal, setModal] = useState(false); const [d, setD] = useState({});
+  const load = () => api.get("/api/settings/media-servers").then(r => setRows(r.filter(s => s.kind === kind)));
+  useEffect(() => { load(); }, [kind]);
+  if (!rows) return <Loading />;
+  const save = async () => { await api.post("/api/settings/media-servers", { ...d, type: kind === "jellyfin" ? "Jellyfin" : "RomM" }); setModal(false); load(); };
+  return <div><div className="flex items-start justify-between"><SectionHead title={title} desc={desc} /></div>
+    {rows.length === 0 ? <Empty>Not connected.</Empty> : <div className="space-y-2">{rows.map(s => <div key={s.id} className="flex items-center gap-2 bg-gray-800 border border-gray-700 rounded-lg px-4 py-3"><Icon name="server" size={16} className="text-indigo-400" /><div className="text-sm text-gray-100">{s.name}</div><div className="text-xs text-gray-500 ml-2">{s.url}</div></div>)}</div>}
+    {modal && <Modal title={"Add " + title} onClose={() => setModal(false)} footer={<><Btn variant="secondary" onClick={() => setModal(false)}>Cancel</Btn><Btn onClick={save}>Save</Btn></>}>
+      <Field label="URL" value={d.url} onChange={v => setD({ ...d, url: v })} placeholder={kind === "jellyfin" ? "http://jellyfin:8096" : "http://romm:8080"} />
+      <Field label={kind === "romm" ? "Client API token" : "API key"} type="password" value={d.apiKey} onChange={v => setD({ ...d, apiKey: v })} />
+      {kind === "romm" && <><Field label="Username (optional)" value={d.username} onChange={v => setD({ ...d, username: v })} /><Field label="Password (optional)" type="password" value={d.password} onChange={v => setD({ ...d, password: v })} /></>}
+    </Modal>}
+  </div>;
+}
+
+function Lists({ app }) {
+  const [rows, setRows] = useState(null); const [profs, setProfs] = useState([]); const [modal, setModal] = useState(false); const [d, setD] = useState({}); const [busy, setBusy] = useState(null);
+  const load = () => Promise.all([api.get(`/api/settings/${app}/lists`), api.get(`/api/settings/${app}/profiles`)]).then(([l, p]) => { setRows(l); setProfs(p); });
+  useEffect(() => { load(); }, [app]);
+  if (!rows) return <Loading />;
+  const openNew = () => { setD({ type: "TMDb", enabled: true, autoAdd: false, profileId: profs[0] && profs[0].id }); setModal("new"); };
+  const openEdit = l => { setD({ id: l.id, name: l.name, type: l.type, url: l.url, enabled: !!l.enabled, autoAdd: !!l.auto_add, profileId: l.profile_id }); setModal("edit"); };
+  const save = async () => { if (modal === "new") await api.post(`/api/settings/${app}/lists`, d); else await api.put("/api/settings/lists/" + d.id, d); setModal(false); load(); };
+  const sync = async (l) => { setBusy(l.id); await api.post(`/api/settings/lists/${l.id}/sync`); setBusy(null); load(); };
+  return <div>
+    <div className="flex items-start justify-between"><SectionHead title={`Lists — ${appLabel(app)}`} desc="Auto-add titles from external lists (Trakt, IMDb, TMDb, IGDB, RSS/JSON)." /><Btn onClick={openNew}><Icon name="plus" size={15} /> Add list</Btn></div>
+    {rows.length === 0 ? <Empty>No lists yet.</Empty> : <div className="space-y-2">{rows.map(l => <div key={l.id} className="flex items-center justify-between bg-gray-800 border border-gray-700 rounded-lg px-4 py-3">
+      <div><div className="text-sm text-gray-100 flex items-center gap-2">{l.name} <span className="text-[10px] uppercase text-gray-400 border border-gray-600 rounded px-1">{l.type}</span>{l.auto_add ? <span className="text-[10px] text-green-400 border border-green-500/40 rounded px-1">auto-add</span> : <span className="text-[10px] text-gray-400 border border-gray-600 rounded px-1">catalogue</span>}{!l.enabled && <span className="text-[10px] text-gray-500">disabled</span>}</div><div className="text-[11px] text-gray-500 break-all">{l.url} · last: {l.last_count || 0} items</div></div>
+      <div className="flex gap-3 shrink-0"><button onClick={() => sync(l)} className="text-indigo-400 text-xs flex items-center gap-1">{busy === l.id ? "Syncing…" : <><Icon name="reset" size={13} /> Sync</>}</button><button onClick={() => openEdit(l)} className="text-indigo-400 text-xs flex items-center gap-1"><Icon name="pencil" size={13} /> Edit</button><button onClick={async () => { await api.del("/api/settings/lists/" + l.id); load(); }} className="text-red-400 text-xs flex items-center gap-1"><Icon name="trash" size={13} /> Delete</button></div>
+    </div>)}</div>}
+    {modal && <Modal title={modal === "new" ? "Add list" : "Edit list"} onClose={() => setModal(false)} footer={<><Btn variant="secondary" onClick={() => setModal(false)}>Cancel</Btn><Btn onClick={save}>Save</Btn></>}>
+      <Field label="Name" value={d.name} onChange={v => setD({ ...d, name: v })} />
+      <Select label="Type" value={d.type} onChange={v => setD({ ...d, type: v })} options={["Trakt", "IMDb", "TMDb", "IGDB", "RSS", "Custom"]} />
+      <Field label="List URL (JSON array/{items:[]} or RSS feed)" value={d.url} onChange={v => setD({ ...d, url: v })} placeholder="https://…" />
+      {profs.length > 0 && <Select label="Quality profile for auto-added items" value={d.profileId} onChange={v => setD({ ...d, profileId: +v })} options={profs.map(p => String(p.id))} />}
+      <Toggle label="Enabled" on={d.enabled} onChange={v => setD({ ...d, enabled: v })} />
+      <Toggle label="Auto-add (request automatically, not just catalogue)" on={d.autoAdd} onChange={v => setD({ ...d, autoAdd: v })} />
+    </Modal>}
+  </div>;
+}
+
+function Calendar() {
+  const [rows] = useAsync(() => api.get("/api/calendar"), []);
+  if (!rows) return <Loading />;
+  const byDate = {}; rows.forEach(e => { (byDate[e.air_date] = byDate[e.air_date] || []).push(e); });
+  const dates = Object.keys(byDate).sort();
+  return <div className="px-8 py-6"><h1 className="text-2xl font-bold text-gray-100 mb-1 flex items-center gap-2"><Icon name="calendar" size={22} /> Calendar</h1><p className="text-gray-400 text-sm mb-5">Upcoming and recent episodes from monitored series.</p>
+    {dates.length === 0 ? <Empty>No scheduled episodes. Request a show to populate its episode schedule.</Empty> :
+      <div className="space-y-5">{dates.map(dt => <div key={dt}>
+        <div className="text-sm font-semibold text-indigo-300 mb-2">{new Date(dt).toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })}</div>
+        <div className="space-y-1.5">{byDate[dt].map((e, i) => <div key={i} className="flex items-center gap-3 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5">
+          <Icon name="tv" size={15} className="text-gray-400" />
+          <span className="text-sm text-gray-100">{e.series}</span>
+          <span className="text-xs text-gray-500">S{String(e.season_number).padStart(2, "0")}E{String(e.episode_number).padStart(2, "0")}</span>
+          <span className="text-sm text-gray-400 flex-1 truncate">{e.title}</span>
+          <span className={cx("text-[10px] uppercase px-2 py-0.5 rounded text-white", e.status === "available" ? "bg-green-600" : e.status === "downloading" ? "bg-blue-600" : "bg-gray-600")}>{e.status}</span>
+        </div>)}</div>
+      </div>)}</div>}
+  </div>;
+}
+
+function Blocklist() {
+  const [rows, setRows] = useState(null);
+  const load = () => api.get("/api/blocklist").then(setRows);
+  useEffect(() => { load(); }, []);
+  if (!rows) return <Loading />;
+  return <div className="px-8 py-6"><h1 className="text-2xl font-bold text-gray-100 mb-1">Blocklist</h1><p className="text-gray-400 text-sm mb-5">Releases that failed to import are blocklisted so they are not grabbed again. Remove one to allow re-grabbing.</p>
+    {rows.length === 0 ? <Empty>Nothing blocklisted.</Empty> :
+      <div className="overflow-hidden rounded-lg border border-gray-700"><table className="w-full text-sm"><thead className="bg-gray-800 text-gray-400 text-xs uppercase"><tr><th className="text-left px-4 py-2">Title</th><th className="text-left px-4 py-2">Release</th><th className="text-left px-4 py-2">Reason</th><th className="px-4 py-2"></th></tr></thead>
+        <tbody>{rows.map(b => <tr key={b.id} className="border-t border-gray-700 text-gray-200"><td className="px-4 py-2.5">{b.title}</td><td className="px-4 py-2.5 text-gray-400 break-all">{b.release_title}</td><td className="px-4 py-2.5 text-gray-500">{b.reason}</td><td className="px-4 py-2.5 text-right"><button onClick={async () => { await api.del("/api/blocklist/" + b.id); load(); }} className="text-red-400 text-xs flex items-center gap-1 ml-auto"><Icon name="trash" size={13} /> Remove</button></td></tr>)}</tbody>
+      </table></div>}
+  </div>;
+}
+
+function Users() {
+  const [rows, setRows] = useState(null); const [modal, setModal] = useState(false); const [d, setD] = useState({}); const [err, setErr] = useState("");
+  const load = () => api.get("/api/users").then(setRows).catch(() => setRows([]));
+  useEffect(() => { load(); }, []);
+  if (!rows) return <Loading />;
+  const openNew = () => { setD({ role: "user", autoApprove: false }); setErr(""); setModal("new"); };
+  const openEdit = u => { setD({ id: u.id, username: u.username, role: u.role, email: u.email, autoApprove: !!u.auto_approve }); setErr(""); setModal("edit"); };
+  const save = async () => { try { if (modal === "new") await api.post("/api/users", d); else await api.put("/api/users/" + d.id, d); setModal(false); load(); } catch (e) { setErr(e.message); } };
+  const del = async u => { try { const r = await api.del("/api/users/" + u.id); if (r && r.ok === false) alert(r.message); load(); } catch (e) { alert(e.message); } };
+  return <div>
+    <div className="flex items-start justify-between"><SectionHead title="Users" desc="Accounts and request permissions. Non-admins without auto-approve have requests held for admin approval." /><Btn onClick={openNew}><Icon name="plus" size={15} /> Add user</Btn></div>
+    <div className="overflow-hidden rounded-lg border border-gray-700"><table className="w-full text-sm">
+      <thead className="bg-gray-800 text-gray-400 text-xs uppercase"><tr><th className="text-left px-4 py-2">User</th><th className="text-left px-4 py-2">Role</th><th className="text-left px-4 py-2">Email</th><th className="text-left px-4 py-2">Auto-approve</th><th className="px-4 py-2"></th></tr></thead>
+      <tbody>{rows.map(u => <tr key={u.id} className="border-t border-gray-700 text-gray-200">
+        <td className="px-4 py-2.5">{u.username}</td>
+        <td className="px-4 py-2.5"><span className={cx("text-[11px] px-2 py-0.5 rounded text-white", u.role === "admin" ? "bg-indigo-600" : "bg-gray-600")}>{u.role}</span></td>
+        <td className="px-4 py-2.5 text-gray-400">{u.email || "—"}</td>
+        <td className="px-4 py-2.5">{u.auto_approve ? <span className="text-green-400 text-xs">yes</span> : <span className="text-gray-500 text-xs">no</span>}</td>
+        <td className="px-4 py-2.5 text-right"><div className="flex gap-3 justify-end"><button onClick={() => openEdit(u)} className="text-indigo-400 text-xs flex items-center gap-1"><Icon name="pencil" size={13} /> Edit</button><button onClick={() => del(u)} className="text-red-400 text-xs flex items-center gap-1"><Icon name="trash" size={13} /> Delete</button></div></td>
+      </tr>)}</tbody>
+    </table></div>
+    {modal && <Modal title={modal === "new" ? "Add user" : "Edit user"} onClose={() => setModal(false)} footer={<><Btn variant="secondary" onClick={() => setModal(false)}>Cancel</Btn><Btn onClick={save}>Save</Btn></>}>
+      {err && <div className="text-red-400 text-sm mb-2">{err}</div>}
+      {modal === "new" && <><Field label="Username" value={d.username} onChange={v => setD({ ...d, username: v })} /><Field label="Password" type="password" value={d.password} onChange={v => setD({ ...d, password: v })} /></>}
+      <Field label="Email (optional)" value={d.email} onChange={v => setD({ ...d, email: v })} />
+      <Select label="Role" value={d.role} onChange={v => setD({ ...d, role: v })} options={["user", "admin"]} />
+      <Toggle label="Auto-approve this user's requests" on={d.autoApprove} onChange={v => setD({ ...d, autoApprove: v })} />
+    </Modal>}
+  </div>;
+}
+
+function MetaFiles({ app }) {
+  const [s, setS] = useState(null); const [saved, setSaved] = useState(false);
+  useEffect(() => { api.get(`/api/settings/${app}/metadata`).then(setS); }, [app]);
+  if (!s) return <Loading />;
+  const save = async () => { await api.post(`/api/settings/${app}/metadata`, s); setSaved(true); setTimeout(() => setSaved(false), 1500); };
+  return <div><SectionHead title={`Metadata — ${appLabel(app)}`} desc="Write Kodi/Jellyfin-style sidecar files into the library on import." />
+    <div className="bg-gray-800 border border-gray-700 rounded-lg p-5 max-w-lg space-y-1">
+      <Toggle label={`Write .nfo files (${app === "shows" ? "tvshow.nfo" : "movie.nfo"})`} on={s.nfoEnabled} onChange={v => setS({ ...s, nfoEnabled: v })} />
+      <Toggle label="Download poster.jpg alongside" on={s.posterEnabled} onChange={v => setS({ ...s, posterEnabled: v })} />
+      <p className="text-[12px] text-gray-500 pt-2">Uses enriched metadata (title, year, plot, rating, studio, genres). Games are handled by RomM and are not affected.</p>
+    </div>
+    <Btn onClick={save} className="mt-3">{saved ? "Saved ✓" : "Save changes"}</Btn>
+  </div>;
+}
+
+function NetworkSettings() {
+  const [g, setG] = useState(null); const [saved, setSaved] = useState(false);
+  useEffect(() => { api.get("/api/settings/general").then(setG); }, []);
+  if (!g) return <Loading />;
+  const save = async () => { await api.post("/api/settings/general", { url_base: g.url_base || "", trust_proxy: g.trust_proxy || "" }); setSaved(true); setTimeout(() => setSaved(false), 1500); };
+  return <div><SectionHead title="Network" desc="Reverse-proxy and URL settings for running Solarr behind a proxy." />
+    <div className="max-w-md">
+      <Field label="URL base (for a subpath, e.g. /solarr)" value={g.url_base} onChange={v => setG({ ...g, url_base: v })} placeholder="/solarr" />
+      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4"><Toggle label="Trust reverse-proxy forwarded headers (X-Forwarded-For)" on={g.trust_proxy === "1"} onChange={v => setG({ ...g, trust_proxy: v ? "1" : "0" })} /></div>
+    </div>
+    <Btn onClick={save} className="mt-3">{saved ? "Saved ✓" : "Save changes"}</Btn>
+  </div>;
+}
+
+function Placeholder({ title, desc }) { return <div><SectionHead title={title} desc={desc} /><div className="text-gray-500 text-sm border border-dashed border-gray-700 rounded-lg p-6">Not yet wired to the backend — coming in a later phase.</div></div>; }
+
+function appLabel(a) { return { movies: "Radarr", shows: "Sonarr", games: "Gamearr" }[a] || a; }
+const TREE = [
+  { type: "item", key: "general", label: "General", icon: "sliders" },
+  { type: "item", key: "connections", label: "Connections", icon: "server" },
+  { type: "item", key: "profiles", label: "Profiles", icon: "list" },
+  { type: "item", key: "mediamanagement", label: "Media Management", icon: "folder" },
+  { type: "item", key: "metadata", label: "Metadata", icon: "tag" },
+  { type: "item", key: "users", label: "Users", icon: "shield" },
+];
+function ApiKeyCard() {
+  const [key, setKey] = useState(null); const [copied, setCopied] = useState(false);
+  useEffect(() => { api.get("/api/settings/api-key").then(r => setKey(r.apiKey)); }, []);
+  const regen = async () => { if (!confirm("Regenerate the API key? Prowlarr will need the new key.")) return; const r = await api.post("/api/settings/api-key/regenerate"); setKey(r.apiKey); };
+  const copy = () => { try { navigator.clipboard.writeText(key); setCopied(true); setTimeout(() => setCopied(false), 1200); } catch (e) {} };
+  return <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 mb-6">
+    <div className="text-sm font-semibold text-gray-100 mb-1">Solarr API key</div>
+    <p className="text-[12px] text-gray-500 mb-3">Add Solarr as a single app in <span className="text-gray-300">Prowlarr → Settings → Apps</span> (as Radarr or Sonarr), using this key and the Solarr URL. Prowlarr then syncs your indexers into Solarr automatically.</p>
+    <div className="flex items-center gap-2">
+      <code className="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-[13px] text-indigo-300 font-mono truncate">{key || "…"}</code>
+      <Btn variant="secondary" onClick={copy}>{copied ? "Copied ✓" : "Copy"}</Btn>
+      <Btn variant="secondary" onClick={regen}><Icon name="reset" size={14} /> Regenerate</Btn>
+    </div>
+  </div>;
+}
+
+function ConnectionAddModal({ open, onClose, onSaved }) {
+  const [step, setStep] = useState(0);
+  const [kind, setKind] = useState("");
+  const [draft, setDraft] = useState({ name: "", url: "", apiKey: "", host: "", port: "", username: "", password: "", catMovie: "movies", catShow: "tv", catGame: "games" });
+  const [test, setTest] = useState("");
+  const label = { prowlarr: "Prowlarr", qbittorrent: "qBittorrent", jellyfin: "Jellyfin", romm: "RomM" }[kind] || "connection";
+  const start = (k) => { setKind(k); setDraft({ name: "", url: "", apiKey: "", host: "", port: "", username: "", password: "", catMovie: "movies", catShow: "tv", catGame: "games" }); setTest(""); setStep(1); };
+  const chooseConfig = () => {
+    if (kind === "prowlarr") return { url: draft.url, apiKey: draft.apiKey };
+    if (kind === "qbittorrent") return { host: draft.host, port: draft.port, username: draft.username, password: draft.password };
+    if (kind === "jellyfin") return { url: draft.url, apiKey: draft.apiKey };
+    if (kind === "romm") return { url: draft.url, apiKey: draft.apiKey, username: draft.username, password: draft.password };
+    return {};
+  };
+  const doTest = async () => {
+    setTest("...");
+    const service = { prowlarr: "prowlarr", qbittorrent: "qbittorrent", jellyfin: "jellyfin", romm: "romm" }[kind];
+    const r = await api.post("/api/setup/test", { service, config: chooseConfig() });
+    setTest(r.ok ? "ok" : "fail");
+  };
+  const save = async () => {
+    try {
+      if (kind === "prowlarr") await api.post("/api/settings/prowlarr", { url: draft.url, apiKey: draft.apiKey });
+      else if (kind === "qbittorrent") await api.post("/api/settings/download-clients", { name: draft.name || "qBittorrent", type: "qBittorrent", host: draft.host, port: draft.port, username: draft.username, password: draft.password, catMovie: draft.catMovie, catShow: draft.catShow, catGame: draft.catGame, enabled: true, forMovies: true, forShows: true, forGames: true });
+      else if (kind === "jellyfin") await api.post("/api/settings/media-servers", { name: "Jellyfin", type: "Jellyfin", url: draft.url, apiKey: draft.apiKey, username: "", password: "" });
+      else if (kind === "romm") await api.post("/api/settings/media-servers", { name: "RomM", type: "RomM", url: draft.url, apiKey: draft.apiKey, username: draft.username, password: draft.password });
+      onSaved();
+      onClose();
+    } catch (e) {
+      setTest("fail");
+    }
+  };
+  if (!open) return null;
+  return <Modal title={step === 0 ? "Add connection" : `Connect ${label}`} onClose={onClose} footer={<><Btn variant="secondary" onClick={step === 0 ? onClose : () => setStep(0)}>Cancel</Btn>{step === 1 && <><Btn variant="secondary" onClick={doTest}>{test === "..." ? "Testing…" : "Test"}</Btn><Btn onClick={save} disabled={test !== "ok"}>Save</Btn></>}</>}>
+    {step === 0 && <div className="space-y-3">
+      <p className="text-sm text-gray-400">Choose the app or service you want to connect to Solarr.</p>
+      <Select label="Connection type" value={kind} onChange={v => start(v)} options={["", "Prowlarr", "qBittorrent", "Jellyfin", "RomM"]} />
+      {kind && <div className="flex justify-end"><Btn onClick={() => setStep(1)}>Continue</Btn></div>}
+    </div>}
+    {step === 1 && <div className="space-y-3">
+      {kind === "prowlarr" && <><Field label="URL" value={draft.url} onChange={v => setDraft({ ...draft, url: v })} placeholder="http://prowlarr:9696" /><Field label="API key" type="password" value={draft.apiKey} onChange={v => setDraft({ ...draft, apiKey: v })} /></>}
+      {kind === "qbittorrent" && <><Field label="Name" value={draft.name} onChange={v => setDraft({ ...draft, name: v })} /><Field label="Host" value={draft.host} onChange={v => setDraft({ ...draft, host: v })} placeholder="qbittorrent" /><Field label="Port" value={draft.port} onChange={v => setDraft({ ...draft, port: v })} placeholder="8080" /><Field label="Username" value={draft.username} onChange={v => setDraft({ ...draft, username: v })} /><Field label="Password" type="password" value={draft.password} onChange={v => setDraft({ ...draft, password: v })} /></>}
+      {kind === "jellyfin" && <><Field label="URL" value={draft.url} onChange={v => setDraft({ ...draft, url: v })} placeholder="http://jellyfin:8096" /><Field label="API key" type="password" value={draft.apiKey} onChange={v => setDraft({ ...draft, apiKey: v })} /></>}
+      {kind === "romm" && <><Field label="URL" value={draft.url} onChange={v => setDraft({ ...draft, url: v })} placeholder="http://romm:8080" /><Field label="API key / token" type="password" value={draft.apiKey} onChange={v => setDraft({ ...draft, apiKey: v })} /><Field label="Username (optional)" value={draft.username} onChange={v => setDraft({ ...draft, username: v })} /><Field label="Password (optional)" type="password" value={draft.password} onChange={v => setDraft({ ...draft, password: v })} /></>}
+      <div className="flex items-center gap-2 pt-1">
+        <Btn variant="secondary" onClick={() => setStep(0)}>Back</Btn>
+      </div>
+      {test === "ok" && <div className="text-green-400 text-sm flex items-center gap-1"><Icon name="check" size={14} /> Connected</div>}
+      {test === "fail" && <div className="text-red-400 text-sm flex items-center gap-1"><Icon name="x" size={14} /> Could not connect</div>}
+    </div>}
+  </Modal>;
+}
+
+function ConnectionsTab() {
+  const Divider = ({ label }) => <div className="flex items-center gap-3 mt-8 mb-3"><h3 className="text-sm font-semibold uppercase tracking-wide text-gray-400">{label}</h3><div className="flex-1 h-px bg-gray-800" /></div>;
+  const [modal, setModal] = useState(false); const [refresh, setRefresh] = useState(0);
+  return <div>
+    <SectionHead title="Connections" desc="Everything Solarr talks to: your indexer manager, download client, and media servers — all in one place." />
+    <ApiKeyCard />
+    <div className="flex justify-end mb-4"><Btn onClick={() => setModal(true)}><Icon name="plus" size={15} /> Add connection</Btn></div>
+    <Divider label="Indexers (Prowlarr)" />
+    <Indexers key={"prowlarr-" + refresh} />
+    <Divider label="Download clients" />
+    <DownloadClients key={"download-" + refresh} />
+    <Divider label="Jellyfin — movies, shows & anime library" />
+    <MediaServer key={"jellyfin-" + refresh} kind="jellyfin" title="Jellyfin" desc="Movie/show/anime library + playback + rescan." />
+    <Divider label="RomM — games library" />
+    <MediaServer key={"romm-" + refresh} kind="romm" title="RomM" desc="Games library; imports auto-scan via RomM's watcher." />
+    <ConnectionAddModal open={modal} onClose={() => setModal(false)} onSaved={() => setRefresh(v => v + 1)} />
+  </div>;
+}
+
+const PROFILE_TYPES = [["movies", "Movies"], ["shows", "Shows"], ["anime", "Anime"], ["games", "Games"]];
+function ProfilesTab() {
+  const [app, setApp] = useState("movies");
+  return <div>
+    <SectionHead title="Profiles" desc="Quality profiles decide which releases are grabbed and upgraded. Pick a content type — movies, shows and anime share the video qualities; games have their own." />
+    <div className="flex gap-1.5 mb-5 bg-gray-800 border border-gray-700 rounded-lg p-1 w-fit">
+      {PROFILE_TYPES.map(([k, l]) => <button key={k} onClick={() => setApp(k)} className={cx("px-3.5 py-1.5 rounded-md text-[13px]", app === k ? "bg-indigo-600 text-white" : "text-gray-400 hover:text-gray-200")}>{l}</button>)}
+    </div>
+    <Profiles app={app} key={app} />
+  </div>;
+}
+
+function MetadataProviders() {
+  const [data, setData] = useState(null); const [modal, setModal] = useState(null); const [form, setForm] = useState({});
+  const load = () => api.get("/api/settings/providers").then(setData);
+  useEffect(() => { load(); }, []);
+  if (!data) return <Loading />;
+  const providers = data.providers;
+  const tvdb = providers.find(p => p.id === "tvdb");
+  const openEdit = p => { setForm({}); setModal(p); };
+  const save = async () => { await api.post("/api/settings/providers", { fields: form }); setModal(null); load(); };
+  const disconnect = async p => { const blank = {}; p.fields.forEach(f => blank[f.key] = ""); await api.post("/api/settings/providers", { fields: blank }); load(); };
+  const setShowsProvider = async v => { await api.post("/api/settings/providers", { showsProvider: v }); load(); };
+  const SCOPE_ICON = { "Movies & Shows": "film", "Shows": "tv", "Games": "gamepad", "Anime": "star" };
+  return <div>
+    <SectionHead title="Metadata" desc="Providers power discovery and enrichment. AniList (anime) is free and always connected; the others use a free API key you paste in." />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      {providers.map(p => <div key={p.id} className={cx("rounded-xl border p-4", p.connected ? "bg-gray-800 border-gray-700" : "bg-gray-900/40 border-dashed border-gray-700")}>
+        <div className="flex items-center gap-2.5">
+          <div className={cx("w-9 h-9 rounded-lg flex items-center justify-center", p.connected ? "bg-indigo-600/20 text-indigo-300" : "bg-gray-800 text-gray-500")}><Icon name={SCOPE_ICON[p.scope] || "tag"} size={18} /></div>
+          <div className="flex-1">
+            <div className="text-sm font-semibold text-gray-100 flex items-center gap-2">{p.name}
+              {p.connected ? <span className="text-[10px] bg-green-600/20 text-green-400 px-1.5 py-0.5 rounded">Connected</span>
+                           : <span className="text-[10px] bg-gray-700 text-gray-400 px-1.5 py-0.5 rounded">Not connected</span>}
+              {p.keyless && <span className="text-[10px] bg-indigo-600/20 text-indigo-300 px-1.5 py-0.5 rounded">No key needed</span>}
+            </div>
+            <div className="text-[11px] text-gray-500">{p.scope}</div>
+          </div>
+        </div>
+        <div className="mt-3 flex gap-2">
+          {p.keyless ? <span className="text-[12px] text-gray-500">Ready to use out of the box.</span>
+            : p.connected
+              ? <><Btn variant="secondary" onClick={() => openEdit(p)}><Icon name="pencil" size={13} /> Update key</Btn><button onClick={() => disconnect(p)} className="text-red-400 text-xs flex items-center gap-1 px-2"><Icon name="x" size={13} /> Disconnect</button></>
+              : <Btn onClick={() => openEdit(p)}><Icon name="plus" size={14} /> Add {p.name}</Btn>}
+        </div>
+      </div>)}
+    </div>
+
+    {tvdb && tvdb.connected && <div className="mt-6 bg-gray-800 border border-gray-700 rounded-lg p-4 max-w-md">
+      <div className="text-sm font-semibold text-gray-100 mb-2">Shows discovery source</div>
+      <Select label="" value={data.showsProvider} onChange={setShowsProvider} options={["tmdb", "tvdb"]} />
+      <p className="text-[11px] text-gray-500 mt-1">TMDB is the default; switch to TheTVDB if you prefer its series data.</p>
+    </div>}
+
+    {modal && <Modal title={`${modal.connected ? "Update" : "Connect"} ${modal.name}`} onClose={() => setModal(null)} footer={<><Btn variant="secondary" onClick={() => setModal(null)}>Cancel</Btn><Btn onClick={save}>Save</Btn></>}>
+      <p className="text-[12px] text-gray-500 mb-3">Get a free key from the provider, then paste it here. Keys are stored on your server only.</p>
+      {modal.fields.map(fld => <Field key={fld.key} label={fld.label + (fld.value ? " (set — leave blank to keep)" : "")} type={fld.secret ? "password" : "text"} value={form[fld.key] || ""} onChange={v => setForm({ ...form, [fld.key]: v })} />)}
+    </Modal>}
+  </div>;
+}
+
+function Dashboard() {
+  const [active, setActive] = useState("general");
+  const render = () => {
+    if (active === "general") return <General />;
+    if (active === "connections") return <ConnectionsTab />;
+    if (active === "profiles") return <ProfilesTab />;
+    if (active === "mediamanagement") return <div><SectionHead title="Media Management" desc="Root folders / libraries. Tag each with the content it holds (movies, shows, anime, games)." /><RootFolders /></div>;
+    if (active === "metadata") return <MetadataProviders />;
+    if (active === "users") return <Users />;
+    return null;
+  };
+  return <div className="flex" style={{ minHeight: "calc(100vh - 61px)" }}>
+    <aside className="w-64 shrink-0 border-r border-gray-800 p-3 overflow-y-auto">
+      <div className="px-3 py-2 text-xs uppercase tracking-wide text-gray-500">Dashboard</div>
+      {TREE.map(node =>
+        <button key={node.key} onClick={() => setActive(node.key)} className={cx("w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-left mb-0.5", active === node.key ? "bg-gray-700 text-gray-100" : "text-gray-400 hover:bg-gray-800 hover:text-gray-200")}><Icon name={node.icon} size={16} /> {node.label}</button>)}
+    </aside>
+    <div className="flex-1 min-w-0 px-8 py-6 overflow-y-auto">{render()}</div>
+  </div>;
+}
+
+/* =========================================================================
+   Shell
+   ========================================================================= */
+const NAV = [["discover", "Discover", "compass"], ["movie", "Movies", "film"], ["show", "Shows", "tv"], ["anime", "Anime", "star"], ["game", "Games", "gamepad"], ["requests", "Requests", "inbox"], ["media-mgmt", "Media Management", "folder"]];
+function Header({ onOpen, onHome }) {
+  const [q, setQ] = useState(""); const [res, setRes] = useState([]); const [open, setOpen] = useState(false);
+  useEffect(() => { if (!q.trim()) { setRes([]); return; } const t = setTimeout(async () => { try { setRes(await api.get("/api/search?q=" + encodeURIComponent(q))); setOpen(true); } catch {} }, 250); return () => clearTimeout(t); }, [q]);
+  return <div className="flex items-center gap-4 px-8 py-3.5 bg-gray-800 border-b border-gray-700 sticky top-0 z-20">
+    <button onClick={onHome} className="text-gray-200 hover:text-white"><Icon name="compass" size={20} /></button>
+    <div className="relative flex-1 max-w-lg">
+      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><Icon name="search" size={16} /></span>
+      <input value={q} onChange={e => { setQ(e.target.value); setOpen(true); }} placeholder="Search movies, shows, games..." className="w-full pl-9 pr-3 py-2.5 rounded-lg bg-gray-900 border border-gray-700 text-gray-100 text-sm focus:border-indigo-500 focus:outline-none" />
+      {open && q.trim() && <div className="absolute left-0 right-0 bg-gray-800 border border-gray-700 rounded-lg overflow-y-auto z-30 shadow-xl" style={{ top: "112%", maxHeight: "24rem" }}>
+        {res.length === 0 ? <div className="px-4 py-3 text-sm text-gray-500">No matches.</div> : res.map((m, i) => <button key={i} onClick={() => { onOpen(m); setOpen(false); setQ(""); }} className="flex items-center gap-3 px-3.5 py-2.5 w-full text-left hover:bg-gray-700"><div className="w-8 h-11 rounded shrink-0" style={m.cover_url ? { backgroundImage: `url(${m.cover_url})`, backgroundSize: "cover" } : posterStyle(m.title)} /><div><div className="text-sm text-gray-100">{m.title}</div><div className="text-[11px] text-gray-500 capitalize">{m.media_type} · {m.year || ""}</div></div></button>)}
+      </div>}
+    </div>
+  </div>;
+}
+function Sidebar({ page, setPage }) {
+  return <aside className="w-56 shrink-0 bg-gray-800 min-h-screen p-3 sticky top-0 h-screen flex flex-col">
+    <div className="px-3 py-4 text-lg font-bold text-gray-100 flex items-center gap-2"><Icon name="clap" size={22} /> Solarr</div>
+    <nav className="flex flex-col gap-1 mt-2">{NAV.map(([k, l, ic]) => <button key={k} onClick={() => setPage(k)} className={cx("flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg text-sm text-left", page === k ? "bg-gray-700 text-gray-100" : "text-gray-400 hover:bg-gray-700/60 hover:text-gray-200")}><Icon name={ic} size={17} /> {l}</button>)}</nav>
+  </aside>;
+}
+
+function MediaManagement() {
+  const [rfs, setRfs] = useState([]); const [dcs, setDcs] = useState([]); const [reqs, setReqs] = useState([]);
+  useEffect(() => { api.get("/api/settings/root-folders").then(setRfs).catch(()=>{}); api.get("/api/settings/download-clients").then(setDcs).catch(()=>{}); api.get("/api/requests").then(setReqs).catch(()=>{}); }, []);
+  return <div className="p-8 max-w-5xl"><SectionHead title="Media Management" desc="Overview of root folders, download clients, and recent activity." />
+    <div className="mb-6"><h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Root Folders</h3>
+      {rfs.length === 0 ? <p className="text-sm text-gray-500">No root folders configured.</p> :
+        <div className="overflow-hidden rounded-lg border border-gray-700"><table className="w-full text-sm"><thead className="bg-gray-800 text-gray-400 text-xs uppercase"><tr><th className="text-left px-4 py-2">Path</th><th className="text-left px-4 py-2">Movies</th><th className="text-left px-4 py-2">Shows</th><th className="text-left px-4 py-2">Games</th><th className="text-left px-4 py-2">Anime</th></tr></thead>
+          <tbody>{rfs.map(r => <tr key={r.id} className="border-t border-gray-700 text-gray-200"><td className="px-4 py-2.5 font-mono text-xs">{r.path}</td><td className="px-4 py-2.5">{r.for_movies ? "✓" : ""}</td><td className="px-4 py-2.5">{r.for_shows ? "✓" : ""}</td><td className="px-4 py-2.5">{r.for_games ? "✓" : ""}</td><td className="px-4 py-2.5">{r.for_anime ? "✓" : ""}</td></tr>)}</tbody></table></div>}
+    </div>
+    <div className="mb-6"><h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Download Clients</h3>
+      {dcs.length === 0 ? <p className="text-sm text-gray-500">No download clients configured.</p> :
+        <div className="overflow-hidden rounded-lg border border-gray-700"><table className="w-full text-sm"><thead className="bg-gray-800 text-gray-400 text-xs uppercase"><tr><th className="text-left px-4 py-2">Name</th><th className="text-left px-4 py-2">Type</th><th className="text-left px-4 py-2">Host</th><th className="text-left px-4 py-2">Port</th><th className="text-left px-4 py-2">Status</th></tr></thead>
+          <tbody>{dcs.map(c => <tr key={c.id} className="border-t border-gray-700 text-gray-200"><td className="px-4 py-2.5">{c.name}</td><td className="px-4 py-2.5">{c.type}</td><td className="px-4 py-2.5 font-mono text-xs">{c.host}</td><td className="px-4 py-2.5">{c.port}</td><td className="px-4 py-2.5"><span className={c.enabled ? "text-green-400" : "text-gray-500"}>{c.enabled ? "Enabled" : "Disabled"}</span></td></tr>)}</tbody></table></div>}
+    </div>
+    <div><h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Recent Requests</h3>
+      {reqs.length === 0 ? <p className="text-sm text-gray-500">No requests yet.</p> :
+        <div className="overflow-hidden rounded-lg border border-gray-700"><table className="w-full text-sm"><thead className="bg-gray-800 text-gray-400 text-xs uppercase"><tr><th className="text-left px-4 py-2">Title</th><th className="text-left px-4 py-2">Type</th><th className="text-left px-4 py-2">Status</th><th className="text-left px-4 py-2">Requested</th></tr></thead>
+          <tbody>{reqs.slice(0,20).map(r => <tr key={r.id} className="border-t border-gray-700 text-gray-200"><td className="px-4 py-2.5">{r.title}</td><td className="px-4 py-2.5 capitalize">{r.media_type}</td><td className="px-4 py-2.5">{r.status}</td><td className="px-4 py-2.5 text-gray-500 text-xs">{(r.requested_at||"").slice(0,10)}</td></tr>)}</tbody></table></div>}
+    </div>
+  </div>;
+}
+
+function AppShell() {
+  const [page, setPage] = useState("discover"); const [sel, setSel] = useState(null);
+  const open = m => { setSel(m); setPage("detail"); };
+  const body = () => {
+    if (page === "discover") return <Discover onOpen={open} setPage={setPage} />;
+    if (page === "movie") return <Library type="movie" title="Movies" onOpen={open} />;
+    if (page === "show") return <Library type="show" title="Shows" onOpen={open} />;
+    if (page === "anime") return <Library type="anime" title="Anime" onOpen={open} />;
+    if (page === "game") return <Library type="game" title="Games" onOpen={open} />;
+    if (page === "requests") return <Requests isAdmin={true} />;
+    if (page === "media-mgmt") return <MediaManagement />;
+    if (page === "detail") return <Detail item={sel} onBack={() => setPage("discover")} />;
+  };
+  return <div className="flex min-h-screen text-gray-200" style={{ background: "#0b1120", fontFamily: "-apple-system,Segoe UI,Roboto,Arial,sans-serif" }}>
+    <Sidebar page={page} setPage={p => { setSel(null); setPage(p); }} />
+    <div className="flex-1 min-w-0"><Header onOpen={open} onHome={() => setPage("discover")} />{body()}</div>
+  </div>;
+}
+
+function App() {
+  return <AppShell />;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

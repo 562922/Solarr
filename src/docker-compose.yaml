@@ -1,0 +1,112 @@
+services:
+  solarr:
+    build: ./Solarr/solarr-backend
+    image: solarr:local
+    container_name: solarr
+    restart: unless-stopped
+    env_file:
+      - ./solarr.env   # metadata API keys (TMDB, IGDB, etc.)
+    volumes:
+      - ./config/solarr:/config
+      - ./library:/library
+    ports:
+      - "5001:5000"
+    depends_on:
+      - prowlarr
+      - qbittorrent
+      - romm
+      - jellyfin
+  
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=10000
+      - TZ=America/Los_Angeles
+    volumes:
+      - ./config/prowlarr:/config
+    ports:
+      - "9696:9696"
+    
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    restart: unless-stopped
+    environment:
+      - LOG_LEVEL=info
+      - TZ=America/Los_Angeles
+    ports:
+      - "8191:8191"
+    
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=10000
+      - TZ=America/Los_Angeles
+      - WEBUI_PORT=8080
+    volumes:
+      - ./config/qbittorrent:/config
+      - ./library:/library
+    ports:
+      - "8080:8080"
+      - "6881:6881"
+      - "6881:6881/udp"
+
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=10000
+      - TZ=America/Los_Angeles
+    volumes:
+      - ./config/jellyfin:/config
+      - ./library:/library
+    ports:
+      - "8096:8096"
+
+  romm:
+    image: rommapp/romm:latest
+    container_name: romm
+    restart: unless-stopped
+    environment:
+      ROMM_DB_DRIVER: mariadb
+      ROMM_AUTH_SECRET_KEY: 737430f0f677e94be108933aee92ca3c75cd292c434e5fe20dbc25bc0efb6a3d
+      DB_HOST: romm-db
+      DB_NAME: romm
+      DB_USER: romm
+      DB_PASSWD: romm
+      SCREENSCRAPER_USER: jellyuserromm0425
+      SCREENSCRAPER_PASSWORD: 8DxbAYDVX+f&26p
+      RETROACHIEVEMENTS_API_KEY: AnrATOR6rjoVW2124kF2mJaBIWioGnCM
+      STEAMGRIDDB_API_KEY: 8a083ae382189ff49da767fdde39c301
+      HASHEOUS_API_ENABLED: true
+      IGDB_CLIENT_ID: 91487550546044879ab2e4fa51d60abc
+      IGDB_CLIENT_SECRET: 91487550546044879ab2e4fa51d60abc
+    volumes:
+      - ./config/romm/resources:/romm/resources
+      - ./config/romm/config:/config
+      - ./config/romm/romm_redis_data:/redis-data
+      - ./library:/library
+    ports:
+      - "8082:8080"
+    depends_on:
+      - romm-db
+
+  romm-db:
+    image: mariadb:latest
+    container_name: romm-db
+    restart: unless-stopped
+    environment:
+      - MARIADB_ROOT_PASSWORD=romm-root
+      - MARIADB_DATABASE=romm
+      - MARIADB_USER=romm
+      - MARIADB_PASSWORD=romm
+    volumes:
+      - ./config/romm/mysql_data:/var/lib/mysql

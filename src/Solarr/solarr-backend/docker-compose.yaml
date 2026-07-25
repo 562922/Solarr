@@ -1,0 +1,113 @@
+# =============================================================================
+# Solarr — full example stack
+#
+# Solarr replaces jellyseerr + radarr + sonarr + a "gamearr" with ONE service.
+# It orchestrates requests and downloads for movies, shows AND games, driving:
+#   Prowlarr (indexers) · qBittorrent (downloads) · Jellyfin (movie/show library)
+#   RomM (game library).
+#
+# The single hard requirement: every service that touches media files shares the
+# SAME library mount, so Solarr/qBittorrent hardlink or move on import instead of
+# copying across containers. Below, the host library is mounted at /library in
+# every relevant service (and RomM sees the games subtree at /romm/library).
+#
+# First run:  docker compose up -d --build
+# Then open   http://<host>:5000  and complete the Solarr setup wizard, entering
+# the in-network URLs shown in each service comment below.
+# =============================================================================
+
+services:
+
+  solarr:
+    build: ./solarr            # folder containing this repo's Dockerfile + app/
+    image: solarr:local
+    container_name: solarr
+    restart: unless-stopped
+    ports:
+      - "5000:5000"            # web UI + API (served together)
+    volumes:
+      - ./solarr/config:/config          # SQLite db + settings persist here
+      - /srv/media/library:/library      # SHARED library (same mount everywhere)
+    depends_on:
+      - prowlarr
+      - qbittorrent
+      - jellyfin
+      - romm
+    # In the setup wizard, use these in-network addresses:
+    #   Prowlarr     http://prowlarr:9696       (Settings → API key)
+    #   qBittorrent  host: qbittorrent  port: 8080
+    #   Jellyfin     http://jellyfin:8096       (Dashboard → API keys)
+    #   RomM         http://romm:8080           (Basic auth user/pass, or /api/token)
+    # TMDb + IGDB keys go under Dashboard → Seerr → Metadata.
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    restart: unless-stopped
+    environment: [PUID=1000, PGID=1000, TZ=Etc/UTC]
+    volumes:
+      - ./prowlarr/config:/config
+    ports:
+      - "9696:9696"
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    restart: unless-stopped
+    environment: [PUID=1000, PGID=1000, TZ=Etc/UTC, WEBUI_PORT=8080]
+    volumes:
+      - ./qbittorrent/config:/config
+      - /srv/media/library:/library       # SAME shared mount -> hardlink imports
+    ports:
+      - "8080:8080"
+
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    restart: unless-stopped
+    environment: [PUID=1000, PGID=1000, TZ=Etc/UTC]
+    volumes:
+      - ./jellyfin/config:/config
+      - /srv/media/library:/library       # movies + shows read from here
+    ports:
+      - "8096:8096"
+
+  romm:
+    image: rommapp/romm:latest
+    container_name: romm
+    restart: unless-stopped
+    environment:
+      - ROMM_AUTH_SECRET_KEY=change_me_openssl_rand_hex_32
+      - DB_HOST=romm-db
+      - DB_NAME=romm
+      - DB_USER=romm
+      - DB_PASSWD=romm
+      # optional metadata providers:
+      # - IGDB_CLIENT_ID=...
+      # - IGDB_CLIENT_SECRET=...
+    volumes:
+      - ./romm/config:/romm/config
+      - ./romm/resources:/romm/resources
+      - ./romm/assets:/romm/assets
+      - /srv/media/library/roms:/romm/library   # RomM's watcher auto-scans here
+    ports:
+      - "8081:8080"
+    depends_on:
+      - romm-db
+
+  romm-db:
+    image: mariadb:latest
+    container_name: romm-db
+    restart: unless-stopped
+    environment:
+      - MARIADB_ROOT_PASSWORD=romm-root
+      - MARIADB_DATABASE=romm
+      - MARIADB_USER=romm
+      - MARIADB_PASSWORD=romm
+    volumes:
+      - ./romm/db:/var/lib/mysql
+
+# Note on games: Solarr places imported ROMs at  /library/roms/<platform>/  which
+# RomM sees as /romm/library/<platform>/ and auto-imports via its filesystem
+# watcher (no explicit scan call needed). Set the Solarr "games" root folder to a
+# path under the shared /library mount so both containers resolve the same files.

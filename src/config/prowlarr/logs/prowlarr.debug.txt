@@ -1,0 +1,2151 @@
+2026-07-16 23:21:55.7|Debug|ProcessProvider|Found 0 processes with the name: Prowlarr.Console
+2026-07-16 23:21:55.7|Debug|ProcessProvider|Found 1 processes with the name: Prowlarr
+2026-07-16 23:21:55.7|Debug|ProcessProvider| - [152] Prowlarr
+2026-07-16 23:21:55.7|Info|MigrationController|*** Migrating data source=/config/logs.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-16 23:21:55.8|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-16 23:21:55.8|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-16 23:21:55.8|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-16 23:21:55.9|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-16 23:21:55.9|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0577681s
+2026-07-16 23:21:55.9|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-16 23:21:55.9|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0666872s
+2026-07-16 23:21:56.0|Info|FluentMigrator.Runner.MigrationRunner|VersionMigration migrating
+2026-07-16 23:21:56.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:56.0|Info|FluentMigrator.Runner.MigrationRunner|CreateTable VersionInfo
+2026-07-16 23:21:56.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|CREATE TABLE "VersionInfo" ("Version" INTEGER NOT NULL)
+2026-07-16 23:21:56.0|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0091901s
+2026-07-16 23:21:56.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:56.0|Info|FluentMigrator.Runner.MigrationRunner|VersionMigration migrated
+2026-07-16 23:21:56.0|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0352449s
+2026-07-16 23:21:56.0|Info|FluentMigrator.Runner.MigrationRunner|VersionUniqueMigration migrating
+2026-07-16 23:21:56.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:56.1|Info|FluentMigrator.Runner.MigrationRunner|CreateIndex VersionInfo (Version)
+2026-07-16 23:21:56.1|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|CREATE UNIQUE INDEX "UC_Version" ON "VersionInfo" ("Version" ASC)
+2026-07-16 23:21:56.1|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0098082s
+2026-07-16 23:21:56.1|Info|FluentMigrator.Runner.MigrationRunner|AlterTable VersionInfo
+2026-07-16 23:21:56.1|Info|FluentMigrator.Runner.MigrationRunner|=> 2.32E-05s
+2026-07-16 23:21:56.1|Info|FluentMigrator.Runner.MigrationRunner|CreateColumn VersionInfo AppliedOn DateTime
+2026-07-16 23:21:56.1|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|ALTER TABLE "VersionInfo" ADD COLUMN "AppliedOn" DATETIME
+2026-07-16 23:21:56.1|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0132146s
+2026-07-16 23:21:56.1|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:56.1|Info|FluentMigrator.Runner.MigrationRunner|VersionUniqueMigration migrated
+2026-07-16 23:21:56.1|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0312016s
+2026-07-16 23:21:56.1|Info|FluentMigrator.Runner.MigrationRunner|VersionDescriptionMigration migrating
+2026-07-16 23:21:56.1|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:56.2|Info|FluentMigrator.Runner.MigrationRunner|AlterTable VersionInfo
+2026-07-16 23:21:56.2|Info|FluentMigrator.Runner.MigrationRunner|=> 9.8E-06s
+2026-07-16 23:21:56.2|Info|FluentMigrator.Runner.MigrationRunner|CreateColumn VersionInfo Description String
+2026-07-16 23:21:56.2|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|ALTER TABLE "VersionInfo" ADD COLUMN "Description" TEXT
+2026-07-16 23:21:56.2|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0069573s
+2026-07-16 23:21:56.2|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:56.2|Info|FluentMigrator.Runner.MigrationRunner|VersionDescriptionMigration migrated
+2026-07-16 23:21:56.2|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0269165s
+2026-07-16 23:21:56.2|Info|FluentMigrator.Runner.MigrationRunner|1: InitialSetup migrating
+2026-07-16 23:21:56.2|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:56.2|Info|InitialSetup|Starting migration of Log DB to 1
+2026-07-16 23:21:56.3|Info|FluentMigrator.Runner.MigrationRunner|CreateTable Logs
+2026-07-16 23:21:56.3|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|CREATE TABLE "Logs" ("Id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "Message" TEXT NOT NULL, "Time" DATETIME NOT NULL, "Logger" TEXT NOT NULL, "Exception" TEXT, "ExceptionType" TEXT, "Level" TEXT NOT NULL)
+2026-07-16 23:21:56.3|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0081101s
+2026-07-16 23:21:56.3|Info|FluentMigrator.Runner.MigrationRunner|CreateIndex Logs (Time)
+2026-07-16 23:21:56.3|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|CREATE INDEX "IX_Logs_Time" ON "Logs" ("Time" ASC)
+2026-07-16 23:21:56.3|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0073692s
+2026-07-16 23:21:56.3|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (1, '2026-07-17T06:21:56', 'InitialSetup')
+2026-07-16 23:21:56.3|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:56.3|Info|FluentMigrator.Runner.MigrationRunner|1: InitialSetup migrated
+2026-07-16 23:21:56.3|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0427886s
+2026-07-16 23:21:56.3|Info|FluentMigrator.Runner.MigrationRunner|2: ApplicationStatus migrating
+2026-07-16 23:21:56.3|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:56.3|Info|ApplicationStatus|Starting migration of Log DB to 2
+2026-07-16 23:21:56.4|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (2, '2026-07-17T06:21:56', 'ApplicationStatus')
+2026-07-16 23:21:56.4|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:56.4|Info|FluentMigrator.Runner.MigrationRunner|2: ApplicationStatus migrated
+2026-07-16 23:21:56.4|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0333299s
+2026-07-16 23:21:56.4|Info|FluentMigrator.Runner.MigrationRunner|3: IndexerProps migrating
+2026-07-16 23:21:56.4|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:56.4|Info|IndexerProps|Starting migration of Log DB to 3
+2026-07-16 23:21:56.4|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (3, '2026-07-17T06:21:56', 'IndexerProps')
+2026-07-16 23:21:56.4|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:56.4|Info|FluentMigrator.Runner.MigrationRunner|3: IndexerProps migrated
+2026-07-16 23:21:56.4|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0349325s
+2026-07-16 23:21:56.5|Info|FluentMigrator.Runner.MigrationRunner|4: add_update_history migrating
+2026-07-16 23:21:56.5|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:56.5|Info|add_update_history|Starting migration of Log DB to 4
+2026-07-16 23:21:56.5|Info|FluentMigrator.Runner.MigrationRunner|CreateTable UpdateHistory
+2026-07-16 23:21:56.5|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|CREATE TABLE "UpdateHistory" ("Id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "Date" DATETIME NOT NULL, "Version" TEXT NOT NULL, "EventType" INTEGER NOT NULL)
+2026-07-16 23:21:56.5|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0091853s
+2026-07-16 23:21:56.5|Info|FluentMigrator.Runner.MigrationRunner|CreateIndex UpdateHistory (Date)
+2026-07-16 23:21:56.5|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|CREATE INDEX "IX_UpdateHistory_Date" ON "UpdateHistory" ("Date" ASC)
+2026-07-16 23:21:56.5|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0056926s
+2026-07-16 23:21:56.5|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (4, '2026-07-17T06:21:56', 'add_update_history')
+2026-07-16 23:21:56.5|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:56.5|Info|FluentMigrator.Runner.MigrationRunner|4: add_update_history migrated
+2026-07-16 23:21:56.5|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0303149s
+2026-07-16 23:21:56.6|Info|FluentMigrator.Runner.MigrationRunner|5: update_notifiarr migrating
+2026-07-16 23:21:56.6|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:56.6|Info|update_notifiarr|Starting migration of Log DB to 5
+2026-07-16 23:21:56.6|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (5, '2026-07-17T06:21:56', 'update_notifiarr')
+2026-07-16 23:21:56.6|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:56.6|Info|FluentMigrator.Runner.MigrationRunner|5: update_notifiarr migrated
+2026-07-16 23:21:56.6|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0280501s
+2026-07-16 23:21:56.6|Info|FluentMigrator.Runner.MigrationRunner|6: app_profiles migrating
+2026-07-16 23:21:56.6|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:56.6|Info|app_profiles|Starting migration of Log DB to 6
+2026-07-16 23:21:56.6|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (6, '2026-07-17T06:21:56', 'app_profiles')
+2026-07-16 23:21:56.6|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:56.6|Info|FluentMigrator.Runner.MigrationRunner|6: app_profiles migrated
+2026-07-16 23:21:56.6|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0280822s
+2026-07-16 23:21:56.6|Info|FluentMigrator.Runner.MigrationRunner|7: history_failed migrating
+2026-07-16 23:21:56.7|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:56.7|Info|history_failed|Starting migration of Log DB to 7
+2026-07-16 23:21:56.7|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (7, '2026-07-17T06:21:56', 'history_failed')
+2026-07-16 23:21:56.7|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:56.7|Info|FluentMigrator.Runner.MigrationRunner|7: history_failed migrated
+2026-07-16 23:21:56.7|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0292629s
+2026-07-16 23:21:56.7|Info|FluentMigrator.Runner.MigrationRunner|8: redacted_api migrating
+2026-07-16 23:21:56.7|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:56.7|Info|redacted_api|Starting migration of Log DB to 8
+2026-07-16 23:21:56.7|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (8, '2026-07-17T06:21:56', 'redacted_api')
+2026-07-16 23:21:56.7|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:56.7|Info|FluentMigrator.Runner.MigrationRunner|8: redacted_api migrated
+2026-07-16 23:21:56.7|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0272861s
+2026-07-16 23:21:56.7|Info|FluentMigrator.Runner.MigrationRunner|10: IndexerProxies migrating
+2026-07-16 23:21:56.7|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:56.7|Info|IndexerProxies|Starting migration of Log DB to 10
+2026-07-16 23:21:56.8|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (10, '2026-07-17T06:21:56', 'IndexerProxies')
+2026-07-16 23:21:56.8|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:56.8|Info|FluentMigrator.Runner.MigrationRunner|10: IndexerProxies migrated
+2026-07-16 23:21:56.8|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0256612s
+2026-07-16 23:21:56.8|Info|FluentMigrator.Runner.MigrationRunner|11: app_indexer_remote_name migrating
+2026-07-16 23:21:56.8|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:56.8|Info|app_indexer_remote_name|Starting migration of Log DB to 11
+2026-07-16 23:21:56.8|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (11, '2026-07-17T06:21:56', 'app_indexer_remote_name')
+2026-07-16 23:21:56.8|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:56.8|Info|FluentMigrator.Runner.MigrationRunner|11: app_indexer_remote_name migrated
+2026-07-16 23:21:56.8|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0423617s
+2026-07-16 23:21:56.8|Info|FluentMigrator.Runner.MigrationRunner|13: desi_gazelle_to_unit3d migrating
+2026-07-16 23:21:56.8|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:56.9|Info|desi_gazelle_to_unit3d|Starting migration of Log DB to 13
+2026-07-16 23:21:56.9|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (13, '2026-07-17T06:21:56', 'desi_gazelle_to_unit3d')
+2026-07-16 23:21:56.9|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:56.9|Info|FluentMigrator.Runner.MigrationRunner|13: desi_gazelle_to_unit3d migrated
+2026-07-16 23:21:56.9|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0308605s
+2026-07-16 23:21:56.9|Info|FluentMigrator.Runner.MigrationRunner|14: add_on_update_to_notifications migrating
+2026-07-16 23:21:56.9|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:56.9|Info|add_on_update_to_notifications|Starting migration of Log DB to 14
+2026-07-16 23:21:56.9|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (14, '2026-07-17T06:21:56', 'add_on_update_to_notifications')
+2026-07-16 23:21:56.9|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:56.9|Info|FluentMigrator.Runner.MigrationRunner|14: add_on_update_to_notifications migrated
+2026-07-16 23:21:56.9|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0259605s
+2026-07-16 23:21:56.9|Info|FluentMigrator.Runner.MigrationRunner|15: IndexerVersions migrating
+2026-07-16 23:21:56.9|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:56.9|Info|IndexerVersions|Starting migration of Log DB to 15
+2026-07-16 23:21:57.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (15, '2026-07-17T06:21:57', 'IndexerVersions')
+2026-07-16 23:21:57.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:57.0|Info|FluentMigrator.Runner.MigrationRunner|15: IndexerVersions migrated
+2026-07-16 23:21:57.0|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0298779s
+2026-07-16 23:21:57.0|Info|FluentMigrator.Runner.MigrationRunner|16: cleanup_config migrating
+2026-07-16 23:21:57.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:57.0|Info|cleanup_config|Starting migration of Log DB to 16
+2026-07-16 23:21:57.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (16, '2026-07-17T06:21:57', 'cleanup_config')
+2026-07-16 23:21:57.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:57.0|Info|FluentMigrator.Runner.MigrationRunner|16: cleanup_config migrated
+2026-07-16 23:21:57.0|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0397468s
+2026-07-16 23:21:57.0|Info|FluentMigrator.Runner.MigrationRunner|17: indexer_cleanup migrating
+2026-07-16 23:21:57.1|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:57.1|Info|indexer_cleanup|Starting migration of Log DB to 17
+2026-07-16 23:21:57.1|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (17, '2026-07-17T06:21:57', 'indexer_cleanup')
+2026-07-16 23:21:57.1|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:57.1|Info|FluentMigrator.Runner.MigrationRunner|17: indexer_cleanup migrated
+2026-07-16 23:21:57.1|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0335934s
+2026-07-16 23:21:57.1|Info|FluentMigrator.Runner.MigrationRunner|18: minimum_seeders migrating
+2026-07-16 23:21:57.1|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:57.1|Info|minimum_seeders|Starting migration of Log DB to 18
+2026-07-16 23:21:57.1|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (18, '2026-07-17T06:21:57', 'minimum_seeders')
+2026-07-16 23:21:57.1|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:57.1|Info|FluentMigrator.Runner.MigrationRunner|18: minimum_seeders migrated
+2026-07-16 23:21:57.2|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0389576s
+2026-07-16 23:21:57.2|Info|FluentMigrator.Runner.MigrationRunner|19: remove_showrss migrating
+2026-07-16 23:21:57.2|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:57.2|Info|remove_showrss|Starting migration of Log DB to 19
+2026-07-16 23:21:57.2|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (19, '2026-07-17T06:21:57', 'remove_showrss')
+2026-07-16 23:21:57.2|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:57.2|Info|FluentMigrator.Runner.MigrationRunner|19: remove_showrss migrated
+2026-07-16 23:21:57.2|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0298385s
+2026-07-16 23:21:57.2|Info|FluentMigrator.Runner.MigrationRunner|20: remove_torrentparadiseml migrating
+2026-07-16 23:21:57.2|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:57.2|Info|remove_torrentparadiseml|Starting migration of Log DB to 20
+2026-07-16 23:21:57.2|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (20, '2026-07-17T06:21:57', 'remove_torrentparadiseml')
+2026-07-16 23:21:57.2|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:57.3|Info|FluentMigrator.Runner.MigrationRunner|20: remove_torrentparadiseml migrated
+2026-07-16 23:21:57.3|Info|FluentMigrator.Runner.MigrationRunner|=> 0.032335s
+2026-07-16 23:21:57.3|Info|FluentMigrator.Runner.MigrationRunner|21: localization_setting_to_string migrating
+2026-07-16 23:21:57.3|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:57.3|Info|localization_setting_to_string|Starting migration of Log DB to 21
+2026-07-16 23:21:57.3|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (21, '2026-07-17T06:21:57', 'localization_setting_to_string')
+2026-07-16 23:21:57.3|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:57.3|Info|FluentMigrator.Runner.MigrationRunner|21: localization_setting_to_string migrated
+2026-07-16 23:21:57.3|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0341343s
+2026-07-16 23:21:57.3|Info|FluentMigrator.Runner.MigrationRunner|22: orpheus_api migrating
+2026-07-16 23:21:57.3|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:57.3|Info|orpheus_api|Starting migration of Log DB to 22
+2026-07-16 23:21:57.3|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (22, '2026-07-17T06:21:57', 'orpheus_api')
+2026-07-16 23:21:57.3|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:57.3|Info|FluentMigrator.Runner.MigrationRunner|22: orpheus_api migrated
+2026-07-16 23:21:57.4|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0237834s
+2026-07-16 23:21:57.4|Info|FluentMigrator.Runner.MigrationRunner|23: download_client_categories migrating
+2026-07-16 23:21:57.4|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:57.4|Info|download_client_categories|Starting migration of Log DB to 23
+2026-07-16 23:21:57.4|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (23, '2026-07-17T06:21:57', 'download_client_categories')
+2026-07-16 23:21:57.4|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:57.4|Info|FluentMigrator.Runner.MigrationRunner|23: download_client_categories migrated
+2026-07-16 23:21:57.4|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0281727s
+2026-07-16 23:21:57.4|Info|FluentMigrator.Runner.MigrationRunner|24: add_salt_to_users migrating
+2026-07-16 23:21:57.4|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:57.4|Info|add_salt_to_users|Starting migration of Log DB to 24
+2026-07-16 23:21:57.4|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (24, '2026-07-17T06:21:57', 'add_salt_to_users')
+2026-07-16 23:21:57.4|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:57.5|Info|FluentMigrator.Runner.MigrationRunner|24: add_salt_to_users migrated
+2026-07-16 23:21:57.5|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0432935s
+2026-07-16 23:21:57.5|Info|FluentMigrator.Runner.MigrationRunner|25: speedcd_userpasssettings_to_speedcdsettings migrating
+2026-07-16 23:21:57.5|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:57.5|Info|speedcd_userpasssettings_to_speedcdsettings|Starting migration of Log DB to 25
+2026-07-16 23:21:57.6|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (25, '2026-07-17T06:21:57', 'speedcd_userpasssettings_to_speedcdsettings')
+2026-07-16 23:21:57.6|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:57.6|Info|FluentMigrator.Runner.MigrationRunner|25: speedcd_userpasssettings_to_speedcdsettings migrated
+2026-07-16 23:21:57.6|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0745817s
+2026-07-16 23:21:57.6|Info|FluentMigrator.Runner.MigrationRunner|26: torrentday_cookiesettings_to_torrentdaysettings migrating
+2026-07-16 23:21:57.6|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:57.6|Info|torrentday_cookiesettings_to_torrentdaysettings|Starting migration of Log DB to 26
+2026-07-16 23:21:57.7|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (26, '2026-07-17T06:21:57', 'torrentday_cookiesettings_to_torrentdaysettings')
+2026-07-16 23:21:57.7|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:57.7|Info|FluentMigrator.Runner.MigrationRunner|26: torrentday_cookiesettings_to_torrentdaysettings migrated
+2026-07-16 23:21:57.7|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0386571s
+2026-07-16 23:21:57.7|Info|FluentMigrator.Runner.MigrationRunner|27: alpharatio_greatposterwall_config_contract migrating
+2026-07-16 23:21:57.7|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:57.7|Info|alpharatio_greatposterwall_config_contract|Starting migration of Log DB to 27
+2026-07-16 23:21:57.7|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (27, '2026-07-17T06:21:57', 'alpharatio_greatposterwall_config_contract')
+2026-07-16 23:21:57.7|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:57.8|Info|FluentMigrator.Runner.MigrationRunner|27: alpharatio_greatposterwall_config_contract migrated
+2026-07-16 23:21:57.8|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0434818s
+2026-07-16 23:21:57.8|Info|FluentMigrator.Runner.MigrationRunner|28: remove_notwhatcd migrating
+2026-07-16 23:21:57.8|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:57.8|Info|remove_notwhatcd|Starting migration of Log DB to 28
+2026-07-16 23:21:57.8|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (28, '2026-07-17T06:21:57', 'remove_notwhatcd')
+2026-07-16 23:21:57.8|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:57.9|Info|FluentMigrator.Runner.MigrationRunner|28: remove_notwhatcd migrated
+2026-07-16 23:21:57.9|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0749961s
+2026-07-16 23:21:57.9|Info|FluentMigrator.Runner.MigrationRunner|29: add_on_grab_to_notifications migrating
+2026-07-16 23:21:57.9|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:57.9|Info|add_on_grab_to_notifications|Starting migration of Log DB to 29
+2026-07-16 23:21:57.9|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (29, '2026-07-17T06:21:57', 'add_on_grab_to_notifications')
+2026-07-16 23:21:57.9|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:57.9|Info|FluentMigrator.Runner.MigrationRunner|29: add_on_grab_to_notifications migrated
+2026-07-16 23:21:57.9|Info|FluentMigrator.Runner.MigrationRunner|=> 0.039956s
+2026-07-16 23:21:58.0|Info|FluentMigrator.Runner.MigrationRunner|30: animetorrents_use_custom_config_contract migrating
+2026-07-16 23:21:58.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:58.0|Info|animetorrents_use_custom_config_contract|Starting migration of Log DB to 30
+2026-07-16 23:21:58.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (30, '2026-07-17T06:21:58', 'animetorrents_use_custom_config_contract')
+2026-07-16 23:21:58.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:58.0|Info|FluentMigrator.Runner.MigrationRunner|30: animetorrents_use_custom_config_contract migrated
+2026-07-16 23:21:58.0|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0391168s
+2026-07-16 23:21:58.0|Info|FluentMigrator.Runner.MigrationRunner|31: apprise_server_url migrating
+2026-07-16 23:21:58.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:58.0|Info|apprise_server_url|Starting migration of Log DB to 31
+2026-07-16 23:21:58.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (31, '2026-07-17T06:21:58', 'apprise_server_url')
+2026-07-16 23:21:58.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:58.1|Info|FluentMigrator.Runner.MigrationRunner|31: apprise_server_url migrated
+2026-07-16 23:21:58.1|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0383597s
+2026-07-16 23:21:58.1|Info|FluentMigrator.Runner.MigrationRunner|32: health_restored_notification migrating
+2026-07-16 23:21:58.1|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:58.1|Info|health_restored_notification|Starting migration of Log DB to 32
+2026-07-16 23:21:58.1|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (32, '2026-07-17T06:21:58', 'health_restored_notification')
+2026-07-16 23:21:58.1|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:58.2|Info|FluentMigrator.Runner.MigrationRunner|32: health_restored_notification migrated
+2026-07-16 23:21:58.2|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0624969s
+2026-07-16 23:21:58.2|Info|FluentMigrator.Runner.MigrationRunner|33: remove_uc migrating
+2026-07-16 23:21:58.2|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:58.2|Info|remove_uc|Starting migration of Log DB to 33
+2026-07-16 23:21:58.2|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (33, '2026-07-17T06:21:58', 'remove_uc')
+2026-07-16 23:21:58.2|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:58.2|Info|FluentMigrator.Runner.MigrationRunner|33: remove_uc migrated
+2026-07-16 23:21:58.2|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0321047s
+2026-07-16 23:21:58.2|Info|FluentMigrator.Runner.MigrationRunner|34: history_fix_data_titles migrating
+2026-07-16 23:21:58.2|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:58.2|Info|history_fix_data_titles|Starting migration of Log DB to 34
+2026-07-16 23:21:58.3|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (34, '2026-07-17T06:21:58', 'history_fix_data_titles')
+2026-07-16 23:21:58.3|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:58.3|Info|FluentMigrator.Runner.MigrationRunner|34: history_fix_data_titles migrated
+2026-07-16 23:21:58.3|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0327259s
+2026-07-16 23:21:58.3|Info|FluentMigrator.Runner.MigrationRunner|35: download_client_per_indexer migrating
+2026-07-16 23:21:58.3|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:58.3|Info|download_client_per_indexer|Starting migration of Log DB to 35
+2026-07-16 23:21:58.3|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (35, '2026-07-17T06:21:58', 'download_client_per_indexer')
+2026-07-16 23:21:58.3|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:58.3|Info|FluentMigrator.Runner.MigrationRunner|35: download_client_per_indexer migrated
+2026-07-16 23:21:58.3|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0395093s
+2026-07-16 23:21:58.4|Info|FluentMigrator.Runner.MigrationRunner|36: postgres_update_timestamp_columns_to_with_timezone migrating
+2026-07-16 23:21:58.4|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:58.4|Info|postgres_update_timestamp_columns_to_with_timezone|Starting migration of Log DB to 36
+2026-07-16 23:21:58.4|Info|FluentMigrator.Runner.MigrationRunner|AlterTable Logs
+2026-07-16 23:21:58.4|Info|FluentMigrator.Runner.MigrationRunner|=> 4.24E-05s
+2026-07-16 23:21:58.4|Info|FluentMigrator.Runner.MigrationRunner|AlterColumn Logs Time DateTimeOffset
+2026-07-16 23:21:58.4|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|CREATE TABLE "Logs_temp" ("Id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "Message" TEXT NOT NULL, "Time" DATETIME NOT NULL, "Logger" TEXT NOT NULL, "Exception" TEXT, "ExceptionType" TEXT, "Level" TEXT NOT NULL)
+2026-07-16 23:21:58.4|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "Logs_temp" ("Id", "Message", "Time", "Logger", "Exception", "ExceptionType", "Level") SELECT "Id", "Message", "Time", "Logger", "Exception", "ExceptionType", "Level" FROM "Logs"
+2026-07-16 23:21:58.4|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|DROP TABLE "Logs"
+2026-07-16 23:21:58.4|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|ALTER TABLE "Logs_temp" RENAME TO "Logs"
+2026-07-16 23:21:58.4|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|CREATE INDEX "IX_Logs_Time" ON "Logs" ("Time" ASC)
+2026-07-16 23:21:58.4|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0383705s
+2026-07-16 23:21:58.4|Info|FluentMigrator.Runner.MigrationRunner|AlterTable UpdateHistory
+2026-07-16 23:21:58.5|Info|FluentMigrator.Runner.MigrationRunner|=> 7E-06s
+2026-07-16 23:21:58.5|Info|FluentMigrator.Runner.MigrationRunner|AlterColumn UpdateHistory Date DateTimeOffset
+2026-07-16 23:21:58.5|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|CREATE TABLE "UpdateHistory_temp" ("Id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "Date" DATETIME NOT NULL, "Version" TEXT NOT NULL, "EventType" INTEGER NOT NULL)
+2026-07-16 23:21:58.5|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "UpdateHistory_temp" ("Id", "Date", "Version", "EventType") SELECT "Id", "Date", "Version", "EventType" FROM "UpdateHistory"
+2026-07-16 23:21:58.5|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|DROP TABLE "UpdateHistory"
+2026-07-16 23:21:58.5|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|ALTER TABLE "UpdateHistory_temp" RENAME TO "UpdateHistory"
+2026-07-16 23:21:58.5|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|CREATE INDEX "IX_UpdateHistory_Date" ON "UpdateHistory" ("Date" ASC)
+2026-07-16 23:21:58.5|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0383904s
+2026-07-16 23:21:58.5|Info|FluentMigrator.Runner.MigrationRunner|AlterTable VersionInfo
+2026-07-16 23:21:58.5|Info|FluentMigrator.Runner.MigrationRunner|=> 8.5E-06s
+2026-07-16 23:21:58.5|Info|FluentMigrator.Runner.MigrationRunner|AlterColumn VersionInfo AppliedOn DateTimeOffset
+2026-07-16 23:21:58.5|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|CREATE TABLE "VersionInfo_temp" ("Version" INTEGER NOT NULL, "AppliedOn" DATETIME, "Description" TEXT)
+2026-07-16 23:21:58.5|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo_temp" ("Version", "AppliedOn", "Description") SELECT "Version", "AppliedOn", "Description" FROM "VersionInfo"
+2026-07-16 23:21:58.5|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|DROP TABLE "VersionInfo"
+2026-07-16 23:21:58.6|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|ALTER TABLE "VersionInfo_temp" RENAME TO "VersionInfo"
+2026-07-16 23:21:58.6|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|CREATE UNIQUE INDEX "UC_Version" ON "VersionInfo" ("Version" ASC)
+2026-07-16 23:21:58.6|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0372339s
+2026-07-16 23:21:58.6|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (36, '2026-07-17T06:21:58', 'postgres_update_timestamp_columns_to_with_timezone')
+2026-07-16 23:21:58.6|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:58.6|Info|FluentMigrator.Runner.MigrationRunner|36: postgres_update_timestamp_columns_to_with_timezone migrated
+2026-07-16 23:21:58.6|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0682061s
+2026-07-16 23:21:58.6|Info|FluentMigrator.Runner.MigrationRunner|37: add_notification_status migrating
+2026-07-16 23:21:58.6|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:58.6|Info|add_notification_status|Starting migration of Log DB to 37
+2026-07-16 23:21:58.6|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (37, '2026-07-17T06:21:58', 'add_notification_status')
+2026-07-16 23:21:58.6|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:58.6|Info|FluentMigrator.Runner.MigrationRunner|37: add_notification_status migrated
+2026-07-16 23:21:58.7|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0273976s
+2026-07-16 23:21:58.7|Info|FluentMigrator.Runner.MigrationRunner|38: indexers_freeleech_only_config_contract migrating
+2026-07-16 23:21:58.7|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:58.7|Info|indexers_freeleech_only_config_contract|Starting migration of Log DB to 38
+2026-07-16 23:21:58.7|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (38, '2026-07-17T06:21:58', 'indexers_freeleech_only_config_contract')
+2026-07-16 23:21:58.7|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:58.7|Info|FluentMigrator.Runner.MigrationRunner|38: indexers_freeleech_only_config_contract migrated
+2026-07-16 23:21:58.7|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0317537s
+2026-07-16 23:21:58.7|Info|FluentMigrator.Runner.MigrationRunner|39: email_encryption migrating
+2026-07-16 23:21:58.7|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:58.7|Info|email_encryption|Starting migration of Log DB to 39
+2026-07-16 23:21:58.7|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (39, '2026-07-17T06:21:58', 'email_encryption')
+2026-07-16 23:21:58.7|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:58.7|Info|FluentMigrator.Runner.MigrationRunner|39: email_encryption migrated
+2026-07-16 23:21:58.7|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0248915s
+2026-07-16 23:21:58.8|Info|FluentMigrator.Runner.MigrationRunner|40: newznab_category_to_capabilities_settings migrating
+2026-07-16 23:21:58.8|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:58.8|Info|newznab_category_to_capabilities_settings|Starting migration of Log DB to 40
+2026-07-16 23:21:58.8|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (40, '2026-07-17T06:21:58', 'newznab_category_to_capabilities_settings')
+2026-07-16 23:21:58.8|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:58.8|Info|FluentMigrator.Runner.MigrationRunner|40: newznab_category_to_capabilities_settings migrated
+2026-07-16 23:21:58.8|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0271213s
+2026-07-16 23:21:58.8|Info|FluentMigrator.Runner.MigrationRunner|41: gazelle_freeleech_token_options migrating
+2026-07-16 23:21:58.8|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:58.8|Info|gazelle_freeleech_token_options|Starting migration of Log DB to 41
+2026-07-16 23:21:58.8|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (41, '2026-07-17T06:21:58', 'gazelle_freeleech_token_options')
+2026-07-16 23:21:58.8|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:58.8|Info|FluentMigrator.Runner.MigrationRunner|41: gazelle_freeleech_token_options migrated
+2026-07-16 23:21:58.8|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0310746s
+2026-07-16 23:21:58.9|Info|FluentMigrator.Runner.MigrationRunner|42: myanonamouse_freeleech_wedge_options migrating
+2026-07-16 23:21:58.9|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:58.9|Info|myanonamouse_freeleech_wedge_options|Starting migration of Log DB to 42
+2026-07-16 23:21:58.9|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (42, '2026-07-17T06:21:58', 'myanonamouse_freeleech_wedge_options')
+2026-07-16 23:21:58.9|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:58.9|Info|FluentMigrator.Runner.MigrationRunner|42: myanonamouse_freeleech_wedge_options migrated
+2026-07-16 23:21:58.9|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0595308s
+2026-07-16 23:21:58.9|Info|FluentMigrator.Runner.MigrationRunner|43: newznab_indexers_enable_redirect migrating
+2026-07-16 23:21:58.9|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:59.0|Info|newznab_indexers_enable_redirect|Starting migration of Log DB to 43
+2026-07-16 23:21:59.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (43, '2026-07-17T06:21:59', 'newznab_indexers_enable_redirect')
+2026-07-16 23:21:59.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:59.0|Info|FluentMigrator.Runner.MigrationRunner|43: newznab_indexers_enable_redirect migrated
+2026-07-16 23:21:59.0|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0306802s
+2026-07-16 23:21:59.0|Info|FluentMigrator.Runner.MigrationRunner|44: myanonamouse_freeleech_wedge_checkbox migrating
+2026-07-16 23:21:59.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Beginning Transaction
+2026-07-16 23:21:59.0|Info|myanonamouse_freeleech_wedge_checkbox|Starting migration of Log DB to 44
+2026-07-16 23:21:59.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|INSERT INTO "VersionInfo" ("Version", "AppliedOn", "Description") VALUES (44, '2026-07-17T06:21:59', 'myanonamouse_freeleech_wedge_checkbox')
+2026-07-16 23:21:59.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Committing Transaction
+2026-07-16 23:21:59.0|Info|FluentMigrator.Runner.MigrationRunner|44: myanonamouse_freeleech_wedge_checkbox migrated
+2026-07-16 23:21:59.0|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0283493s
+2026-07-16 23:21:59.0|Debug|MigrationController|Took: 00:00:03.3054093
+2026-07-16 23:21:59.3|Info|Microsoft.Hosting.Lifetime|Now listening on: http://[::]:9696
+2026-07-16 23:21:59.3|Info|UpdaterConfigProvider|Update mechanism BuiltIn not supported in the current configuration, changing to Docker.
+2026-07-16 23:21:59.5|Info|AppSyncProfileService|Setting up default app profile
+2026-07-16 23:21:59.5|Debug|NotificationFactory|Initializing Providers. Count 20
+2026-07-16 23:21:59.6|Info|CommandExecutor|Starting 3 threads for tasks.
+2026-07-16 23:21:59.6|Debug|HttpClient|Downloading [https://indexers.prowlarr.com/master/11/package.zip] to [/config/Definitions/indexers.zip]
+2026-07-16 23:21:59.7|Info|ManagedHttpDispatcher|IPv4 is available: True, IPv6 will be disabled
+2026-07-16 23:22:00.1|Debug|HttpClient|Downloading Completed. took 0s
+2026-07-16 23:22:05.1|Debug|IndexerDefinitionUpdateService|Updated indexer definitions
+2026-07-16 23:22:05.1|Debug|IndexerFactory|Initializing Providers. Count 67
+2026-07-16 23:22:05.1|Debug|IndexerProxyFactory|Initializing Providers. Count 4
+2026-07-16 23:22:05.1|Debug|DownloadClientFactory|Initializing Providers. Count 18
+2026-07-16 23:22:05.1|Debug|ApplicationFactory|Initializing Providers. Count 7
+2026-07-16 23:22:05.1|Info|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2026-07-16 23:22:05.1|Info|Microsoft.Hosting.Lifetime|Hosting environment: Production
+2026-07-16 23:22:05.1|Info|Microsoft.Hosting.Lifetime|Content root path: /app/prowlarr/bin
+2026-07-16 23:23:03.5|Info|Microsoft.Hosting.Lifetime|Application is shutting down...
+2026-07-16 23:23:03.6|Info|ConsoleApp|Exiting main.
+2026-07-16 23:23:12.4|Debug|ProcessProvider|Found 0 processes with the name: Prowlarr.Console
+2026-07-16 23:23:12.4|Debug|ProcessProvider|Found 1 processes with the name: Prowlarr
+2026-07-16 23:23:12.4|Debug|ProcessProvider| - [152] Prowlarr
+2026-07-16 23:23:12.5|Info|MigrationController|*** Migrating data source=/config/prowlarr.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-16 23:23:12.6|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-16 23:23:12.6|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-16 23:23:12.6|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-16 23:23:12.7|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-16 23:23:12.7|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0834517s
+2026-07-16 23:23:12.7|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-16 23:23:12.7|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0948445s
+2026-07-16 23:23:12.8|Debug|MigrationController|Took: 00:00:00.2565048
+2026-07-16 23:23:12.8|Info|MigrationController|*** Migrating data source=/config/logs.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-16 23:23:12.8|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-16 23:23:12.8|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-16 23:23:12.8|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-16 23:23:12.9|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-16 23:23:12.9|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0425202s
+2026-07-16 23:23:12.9|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-16 23:23:12.9|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0499349s
+2026-07-16 23:23:12.9|Debug|MigrationController|Took: 00:00:00.1208885
+2026-07-16 23:23:13.2|Info|Microsoft.Hosting.Lifetime|Now listening on: http://[::]:9696
+2026-07-16 23:23:13.3|Debug|NotificationFactory|Initializing Providers. Count 20
+2026-07-16 23:23:13.3|Info|CommandExecutor|Starting 3 threads for tasks.
+2026-07-16 23:23:13.5|Debug|HttpClient|Downloading [https://indexers.prowlarr.com/master/11/package.zip] to [/config/Definitions/indexers.zip]
+2026-07-16 23:23:13.6|Info|ManagedHttpDispatcher|IPv4 is available: True, IPv6 will be disabled
+2026-07-16 23:23:14.0|Debug|HttpClient|Downloading Completed. took 0s
+2026-07-16 23:23:19.0|Debug|IndexerDefinitionUpdateService|Updated indexer definitions
+2026-07-16 23:23:19.0|Debug|IndexerFactory|Initializing Providers. Count 67
+2026-07-16 23:23:19.1|Debug|IndexerProxyFactory|Initializing Providers. Count 4
+2026-07-16 23:23:19.1|Debug|DownloadClientFactory|Initializing Providers. Count 18
+2026-07-16 23:23:19.1|Debug|ApplicationFactory|Initializing Providers. Count 7
+2026-07-16 23:23:19.1|Info|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2026-07-16 23:23:19.1|Info|Microsoft.Hosting.Lifetime|Hosting environment: Production
+2026-07-16 23:23:19.1|Info|Microsoft.Hosting.Lifetime|Content root path: /app/prowlarr/bin
+2026-07-16 23:23:58.5|Info|Microsoft.Hosting.Lifetime|Application is shutting down...
+2026-07-16 23:23:58.6|Info|ConsoleApp|Exiting main.
+2026-07-16 23:24:05.6|Debug|ProcessProvider|Found 0 processes with the name: Prowlarr.Console
+2026-07-16 23:24:05.6|Debug|ProcessProvider|Found 1 processes with the name: Prowlarr
+2026-07-16 23:24:05.6|Debug|ProcessProvider| - [152] Prowlarr
+2026-07-16 23:24:05.6|Info|MigrationController|*** Migrating data source=/config/prowlarr.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-16 23:24:05.7|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-16 23:24:05.7|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-16 23:24:05.7|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-16 23:24:05.8|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-16 23:24:05.8|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0686712s
+2026-07-16 23:24:05.8|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-16 23:24:05.8|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0764615s
+2026-07-16 23:24:05.8|Debug|MigrationController|Took: 00:00:00.2017306
+2026-07-16 23:24:05.8|Info|MigrationController|*** Migrating data source=/config/logs.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-16 23:24:05.9|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-16 23:24:05.9|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-16 23:24:05.9|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-16 23:24:05.9|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-16 23:24:05.9|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0320634s
+2026-07-16 23:24:05.9|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-16 23:24:05.9|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0373883s
+2026-07-16 23:24:05.9|Debug|MigrationController|Took: 00:00:00.0906144
+2026-07-16 23:24:06.2|Info|Microsoft.Hosting.Lifetime|Now listening on: http://[::]:9696
+2026-07-16 23:24:06.4|Debug|NotificationFactory|Initializing Providers. Count 20
+2026-07-16 23:24:06.4|Info|CommandExecutor|Starting 3 threads for tasks.
+2026-07-16 23:24:06.5|Debug|HttpClient|Downloading [https://indexers.prowlarr.com/master/11/package.zip] to [/config/Definitions/indexers.zip]
+2026-07-16 23:24:06.5|Info|ManagedHttpDispatcher|IPv4 is available: True, IPv6 will be disabled
+2026-07-16 23:24:06.9|Debug|HttpClient|Downloading Completed. took 0s
+2026-07-16 23:24:11.6|Debug|IndexerDefinitionUpdateService|Updated indexer definitions
+2026-07-16 23:24:11.6|Debug|IndexerFactory|Initializing Providers. Count 67
+2026-07-16 23:24:11.6|Debug|IndexerProxyFactory|Initializing Providers. Count 4
+2026-07-16 23:24:11.6|Debug|DownloadClientFactory|Initializing Providers. Count 18
+2026-07-16 23:24:11.6|Debug|ApplicationFactory|Initializing Providers. Count 7
+2026-07-16 23:24:11.6|Info|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2026-07-16 23:24:11.6|Info|Microsoft.Hosting.Lifetime|Hosting environment: Production
+2026-07-16 23:24:11.6|Info|Microsoft.Hosting.Lifetime|Content root path: /app/prowlarr/bin
+2026-07-16 23:24:22.8|Info|Microsoft.Hosting.Lifetime|Application is shutting down...
+2026-07-16 23:24:22.9|Info|ConsoleApp|Exiting main.
+2026-07-16 23:24:29.7|Debug|ProcessProvider|Found 0 processes with the name: Prowlarr.Console
+2026-07-16 23:24:29.7|Debug|ProcessProvider|Found 1 processes with the name: Prowlarr
+2026-07-16 23:24:29.7|Debug|ProcessProvider| - [152] Prowlarr
+2026-07-16 23:24:29.8|Info|MigrationController|*** Migrating data source=/config/prowlarr.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-16 23:24:29.8|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-16 23:24:29.8|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-16 23:24:29.8|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-16 23:24:29.9|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-16 23:24:29.9|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0748789s
+2026-07-16 23:24:29.9|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-16 23:24:29.9|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0842268s
+2026-07-16 23:24:30.0|Debug|MigrationController|Took: 00:00:00.2097325
+2026-07-16 23:24:30.0|Info|MigrationController|*** Migrating data source=/config/logs.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-16 23:24:30.0|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-16 23:24:30.0|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-16 23:24:30.0|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-16 23:24:30.0|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-16 23:24:30.0|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0367598s
+2026-07-16 23:24:30.0|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-16 23:24:30.1|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0417108s
+2026-07-16 23:24:30.1|Debug|MigrationController|Took: 00:00:00.0938958
+2026-07-16 23:24:30.3|Info|Microsoft.Hosting.Lifetime|Now listening on: http://[::]:9696
+2026-07-16 23:24:30.4|Debug|NotificationFactory|Initializing Providers. Count 20
+2026-07-16 23:24:30.4|Info|CommandExecutor|Starting 3 threads for tasks.
+2026-07-16 23:24:30.6|Debug|HttpClient|Downloading [https://indexers.prowlarr.com/master/11/package.zip] to [/config/Definitions/indexers.zip]
+2026-07-16 23:24:30.6|Info|ManagedHttpDispatcher|IPv4 is available: True, IPv6 will be disabled
+2026-07-16 23:24:31.1|Debug|HttpClient|Downloading Completed. took 0s
+2026-07-16 23:24:36.4|Debug|IndexerDefinitionUpdateService|Updated indexer definitions
+2026-07-16 23:24:36.4|Debug|IndexerFactory|Initializing Providers. Count 67
+2026-07-16 23:24:36.4|Debug|IndexerProxyFactory|Initializing Providers. Count 4
+2026-07-16 23:24:36.4|Debug|DownloadClientFactory|Initializing Providers. Count 18
+2026-07-16 23:24:36.4|Debug|ApplicationFactory|Initializing Providers. Count 7
+2026-07-16 23:24:36.4|Info|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2026-07-16 23:24:36.5|Info|Microsoft.Hosting.Lifetime|Hosting environment: Production
+2026-07-16 23:24:36.5|Info|Microsoft.Hosting.Lifetime|Content root path: /app/prowlarr/bin
+2026-07-16 23:24:38.3|Info|Microsoft.Hosting.Lifetime|Application is shutting down...
+2026-07-16 23:24:38.4|Info|ConsoleApp|Exiting main.
+2026-07-16 23:24:48.9|Debug|ProcessProvider|Found 0 processes with the name: Prowlarr.Console
+2026-07-16 23:24:48.9|Debug|ProcessProvider|Found 1 processes with the name: Prowlarr
+2026-07-16 23:24:48.9|Debug|ProcessProvider| - [151] Prowlarr
+2026-07-16 23:24:48.9|Info|MigrationController|*** Migrating data source=/config/prowlarr.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-16 23:24:49.0|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-16 23:24:49.0|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-16 23:24:49.1|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-16 23:24:49.1|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-16 23:24:49.1|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0768153s
+2026-07-16 23:24:49.1|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-16 23:24:49.1|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0865994s
+2026-07-16 23:24:49.2|Debug|MigrationController|Took: 00:00:00.2367568
+2026-07-16 23:24:49.2|Info|MigrationController|*** Migrating data source=/config/logs.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-16 23:24:49.2|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-16 23:24:49.2|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-16 23:24:49.2|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-16 23:24:49.3|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-16 23:24:49.3|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0407457s
+2026-07-16 23:24:49.3|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-16 23:24:49.3|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0482298s
+2026-07-16 23:24:49.3|Debug|MigrationController|Took: 00:00:00.1189447
+2026-07-16 23:24:49.6|Info|Microsoft.Hosting.Lifetime|Now listening on: http://[::]:9696
+2026-07-16 23:24:49.7|Debug|NotificationFactory|Initializing Providers. Count 20
+2026-07-16 23:24:49.7|Info|CommandExecutor|Starting 3 threads for tasks.
+2026-07-16 23:24:49.9|Debug|HttpClient|Downloading [https://indexers.prowlarr.com/master/11/package.zip] to [/config/Definitions/indexers.zip]
+2026-07-16 23:24:49.9|Info|ManagedHttpDispatcher|IPv4 is available: True, IPv6 will be disabled
+2026-07-16 23:24:50.4|Debug|HttpClient|Downloading Completed. took 0s
+2026-07-16 23:24:55.0|Debug|IndexerDefinitionUpdateService|Updated indexer definitions
+2026-07-16 23:24:55.0|Debug|IndexerFactory|Initializing Providers. Count 67
+2026-07-16 23:24:55.1|Debug|IndexerProxyFactory|Initializing Providers. Count 4
+2026-07-16 23:24:55.1|Debug|DownloadClientFactory|Initializing Providers. Count 18
+2026-07-16 23:24:55.1|Debug|ApplicationFactory|Initializing Providers. Count 7
+2026-07-16 23:24:55.1|Info|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2026-07-16 23:24:55.1|Info|Microsoft.Hosting.Lifetime|Hosting environment: Production
+2026-07-16 23:24:55.1|Info|Microsoft.Hosting.Lifetime|Content root path: /app/prowlarr/bin
+2026-07-16 23:26:10.7|Info|Microsoft.Hosting.Lifetime|Application is shutting down...
+2026-07-16 23:26:10.8|Info|ConsoleApp|Exiting main.
+2026-07-16 23:26:19.8|Debug|ProcessProvider|Found 0 processes with the name: Prowlarr.Console
+2026-07-16 23:26:19.8|Debug|ProcessProvider|Found 1 processes with the name: Prowlarr
+2026-07-16 23:26:19.8|Debug|ProcessProvider| - [151] Prowlarr
+2026-07-16 23:26:19.8|Info|MigrationController|*** Migrating data source=/config/prowlarr.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-16 23:26:19.9|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-16 23:26:19.9|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-16 23:26:19.9|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-16 23:26:20.0|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-16 23:26:20.0|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0740402s
+2026-07-16 23:26:20.0|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-16 23:26:20.0|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0830779s
+2026-07-16 23:26:20.0|Debug|MigrationController|Took: 00:00:00.2106192
+2026-07-16 23:26:20.0|Info|MigrationController|*** Migrating data source=/config/logs.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-16 23:26:20.1|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-16 23:26:20.1|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-16 23:26:20.1|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-16 23:26:20.1|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-16 23:26:20.1|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0358754s
+2026-07-16 23:26:20.1|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-16 23:26:20.1|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0432382s
+2026-07-16 23:26:20.1|Debug|MigrationController|Took: 00:00:00.1071084
+2026-07-16 23:26:20.4|Info|Microsoft.Hosting.Lifetime|Now listening on: http://[::]:9696
+2026-07-16 23:26:20.5|Debug|NotificationFactory|Initializing Providers. Count 20
+2026-07-16 23:26:20.5|Info|CommandExecutor|Starting 3 threads for tasks.
+2026-07-16 23:26:20.6|Debug|HttpClient|Downloading [https://indexers.prowlarr.com/master/11/package.zip] to [/config/Definitions/indexers.zip]
+2026-07-16 23:26:20.7|Info|ManagedHttpDispatcher|IPv4 is available: True, IPv6 will be disabled
+2026-07-16 23:26:21.1|Debug|HttpClient|Downloading Completed. took 0s
+2026-07-16 23:26:25.6|Debug|IndexerDefinitionUpdateService|Updated indexer definitions
+2026-07-16 23:26:25.6|Debug|IndexerFactory|Initializing Providers. Count 67
+2026-07-16 23:26:25.6|Debug|IndexerProxyFactory|Initializing Providers. Count 4
+2026-07-16 23:26:25.6|Debug|DownloadClientFactory|Initializing Providers. Count 18
+2026-07-16 23:26:25.6|Debug|ApplicationFactory|Initializing Providers. Count 7
+2026-07-16 23:26:25.7|Info|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2026-07-16 23:26:25.7|Info|Microsoft.Hosting.Lifetime|Hosting environment: Production
+2026-07-16 23:26:25.7|Info|Microsoft.Hosting.Lifetime|Content root path: /app/prowlarr/bin
+2026-07-16 23:28:09.0|Info|Microsoft.Hosting.Lifetime|Application is shutting down...
+2026-07-16 23:28:09.1|Info|ConsoleApp|Exiting main.
+2026-07-16 23:28:16.0|Debug|ProcessProvider|Found 0 processes with the name: Prowlarr.Console
+2026-07-16 23:28:16.0|Debug|ProcessProvider|Found 1 processes with the name: Prowlarr
+2026-07-16 23:28:16.0|Debug|ProcessProvider| - [151] Prowlarr
+2026-07-16 23:28:16.1|Info|MigrationController|*** Migrating data source=/config/prowlarr.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-16 23:28:16.1|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-16 23:28:16.2|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-16 23:28:16.2|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-16 23:28:16.3|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-16 23:28:16.3|Info|FluentMigrator.Runner.MigrationRunner|=> 0.1027516s
+2026-07-16 23:28:16.3|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-16 23:28:16.3|Info|FluentMigrator.Runner.MigrationRunner|=> 0.1123655s
+2026-07-16 23:28:16.3|Debug|MigrationController|Took: 00:00:00.2624436
+2026-07-16 23:28:16.3|Info|MigrationController|*** Migrating data source=/config/logs.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-16 23:28:16.4|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-16 23:28:16.4|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-16 23:28:16.4|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-16 23:28:16.4|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-16 23:28:16.4|Info|FluentMigrator.Runner.MigrationRunner|=> 0.040065s
+2026-07-16 23:28:16.4|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-16 23:28:16.4|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0461884s
+2026-07-16 23:28:16.4|Debug|MigrationController|Took: 00:00:00.1001516
+2026-07-16 23:28:16.6|Info|Microsoft.Hosting.Lifetime|Now listening on: http://[::]:9696
+2026-07-16 23:28:16.7|Debug|NotificationFactory|Initializing Providers. Count 20
+2026-07-16 23:28:16.7|Info|CommandExecutor|Starting 3 threads for tasks.
+2026-07-16 23:28:16.8|Debug|HttpClient|Downloading [https://indexers.prowlarr.com/master/11/package.zip] to [/config/Definitions/indexers.zip]
+2026-07-16 23:28:16.9|Info|ManagedHttpDispatcher|IPv4 is available: True, IPv6 will be disabled
+2026-07-16 23:28:17.3|Debug|HttpClient|Downloading Completed. took 0s
+2026-07-16 23:28:21.9|Debug|IndexerDefinitionUpdateService|Updated indexer definitions
+2026-07-16 23:28:21.9|Debug|IndexerFactory|Initializing Providers. Count 67
+2026-07-16 23:28:22.0|Debug|IndexerProxyFactory|Initializing Providers. Count 4
+2026-07-16 23:28:22.0|Debug|DownloadClientFactory|Initializing Providers. Count 18
+2026-07-16 23:28:22.0|Debug|ApplicationFactory|Initializing Providers. Count 7
+2026-07-16 23:28:22.0|Info|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2026-07-16 23:28:22.0|Info|Microsoft.Hosting.Lifetime|Hosting environment: Production
+2026-07-16 23:28:22.0|Info|Microsoft.Hosting.Lifetime|Content root path: /app/prowlarr/bin
+2026-07-16 23:39:39.6|Debug|Prowlarr.Http.Authentication.NoAuthenticationHandler|AuthenticationScheme: None was successfully authenticated.
+2026-07-16 23:39:39.7|Debug|Prowlarr.Http.Authentication.NoAuthenticationHandler|AuthenticationScheme: None was successfully authenticated.
+2026-07-16 23:39:39.7|Debug|Prowlarr.Http.Authentication.NoAuthenticationHandler|AuthenticationScheme: None was successfully authenticated.
+2026-07-16 23:39:39.7|Debug|Prowlarr.Http.Authentication.NoAuthenticationHandler|AuthenticationScheme: None was successfully authenticated.
+2026-07-16 23:39:39.7|Debug|Prowlarr.Http.Authentication.NoAuthenticationHandler|AuthenticationScheme: None was successfully authenticated.
+2026-07-16 23:39:39.7|Debug|Prowlarr.Http.Authentication.NoAuthenticationHandler|AuthenticationScheme: None was successfully authenticated.
+2026-07-16 23:39:39.8|Debug|Prowlarr.Http.Authentication.NoAuthenticationHandler|AuthenticationScheme: None was successfully authenticated.
+2026-07-16 23:39:39.8|Debug|Prowlarr.Http.Authentication.NoAuthenticationHandler|AuthenticationScheme: None was successfully authenticated.
+2026-07-16 23:39:39.8|Debug|Prowlarr.Http.Authentication.NoAuthenticationHandler|AuthenticationScheme: None was successfully authenticated.
+2026-07-16 23:39:39.8|Debug|Prowlarr.Http.Authentication.NoAuthenticationHandler|AuthenticationScheme: None was successfully authenticated.
+2026-07-16 23:39:39.8|Debug|Prowlarr.Http.Authentication.NoAuthenticationHandler|AuthenticationScheme: None was successfully authenticated.
+2026-07-16 23:39:39.8|Debug|Prowlarr.Http.Authentication.NoAuthenticationHandler|AuthenticationScheme: None was successfully authenticated.
+2026-07-16 23:39:39.8|Debug|Prowlarr.Http.Authentication.NoAuthenticationHandler|AuthenticationScheme: None was successfully authenticated.
+2026-07-16 23:39:39.9|Debug|Prowlarr.Http.Authentication.NoAuthenticationHandler|AuthenticationScheme: None was successfully authenticated.
+2026-07-16 23:39:40.0|Debug|Api|[GET] /api/v1/customFilter: 200.OK (31 ms)
+2026-07-16 23:39:40.0|Debug|Api|[GET] /api/v1/indexer/categories: 200.OK (28 ms)
+2026-07-16 23:39:40.0|Debug|Api|[GET] /api/v1/tag: 200.OK (32 ms)
+2026-07-16 23:39:40.0|Debug|Api|[GET] /api/v1/indexerStatus: 200.OK (31 ms)
+2026-07-16 23:39:40.0|Debug|Api|[GET] /api/v1/appprofile: 200.OK (33 ms)
+2026-07-16 23:39:40.0|Debug|Prowlarr.Http.Authentication.NoAuthenticationHandler|AuthenticationScheme: None was successfully authenticated.
+2026-07-16 23:39:40.1|Debug|Api|[GET] /api/v1/localization: 200.OK (45 ms)
+2026-07-16 23:39:40.1|Debug|Prowlarr.Http.Authentication.NoAuthenticationHandler|AuthenticationScheme: None was successfully authenticated.
+2026-07-16 23:39:40.1|Debug|Api|[GET] /api/v1/indexer: 200.OK (120 ms)
+2026-07-16 23:39:40.1|Debug|Api|[GET] /api/v1/config/ui: 200.OK (86 ms)
+2026-07-16 23:39:40.1|Debug|Api|[GET] /api/v1/system/status: 200.OK (96 ms)
+2026-07-16 23:39:40.1|Debug|Api|[GET] /api/v1/config/host: 200.OK (106 ms)
+2026-07-16 23:39:40.1|Debug|Prowlarr.Http.Authentication.NoAuthenticationHandler|AuthenticationScheme: None was successfully authenticated.
+2026-07-16 23:39:40.2|Debug|Api|[GET] /api/v1/indexer: 200.OK (7 ms)
+2026-07-16 23:39:40.2|Debug|Api|[GET] /api/v1/indexerStatus: 200.OK (11 ms)
+2026-07-16 23:39:40.2|Debug|Api|[GET] /api/v1/config/host: 200.OK (24 ms)
+2026-07-16 23:39:40.2|Debug|Api|[GET] /api/v1/health: 200.OK (24 ms)
+2026-07-16 23:41:02.8|Debug|Api|[PUT] /api/v1/config/host: 202.Accepted (177 ms)
+2026-07-16 23:41:02.8|Debug|Api|[GET] /api/v1/system/status: 200.OK (2 ms)
+2026-07-16 23:41:08.0|Debug|Api|[GET] /api/v1/health: 200.OK (1 ms)
+2026-07-16 23:42:47.0|Debug|Api|[GET] /api/v1/command: 200.OK (25 ms)
+2026-07-16 23:43:01.3|Debug|Api|[GET] /api/v1/health: 200.OK (1 ms)
+2026-07-16 23:43:01.3|Debug|Api|[GET] /api/v1/system/status: 200.OK (2 ms)
+2026-07-16 23:43:03.5|Debug|Api|[GET] /api/v1/indexerStatus: 200.OK (4 ms)
+2026-07-16 23:43:03.5|Debug|Api|[GET] /api/v1/indexer: 200.OK (12 ms)
+2026-07-16 23:43:05.0|Debug|Api|[GET] /api/v1/indexer/schema: 200.OK (644 ms)
+2026-07-16 23:43:08.9|Debug|Api|[GET] /api/v1/indexerProxy: 200.OK (27 ms)
+2026-07-16 23:43:09.6|Debug|Api|[GET] /api/v1/indexerProxy/schema: 200.OK (13 ms)
+2026-07-16 23:43:12.9|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-16 23:43:12.9|Error|FlareSolverr|Proxy validation failed
+
+[v2.4.0.5397] System.Net.Http.HttpRequestException: Connection refused (localhost:8191)
+ ---> System.Net.Sockets.SocketException (111): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at NzbDrone.Common.Http.Dispatchers.ManagedHttpDispatcher.attemptConnection(AddressFamily addressFamily, SocketsHttpConnectionContext context, CancellationToken cancellationToken) in ./NzbDrone.Common/Http/Dispatchers/ManagedHttpDispatcher.cs:line 355
+   at NzbDrone.Common.Http.Dispatchers.ManagedHttpDispatcher.onConnect(SocketsHttpConnectionContext context, CancellationToken cancellationToken) in ./NzbDrone.Common/Http/Dispatchers/ManagedHttpDispatcher.cs:line 341
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.AuthenticationHelper.SendWithAuthAsync(HttpRequestMessage request, Uri authUri, Boolean async, ICredentials credentials, Boolean preAuthenticate, Boolean isProxyAuth, Boolean doRequestAuth, HttpConnectionPool pool, CancellationToken cancellationToken)
+   at System.Net.Http.DiagnosticsHandler.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.DecompressionHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at NzbDrone.Common.Http.Dispatchers.ManagedHttpDispatcher.GetResponseAsync(HttpRequest request, CookieContainer cookies) in ./NzbDrone.Common/Http/Dispatchers/ManagedHttpDispatcher.cs:line 120
+   at NzbDrone.Common.Http.HttpClient.ExecuteRequestAsync(HttpRequest request, CookieContainer cookieContainer) in ./NzbDrone.Common/Http/HttpClient.cs:line 171
+   at NzbDrone.Common.Http.HttpClient.ExecuteAsync(HttpRequest request) in ./NzbDrone.Common/Http/HttpClient.cs:line 70
+   at NzbDrone.Common.Http.HttpClient.Execute(HttpRequest request) in ./NzbDrone.Common/Http/HttpClient.cs:line 137
+   at NzbDrone.Core.IndexerProxies.FlareSolverr.FlareSolverr.Test() in ./NzbDrone.Core/IndexerProxies/FlareSolverr/FlareSolverr.cs:line 189
+
+
+2026-07-16 23:43:13.0|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- Host: Unable to connect to proxy: Connection refused (localhost:8191). Check the log surrounding this error for details
+2026-07-16 23:43:13.0|Debug|Api|[POST] /api/v1/indexerProxy/test: 400.BadRequest (171 ms)
+2026-07-16 23:43:21.2|Debug|Api|[POST] /api/v1/tag: 201.Created (51 ms)
+2026-07-16 23:43:21.2|Debug|Api|[GET] /api/v1/tag: 200.OK (3 ms)
+2026-07-16 23:43:21.2|Debug|Api|[GET] /api/v1/tag/detail: 200.OK (6 ms)
+2026-07-16 23:43:21.3|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-16 23:43:21.6|Debug|Api|[GET] /api/v1/health: 200.OK (2 ms)
+2026-07-16 23:43:22.2|Debug|Api|[POST] /api/v1/indexerProxy/test: 200.OK (906 ms)
+2026-07-16 23:43:23.1|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-16 23:43:23.8|Debug|Api|[POST] /api/v1/indexerProxy: 201.Created (751 ms)
+2026-07-16 23:43:26.5|Debug|Api|[GET] /api/v1/appprofile: 200.OK (8 ms)
+2026-07-16 23:43:26.5|Debug|Api|[GET] /api/v1/applications: 200.OK (19 ms)
+2026-07-16 23:43:27.7|Debug|Api|[GET] /api/v1/applications/schema: 200.OK (23 ms)
+2026-07-16 23:43:28.8|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-16 23:43:29.5|Debug|Api|[GET] /api/v1/health: 200.OK (0 ms)
+2026-07-16 23:47:07.2|Debug|Api|[GET] /api/v1/config/host: 200.OK (24 ms)
+2026-07-16 23:47:40.0|Debug|Api|[GET] /api/v1/indexer: 200.OK (10 ms)
+2026-07-16 23:47:43.9|Debug|Api|[GET] /api/v1/system/status: 200.OK (6 ms)
+2026-07-16 23:47:44.0|Debug|Api|[GET] /api/v1/indexer: 200.OK (2 ms)
+2026-07-16 23:47:44.0|Debug|Api|[GET] /api/v1/indexer: 200.OK (0 ms)
+2026-07-16 23:47:47.0|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-16 23:52:47.1|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-16 23:57:47.1|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 00:02:47.2|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 00:05:19.1|Debug|Api|[GET] /api/v1/downloadclient: 200.OK (28 ms)
+2026-07-17 00:05:20.0|Debug|Api|[GET] /api/v1/downloadclient/schema: 200.OK (45 ms)
+2026-07-17 00:07:21.0|Debug|QBittorrentProxyV2|qBittorrent authentication succeeded.
+2026-07-17 00:07:21.1|Debug|Api|[POST] /api/v1/downloadclient/test: 200.OK (233 ms)
+2026-07-17 00:07:22.2|Debug|Api|[POST] /api/v1/downloadclient: 201.Created (140 ms)
+2026-07-17 00:07:25.6|Debug|Api|[GET] /api/v1/applications: 200.OK (4 ms)
+2026-07-17 00:07:25.7|Debug|Api|[GET] /api/v1/appprofile: 200.OK (7 ms)
+2026-07-17 00:07:26.8|Debug|Api|[GET] /api/v1/applications/schema: 200.OK (16 ms)
+2026-07-17 00:08:17.2|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 00:13:17.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 00:14:06.8|Debug|Api|[GET] /api/v1/indexer: 200.OK (4 ms)
+2026-07-17 00:16:29.8|Debug|Api|[GET] /api/v1/history?page=1&pageSize=20&sortDirection=descending&sortKey=date: 200.OK (36 ms)
+2026-07-17 00:16:30.4|Debug|Api|[GET] /api/v1/downloadclient: 200.OK (5 ms)
+2026-07-17 00:16:31.2|Debug|Api|[GET] /api/v1/indexer: 200.OK (1 ms)
+2026-07-17 00:16:31.2|Debug|Api|[GET] /api/v1/indexerStatus: 200.OK (2 ms)
+2026-07-17 00:16:32.5|Debug|Api|[GET] /api/v1/indexer/schema: 200.OK (384 ms)
+2026-07-17 00:16:45.8|Debug|Api|[GET] /api/v1/downloadclient: 200.OK (22 ms)
+2026-07-17 00:16:45.9|Debug|Api|[POST] /api/v1/indexer/action/getUrls: 200.OK (145 ms)
+2026-07-17 00:16:57.8|Debug|Cardigann|Adding request for 1337x: https://1337x.st/cat/Movies/1/
+2026-07-17 00:16:57.8|Debug|Cardigann|Downloading Feed https://1337x.st/cat/Movies/1/
+2026-07-17 00:16:57.9|Debug|FlareSolverr|CF Protection not detected, returning original response
+2026-07-17 00:16:57.9|Warn|Cardigann|HTTP Error - Res: HTTP/2.0 [GET] https://1337x.st/cat/Movies/1/: 403.Forbidden (17 bytes)
+error code: 1006
+
+2026-07-17 00:16:57.9|Warn|Cardigann|Unable to connect to indexer
+
+[v2.4.0.5397] NzbDrone.Core.Indexers.Exceptions.IndexerException: Unexpected response status Forbidden code from indexer request
+   at NzbDrone.Core.Indexers.Definitions.Cardigann.CardigannParser.ParseResponse(IndexerResponse indexerResponse) in ./NzbDrone.Core/Indexers/Definitions/Cardigann/CardigannParser.cs:line 58
+   at NzbDrone.Core.Indexers.HttpIndexerBase`1.FetchPage(IndexerRequest request, IParseIndexerResponse parser) in ./NzbDrone.Core/Indexers/HttpIndexerBase.cs:line 591
+   at NzbDrone.Core.Indexers.HttpIndexerBase`1.TestConnection() in ./NzbDrone.Core/Indexers/HttpIndexerBase.cs:line 764
+RequestUri: https://1337x.st/cat/Movies/1/;StatusCode: Forbidden;ContentType: text/plain; charset=UTF-8;ContentLength: 17;ContentSample: error code: 1006
+
+
+2026-07-17 00:16:57.9|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- : Unable to connect to indexer. Unexpected response status Forbidden code from indexer request
+2026-07-17 00:16:57.9|Debug|Api|[POST] /api/v1/indexer/test: 400.BadRequest (186 ms)
+2026-07-17 00:17:03.5|Debug|Api|[POST] /api/v1/indexer/action/getUrls: 200.OK (7 ms)
+2026-07-17 00:17:05.5|Debug|Cardigann|Adding request for 1337x: https://1337x.to/cat/Movies/1/
+2026-07-17 00:17:05.5|Debug|Cardigann|Downloading Feed https://1337x.to/cat/Movies/1/
+2026-07-17 00:17:05.5|Debug|FlareSolverr|CF Protection not detected, returning original response
+2026-07-17 00:17:05.5|Warn|Cardigann|HTTP Error - Res: HTTP/2.0 [GET] https://1337x.to/cat/Movies/1/: 403.Forbidden (17 bytes)
+error code: 1006
+
+2026-07-17 00:17:05.5|Warn|Cardigann|Unable to connect to indexer
+
+[v2.4.0.5397] NzbDrone.Core.Indexers.Exceptions.IndexerException: Unexpected response status Forbidden code from indexer request
+   at NzbDrone.Core.Indexers.Definitions.Cardigann.CardigannParser.ParseResponse(IndexerResponse indexerResponse) in ./NzbDrone.Core/Indexers/Definitions/Cardigann/CardigannParser.cs:line 58
+   at NzbDrone.Core.Indexers.HttpIndexerBase`1.FetchPage(IndexerRequest request, IParseIndexerResponse parser) in ./NzbDrone.Core/Indexers/HttpIndexerBase.cs:line 591
+   at NzbDrone.Core.Indexers.HttpIndexerBase`1.TestConnection() in ./NzbDrone.Core/Indexers/HttpIndexerBase.cs:line 764
+RequestUri: https://1337x.to/cat/Movies/1/;StatusCode: Forbidden;ContentType: text/plain; charset=UTF-8;ContentLength: 17;ContentSample: error code: 1006
+
+
+2026-07-17 00:17:05.5|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- : Unable to connect to indexer. Unexpected response status Forbidden code from indexer request
+2026-07-17 00:17:05.5|Debug|Api|[POST] /api/v1/indexer/test: 400.BadRequest (98 ms)
+2026-07-17 00:17:06.4|Debug|Api|[POST] /api/v1/indexer/action/getUrls: 200.OK (6 ms)
+2026-07-17 00:17:07.8|Debug|Cardigann|Adding request for 1337x: https://x1337x.ws/cat/Movies/1/
+2026-07-17 00:17:07.8|Debug|Cardigann|Downloading Feed https://x1337x.ws/cat/Movies/1/
+2026-07-17 00:17:07.8|Debug|FlareSolverr|CF Protection not detected, returning original response
+2026-07-17 00:17:07.8|Warn|Cardigann|HTTP Error - Res: HTTP/2.0 [GET] https://x1337x.ws/cat/Movies/1/: 403.Forbidden (17 bytes)
+error code: 1006
+
+2026-07-17 00:17:07.8|Warn|Cardigann|Unable to connect to indexer
+
+[v2.4.0.5397] NzbDrone.Core.Indexers.Exceptions.IndexerException: Unexpected response status Forbidden code from indexer request
+   at NzbDrone.Core.Indexers.Definitions.Cardigann.CardigannParser.ParseResponse(IndexerResponse indexerResponse) in ./NzbDrone.Core/Indexers/Definitions/Cardigann/CardigannParser.cs:line 58
+   at NzbDrone.Core.Indexers.HttpIndexerBase`1.FetchPage(IndexerRequest request, IParseIndexerResponse parser) in ./NzbDrone.Core/Indexers/HttpIndexerBase.cs:line 591
+   at NzbDrone.Core.Indexers.HttpIndexerBase`1.TestConnection() in ./NzbDrone.Core/Indexers/HttpIndexerBase.cs:line 764
+RequestUri: https://x1337x.ws/cat/Movies/1/;StatusCode: Forbidden;ContentType: text/plain; charset=UTF-8;ContentLength: 17;ContentSample: error code: 1006
+
+
+2026-07-17 00:17:07.9|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- : Unable to connect to indexer. Unexpected response status Forbidden code from indexer request
+2026-07-17 00:17:07.9|Debug|Api|[POST] /api/v1/indexer/test: 400.BadRequest (101 ms)
+2026-07-17 00:17:08.5|Debug|Api|[POST] /api/v1/indexer/action/getUrls: 200.OK (4 ms)
+2026-07-17 00:17:10.0|Debug|Cardigann|Adding request for 1337x: https://x1337x.eu/cat/Movies/1/
+2026-07-17 00:17:10.0|Debug|Cardigann|Downloading Feed https://x1337x.eu/cat/Movies/1/
+2026-07-17 00:17:10.0|Debug|FlareSolverr|CF Protection not detected, returning original response
+2026-07-17 00:17:10.0|Warn|Cardigann|HTTP Error - Res: HTTP/2.0 [GET] https://x1337x.eu/cat/Movies/1/: 403.Forbidden (17 bytes)
+error code: 1006
+
+2026-07-17 00:17:10.1|Warn|Cardigann|Unable to connect to indexer
+
+[v2.4.0.5397] NzbDrone.Core.Indexers.Exceptions.IndexerException: Unexpected response status Forbidden code from indexer request
+   at NzbDrone.Core.Indexers.Definitions.Cardigann.CardigannParser.ParseResponse(IndexerResponse indexerResponse) in ./NzbDrone.Core/Indexers/Definitions/Cardigann/CardigannParser.cs:line 58
+   at NzbDrone.Core.Indexers.HttpIndexerBase`1.FetchPage(IndexerRequest request, IParseIndexerResponse parser) in ./NzbDrone.Core/Indexers/HttpIndexerBase.cs:line 591
+   at NzbDrone.Core.Indexers.HttpIndexerBase`1.TestConnection() in ./NzbDrone.Core/Indexers/HttpIndexerBase.cs:line 764
+RequestUri: https://x1337x.eu/cat/Movies/1/;StatusCode: Forbidden;ContentType: text/plain; charset=UTF-8;ContentLength: 17;ContentSample: error code: 1006
+
+
+2026-07-17 00:17:10.1|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- : Unable to connect to indexer. Unexpected response status Forbidden code from indexer request
+2026-07-17 00:17:10.1|Debug|Api|[POST] /api/v1/indexer/test: 400.BadRequest (117 ms)
+2026-07-17 00:17:10.8|Debug|Api|[POST] /api/v1/indexer/action/getUrls: 200.OK (7 ms)
+2026-07-17 00:17:12.3|Debug|Cardigann|Adding request for 1337x: https://x1337x.cc/cat/Movies/1/
+2026-07-17 00:17:12.3|Debug|Cardigann|Downloading Feed https://x1337x.cc/cat/Movies/1/
+2026-07-17 00:17:12.4|Debug|FlareSolverr|CF Protection not detected, returning original response
+2026-07-17 00:17:12.4|Warn|Cardigann|HTTP Error - Res: HTTP/2.0 [GET] https://x1337x.cc/cat/Movies/1/: 403.Forbidden (17 bytes)
+error code: 1006
+
+2026-07-17 00:17:12.4|Warn|Cardigann|Unable to connect to indexer
+
+[v2.4.0.5397] NzbDrone.Core.Indexers.Exceptions.IndexerException: Unexpected response status Forbidden code from indexer request
+   at NzbDrone.Core.Indexers.Definitions.Cardigann.CardigannParser.ParseResponse(IndexerResponse indexerResponse) in ./NzbDrone.Core/Indexers/Definitions/Cardigann/CardigannParser.cs:line 58
+   at NzbDrone.Core.Indexers.HttpIndexerBase`1.FetchPage(IndexerRequest request, IParseIndexerResponse parser) in ./NzbDrone.Core/Indexers/HttpIndexerBase.cs:line 591
+   at NzbDrone.Core.Indexers.HttpIndexerBase`1.TestConnection() in ./NzbDrone.Core/Indexers/HttpIndexerBase.cs:line 764
+RequestUri: https://x1337x.cc/cat/Movies/1/;StatusCode: Forbidden;ContentType: text/plain; charset=UTF-8;ContentLength: 17;ContentSample: error code: 1006
+
+
+2026-07-17 00:17:12.4|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- : Unable to connect to indexer. Unexpected response status Forbidden code from indexer request
+2026-07-17 00:17:12.4|Debug|Api|[POST] /api/v1/indexer/test: 400.BadRequest (110 ms)
+2026-07-17 00:18:17.3|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-17 00:19:18.8|Debug|Api|[GET] /api/v1/indexer: 200.OK (3 ms)
+2026-07-17 00:23:17.4|Debug|Api|[GET] /api/v1/command: 200.OK (5 ms)
+2026-07-17 00:28:17.4|Debug|Api|[GET] /api/v1/command: 200.OK (11 ms)
+2026-07-17 00:33:17.5|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-17 00:38:17.5|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-17 00:43:17.6|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-17 00:48:17.6|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-17 00:53:17.7|Debug|Api|[GET] /api/v1/command: 200.OK (6 ms)
+2026-07-17 00:58:17.7|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-17 01:01:25.6|Debug|Api|[GET] /api/v1/indexer: 200.OK (10 ms)
+2026-07-17 01:03:13.6|Debug|Api|[GET] /api/v1/indexer: 200.OK (2 ms)
+2026-07-17 01:03:17.7|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-17 01:03:20.5|Debug|Api|[GET] /api/v1/applications: 200.OK (3 ms)
+2026-07-17 01:03:20.5|Debug|Api|[GET] /api/v1/appprofile: 200.OK (12 ms)
+2026-07-17 01:03:21.4|Debug|Api|[GET] /api/v1/applications/schema: 200.OK (5 ms)
+2026-07-17 01:03:40.0|Warn|Radarr|Unable to complete application test
+
+[v2.4.0.5397] System.Net.Http.HttpRequestException: Connection refused (solarr:5001)
+ ---> System.Net.Sockets.SocketException (111): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at NzbDrone.Common.Http.Dispatchers.ManagedHttpDispatcher.attemptConnection(AddressFamily addressFamily, SocketsHttpConnectionContext context, CancellationToken cancellationToken) in ./NzbDrone.Common/Http/Dispatchers/ManagedHttpDispatcher.cs:line 355
+   at NzbDrone.Common.Http.Dispatchers.ManagedHttpDispatcher.onConnect(SocketsHttpConnectionContext context, CancellationToken cancellationToken) in ./NzbDrone.Common/Http/Dispatchers/ManagedHttpDispatcher.cs:line 341
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.AuthenticationHelper.SendWithAuthAsync(HttpRequestMessage request, Uri authUri, Boolean async, ICredentials credentials, Boolean preAuthenticate, Boolean isProxyAuth, Boolean doRequestAuth, HttpConnectionPool pool, CancellationToken cancellationToken)
+   at System.Net.Http.DiagnosticsHandler.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.DecompressionHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at NzbDrone.Common.Http.Dispatchers.ManagedHttpDispatcher.GetResponseAsync(HttpRequest request, CookieContainer cookies) in ./NzbDrone.Common/Http/Dispatchers/ManagedHttpDispatcher.cs:line 120
+   at NzbDrone.Common.Http.HttpClient.ExecuteRequestAsync(HttpRequest request, CookieContainer cookieContainer) in ./NzbDrone.Common/Http/HttpClient.cs:line 171
+   at NzbDrone.Common.Http.HttpClient.ExecuteAsync(HttpRequest request) in ./NzbDrone.Common/Http/HttpClient.cs:line 70
+   at NzbDrone.Common.Http.HttpClient.Execute(HttpRequest request) in ./NzbDrone.Common/Http/HttpClient.cs:line 137
+   at NzbDrone.Core.Applications.Radarr.RadarrV3Proxy.Execute[TResource](HttpRequest request) in ./NzbDrone.Core/Applications/Radarr/RadarrV3Proxy.cs:line 235
+   at NzbDrone.Core.Applications.Radarr.RadarrV3Proxy.GetIndexerSchema(RadarrSettings settings) in ./NzbDrone.Core/Applications/Radarr/RadarrV3Proxy.cs:line 81
+   at NzbDrone.Core.Applications.Radarr.Radarr.<>c__DisplayClass11_0.<BuildRadarrIndexer>b__0() in ./NzbDrone.Core/Applications/Radarr/Radarr.cs:line 231
+   at NzbDrone.Common.Cache.Cached`1.Get(String key, Func`1 function, Nullable`1 lifeTime) in ./NzbDrone.Common/Cache/Cached.cs:line 98
+   at NzbDrone.Core.Applications.Radarr.Radarr.BuildRadarrIndexer(IndexerDefinition indexer, IndexerCapabilities indexerCapabilities, DownloadProtocol protocol, Int32 id) in ./NzbDrone.Core/Applications/Radarr/Radarr.cs:line 231
+   at NzbDrone.Core.Applications.Radarr.Radarr.Test() in ./NzbDrone.Core/Applications/Radarr/Radarr.cs:line 52
+
+
+2026-07-17 01:03:40.1|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- BaseUrl: Unable to complete application test, cannot connect to Radarr. Connection refused (solarr:5001)
+2026-07-17 01:03:40.1|Debug|Api|[POST] /api/v1/applications/test: 400.BadRequest (109 ms)
+2026-07-17 01:05:30.3|Warn|HttpClient|HTTP Error - Res: HTTP/1.1 [POST] http://solarr:5000/api/v3/indexer/test: 404.NotFound (207 bytes)
+<!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+2026-07-17 01:05:30.3|Warn|Radarr|Unable to complete application test
+
+[v2.4.0.5397] NzbDrone.Common.Http.HttpException: HTTP request failed: [404:NotFound] [POST] at [http://solarr:5000/api/v3/indexer/test]
+   at NzbDrone.Common.Http.HttpClient.ExecuteAsync(HttpRequest request) in ./NzbDrone.Common/Http/HttpClient.cs:line 128
+   at NzbDrone.Common.Http.HttpClient.Post(HttpRequest request) in ./NzbDrone.Common/Http/HttpClient.cs:line 423
+   at NzbDrone.Core.Applications.Radarr.RadarrV3Proxy.TestConnection(RadarrIndexer indexer, RadarrSettings settings) in ./NzbDrone.Core/Applications/Radarr/RadarrV3Proxy.cs:line 133
+   at NzbDrone.Core.Applications.Radarr.Radarr.Test() in ./NzbDrone.Core/Applications/Radarr/Radarr.cs:line 52
+<!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+
+
+2026-07-17 01:05:30.3|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- BaseUrl: Unable to complete application test, cannot connect to Radarr. HTTP request failed: [404:NotFound] [POST] at [http://solarr:5000/api/v3/indexer/test]
+2026-07-17 01:05:30.3|Debug|Api|[POST] /api/v1/applications/test: 400.BadRequest (80 ms)
+2026-07-17 01:08:17.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 01:10:49.3|Debug|Api|[GET] /api/v1/indexer: 200.OK (9 ms)
+2026-07-17 01:10:56.3|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- : Failed to fetch Radarr version
+2026-07-17 01:10:56.3|Debug|Api|[POST] /api/v1/applications/test?forceTest=true: 400.BadRequest (45 ms)
+2026-07-17 01:11:02.1|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- : Failed to fetch Radarr version
+2026-07-17 01:11:02.1|Debug|Api|[POST] /api/v1/applications/test?forceTest=true: 400.BadRequest (26 ms)
+2026-07-17 01:11:05.6|Warn|Radarr|Unable to complete application test
+
+[v2.4.0.5397] System.Net.Http.HttpRequestException: Connection refused (solarr:5001)
+ ---> System.Net.Sockets.SocketException (111): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at NzbDrone.Common.Http.Dispatchers.ManagedHttpDispatcher.attemptConnection(AddressFamily addressFamily, SocketsHttpConnectionContext context, CancellationToken cancellationToken) in ./NzbDrone.Common/Http/Dispatchers/ManagedHttpDispatcher.cs:line 355
+   at NzbDrone.Common.Http.Dispatchers.ManagedHttpDispatcher.onConnect(SocketsHttpConnectionContext context, CancellationToken cancellationToken) in ./NzbDrone.Common/Http/Dispatchers/ManagedHttpDispatcher.cs:line 341
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.AuthenticationHelper.SendWithAuthAsync(HttpRequestMessage request, Uri authUri, Boolean async, ICredentials credentials, Boolean preAuthenticate, Boolean isProxyAuth, Boolean doRequestAuth, HttpConnectionPool pool, CancellationToken cancellationToken)
+   at System.Net.Http.DiagnosticsHandler.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.DecompressionHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at NzbDrone.Common.Http.Dispatchers.ManagedHttpDispatcher.GetResponseAsync(HttpRequest request, CookieContainer cookies) in ./NzbDrone.Common/Http/Dispatchers/ManagedHttpDispatcher.cs:line 120
+   at NzbDrone.Common.Http.HttpClient.ExecuteRequestAsync(HttpRequest request, CookieContainer cookieContainer) in ./NzbDrone.Common/Http/HttpClient.cs:line 171
+   at NzbDrone.Common.Http.HttpClient.ExecuteAsync(HttpRequest request) in ./NzbDrone.Common/Http/HttpClient.cs:line 70
+   at NzbDrone.Common.Http.HttpClient.Execute(HttpRequest request) in ./NzbDrone.Common/Http/HttpClient.cs:line 137
+   at NzbDrone.Core.Applications.Radarr.RadarrV3Proxy.Execute[TResource](HttpRequest request) in ./NzbDrone.Core/Applications/Radarr/RadarrV3Proxy.cs:line 235
+   at NzbDrone.Core.Applications.Radarr.RadarrV3Proxy.GetIndexerSchema(RadarrSettings settings) in ./NzbDrone.Core/Applications/Radarr/RadarrV3Proxy.cs:line 81
+   at NzbDrone.Core.Applications.Radarr.Radarr.<>c__DisplayClass11_0.<BuildRadarrIndexer>b__0() in ./NzbDrone.Core/Applications/Radarr/Radarr.cs:line 231
+   at NzbDrone.Common.Cache.Cached`1.Get(String key, Func`1 function, Nullable`1 lifeTime) in ./NzbDrone.Common/Cache/Cached.cs:line 98
+   at NzbDrone.Core.Applications.Radarr.Radarr.BuildRadarrIndexer(IndexerDefinition indexer, IndexerCapabilities indexerCapabilities, DownloadProtocol protocol, Int32 id) in ./NzbDrone.Core/Applications/Radarr/Radarr.cs:line 231
+   at NzbDrone.Core.Applications.Radarr.Radarr.Test() in ./NzbDrone.Core/Applications/Radarr/Radarr.cs:line 52
+
+
+2026-07-17 01:11:05.6|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- BaseUrl: Unable to complete application test, cannot connect to Radarr. Connection refused (solarr:5001)
+2026-07-17 01:11:05.6|Debug|Api|[POST] /api/v1/applications/test: 400.BadRequest (50 ms)
+2026-07-17 01:11:08.3|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- : Failed to fetch Radarr version
+2026-07-17 01:11:08.3|Debug|Api|[POST] /api/v1/applications/test: 400.BadRequest (31 ms)
+2026-07-17 01:11:27.7|Debug|Api|[GET] /api/v1/applications/schema: 200.OK (3 ms)
+2026-07-17 01:13:17.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 01:17:14.8|Debug|Api|[GET] /api/v1/indexer: 200.OK (9 ms)
+2026-07-17 01:17:30.3|Warn|Radarr|Unable to complete application test
+
+[v2.4.0.5397] System.Net.Http.HttpRequestException: Connection refused (solarr:5001)
+ ---> System.Net.Sockets.SocketException (111): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at NzbDrone.Common.Http.Dispatchers.ManagedHttpDispatcher.attemptConnection(AddressFamily addressFamily, SocketsHttpConnectionContext context, CancellationToken cancellationToken) in ./NzbDrone.Common/Http/Dispatchers/ManagedHttpDispatcher.cs:line 355
+   at NzbDrone.Common.Http.Dispatchers.ManagedHttpDispatcher.onConnect(SocketsHttpConnectionContext context, CancellationToken cancellationToken) in ./NzbDrone.Common/Http/Dispatchers/ManagedHttpDispatcher.cs:line 341
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.AuthenticationHelper.SendWithAuthAsync(HttpRequestMessage request, Uri authUri, Boolean async, ICredentials credentials, Boolean preAuthenticate, Boolean isProxyAuth, Boolean doRequestAuth, HttpConnectionPool pool, CancellationToken cancellationToken)
+   at System.Net.Http.DiagnosticsHandler.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.DecompressionHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at NzbDrone.Common.Http.Dispatchers.ManagedHttpDispatcher.GetResponseAsync(HttpRequest request, CookieContainer cookies) in ./NzbDrone.Common/Http/Dispatchers/ManagedHttpDispatcher.cs:line 120
+   at NzbDrone.Common.Http.HttpClient.ExecuteRequestAsync(HttpRequest request, CookieContainer cookieContainer) in ./NzbDrone.Common/Http/HttpClient.cs:line 171
+   at NzbDrone.Common.Http.HttpClient.ExecuteAsync(HttpRequest request) in ./NzbDrone.Common/Http/HttpClient.cs:line 70
+   at NzbDrone.Common.Http.HttpClient.Execute(HttpRequest request) in ./NzbDrone.Common/Http/HttpClient.cs:line 137
+   at NzbDrone.Core.Applications.Radarr.RadarrV3Proxy.Execute[TResource](HttpRequest request) in ./NzbDrone.Core/Applications/Radarr/RadarrV3Proxy.cs:line 235
+   at NzbDrone.Core.Applications.Radarr.RadarrV3Proxy.GetIndexerSchema(RadarrSettings settings) in ./NzbDrone.Core/Applications/Radarr/RadarrV3Proxy.cs:line 81
+   at NzbDrone.Core.Applications.Radarr.Radarr.<>c__DisplayClass11_0.<BuildRadarrIndexer>b__0() in ./NzbDrone.Core/Applications/Radarr/Radarr.cs:line 231
+   at NzbDrone.Common.Cache.Cached`1.Get(String key, Func`1 function, Nullable`1 lifeTime) in ./NzbDrone.Common/Cache/Cached.cs:line 98
+   at NzbDrone.Core.Applications.Radarr.Radarr.BuildRadarrIndexer(IndexerDefinition indexer, IndexerCapabilities indexerCapabilities, DownloadProtocol protocol, Int32 id) in ./NzbDrone.Core/Applications/Radarr/Radarr.cs:line 231
+   at NzbDrone.Core.Applications.Radarr.Radarr.Test() in ./NzbDrone.Core/Applications/Radarr/Radarr.cs:line 52
+
+
+2026-07-17 01:17:30.4|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- BaseUrl: Unable to complete application test, cannot connect to Radarr. Connection refused (solarr:5001)
+2026-07-17 01:17:30.4|Debug|Api|[POST] /api/v1/applications/test: 400.BadRequest (61 ms)
+2026-07-17 01:17:44.7|Warn|Radarr|Unable to complete application test
+
+[v2.4.0.5397] System.Net.Http.HttpRequestException: Connection refused (solarr:5001)
+ ---> System.Net.Sockets.SocketException (111): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at NzbDrone.Common.Http.Dispatchers.ManagedHttpDispatcher.attemptConnection(AddressFamily addressFamily, SocketsHttpConnectionContext context, CancellationToken cancellationToken) in ./NzbDrone.Common/Http/Dispatchers/ManagedHttpDispatcher.cs:line 355
+   at NzbDrone.Common.Http.Dispatchers.ManagedHttpDispatcher.onConnect(SocketsHttpConnectionContext context, CancellationToken cancellationToken) in ./NzbDrone.Common/Http/Dispatchers/ManagedHttpDispatcher.cs:line 341
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.AuthenticationHelper.SendWithAuthAsync(HttpRequestMessage request, Uri authUri, Boolean async, ICredentials credentials, Boolean preAuthenticate, Boolean isProxyAuth, Boolean doRequestAuth, HttpConnectionPool pool, CancellationToken cancellationToken)
+   at System.Net.Http.DiagnosticsHandler.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.DecompressionHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at NzbDrone.Common.Http.Dispatchers.ManagedHttpDispatcher.GetResponseAsync(HttpRequest request, CookieContainer cookies) in ./NzbDrone.Common/Http/Dispatchers/ManagedHttpDispatcher.cs:line 120
+   at NzbDrone.Common.Http.HttpClient.ExecuteRequestAsync(HttpRequest request, CookieContainer cookieContainer) in ./NzbDrone.Common/Http/HttpClient.cs:line 171
+   at NzbDrone.Common.Http.HttpClient.ExecuteAsync(HttpRequest request) in ./NzbDrone.Common/Http/HttpClient.cs:line 70
+   at NzbDrone.Common.Http.HttpClient.Execute(HttpRequest request) in ./NzbDrone.Common/Http/HttpClient.cs:line 137
+   at NzbDrone.Core.Applications.Radarr.RadarrV3Proxy.Execute[TResource](HttpRequest request) in ./NzbDrone.Core/Applications/Radarr/RadarrV3Proxy.cs:line 235
+   at NzbDrone.Core.Applications.Radarr.RadarrV3Proxy.GetIndexerSchema(RadarrSettings settings) in ./NzbDrone.Core/Applications/Radarr/RadarrV3Proxy.cs:line 81
+   at NzbDrone.Core.Applications.Radarr.Radarr.<>c__DisplayClass11_0.<BuildRadarrIndexer>b__0() in ./NzbDrone.Core/Applications/Radarr/Radarr.cs:line 231
+   at NzbDrone.Common.Cache.Cached`1.Get(String key, Func`1 function, Nullable`1 lifeTime) in ./NzbDrone.Common/Cache/Cached.cs:line 98
+   at NzbDrone.Core.Applications.Radarr.Radarr.BuildRadarrIndexer(IndexerDefinition indexer, IndexerCapabilities indexerCapabilities, DownloadProtocol protocol, Int32 id) in ./NzbDrone.Core/Applications/Radarr/Radarr.cs:line 231
+   at NzbDrone.Core.Applications.Radarr.Radarr.Test() in ./NzbDrone.Core/Applications/Radarr/Radarr.cs:line 52
+
+
+2026-07-17 01:17:44.7|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- BaseUrl: Unable to complete application test, cannot connect to Radarr. Connection refused (solarr:5001)
+2026-07-17 01:17:44.7|Debug|Api|[POST] /api/v1/applications/test: 400.BadRequest (48 ms)
+2026-07-17 01:17:50.0|Warn|Radarr|Unable to complete application test
+
+[v2.4.0.5397] System.Net.Http.HttpRequestException: Connection refused (solarr:5001)
+ ---> System.Net.Sockets.SocketException (111): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at NzbDrone.Common.Http.Dispatchers.ManagedHttpDispatcher.attemptConnection(AddressFamily addressFamily, SocketsHttpConnectionContext context, CancellationToken cancellationToken) in ./NzbDrone.Common/Http/Dispatchers/ManagedHttpDispatcher.cs:line 355
+   at NzbDrone.Common.Http.Dispatchers.ManagedHttpDispatcher.onConnect(SocketsHttpConnectionContext context, CancellationToken cancellationToken) in ./NzbDrone.Common/Http/Dispatchers/ManagedHttpDispatcher.cs:line 341
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.AuthenticationHelper.SendWithAuthAsync(HttpRequestMessage request, Uri authUri, Boolean async, ICredentials credentials, Boolean preAuthenticate, Boolean isProxyAuth, Boolean doRequestAuth, HttpConnectionPool pool, CancellationToken cancellationToken)
+   at System.Net.Http.DiagnosticsHandler.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.DecompressionHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at NzbDrone.Common.Http.Dispatchers.ManagedHttpDispatcher.GetResponseAsync(HttpRequest request, CookieContainer cookies) in ./NzbDrone.Common/Http/Dispatchers/ManagedHttpDispatcher.cs:line 120
+   at NzbDrone.Common.Http.HttpClient.ExecuteRequestAsync(HttpRequest request, CookieContainer cookieContainer) in ./NzbDrone.Common/Http/HttpClient.cs:line 171
+   at NzbDrone.Common.Http.HttpClient.ExecuteAsync(HttpRequest request) in ./NzbDrone.Common/Http/HttpClient.cs:line 70
+   at NzbDrone.Common.Http.HttpClient.Execute(HttpRequest request) in ./NzbDrone.Common/Http/HttpClient.cs:line 137
+   at NzbDrone.Core.Applications.Radarr.RadarrV3Proxy.Execute[TResource](HttpRequest request) in ./NzbDrone.Core/Applications/Radarr/RadarrV3Proxy.cs:line 235
+   at NzbDrone.Core.Applications.Radarr.RadarrV3Proxy.GetIndexerSchema(RadarrSettings settings) in ./NzbDrone.Core/Applications/Radarr/RadarrV3Proxy.cs:line 81
+   at NzbDrone.Core.Applications.Radarr.Radarr.<>c__DisplayClass11_0.<BuildRadarrIndexer>b__0() in ./NzbDrone.Core/Applications/Radarr/Radarr.cs:line 231
+   at NzbDrone.Common.Cache.Cached`1.Get(String key, Func`1 function, Nullable`1 lifeTime) in ./NzbDrone.Common/Cache/Cached.cs:line 98
+   at NzbDrone.Core.Applications.Radarr.Radarr.BuildRadarrIndexer(IndexerDefinition indexer, IndexerCapabilities indexerCapabilities, DownloadProtocol protocol, Int32 id) in ./NzbDrone.Core/Applications/Radarr/Radarr.cs:line 231
+   at NzbDrone.Core.Applications.Radarr.Radarr.Test() in ./NzbDrone.Core/Applications/Radarr/Radarr.cs:line 52
+
+
+2026-07-17 01:17:50.0|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- BaseUrl: Unable to complete application test, cannot connect to Radarr. Connection refused (solarr:5001)
+2026-07-17 01:17:50.0|Debug|Api|[POST] /api/v1/applications/test: 400.BadRequest (47 ms)
+2026-07-17 01:18:10.0|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- : Failed to fetch Radarr version
+2026-07-17 01:18:10.0|Debug|Api|[POST] /api/v1/applications/test: 400.BadRequest (36 ms)
+2026-07-17 01:18:17.9|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-17 01:23:18.0|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-17 01:24:32.8|Debug|Api|[GET] /api/v1/customFilter: 200.OK (5 ms)
+2026-07-17 01:24:32.8|Debug|Api|[GET] /api/v1/indexer/categories: 200.OK (1 ms)
+2026-07-17 01:24:32.8|Debug|Api|[GET] /api/v1/tag: 200.OK (2 ms)
+2026-07-17 01:24:32.9|Debug|Api|[GET] /api/v1/config/ui: 200.OK (2 ms)
+2026-07-17 01:24:32.9|Debug|Api|[GET] /api/v1/indexerStatus: 200.OK (12 ms)
+2026-07-17 01:24:32.9|Debug|Api|[GET] /api/v1/appprofile: 200.OK (14 ms)
+2026-07-17 01:24:32.9|Debug|Api|[GET] /api/v1/indexer: 200.OK (14 ms)
+2026-07-17 01:24:32.9|Debug|Api|[GET] /api/v1/config/host: 200.OK (3 ms)
+2026-07-17 01:24:32.9|Debug|Api|[GET] /api/v1/system/status: 200.OK (1 ms)
+2026-07-17 01:24:32.9|Debug|Api|[GET] /api/v1/localization: 200.OK (4 ms)
+2026-07-17 01:24:32.9|Debug|Api|[GET] /api/v1/health: 200.OK (0 ms)
+2026-07-17 01:24:32.9|Debug|Api|[GET] /api/v1/applications: 200.OK (2 ms)
+2026-07-17 01:24:32.9|Debug|Api|[GET] /api/v1/appprofile: 200.OK (5 ms)
+2026-07-17 01:24:34.2|Debug|Api|[GET] /api/v1/applications/schema: 200.OK (3 ms)
+2026-07-17 01:24:55.7|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- : Failed to fetch Radarr version
+2026-07-17 01:24:55.7|Debug|Api|[POST] /api/v1/applications/test: 400.BadRequest (40 ms)
+2026-07-17 01:25:29.5|Debug|Api|[GET] /api/v1/customFilter: 200.OK (1 ms)
+2026-07-17 01:25:29.5|Debug|Api|[GET] /api/v1/tag: 200.OK (1 ms)
+2026-07-17 01:25:29.5|Debug|Api|[GET] /api/v1/appprofile: 200.OK (1 ms)
+2026-07-17 01:25:29.5|Debug|Api|[GET] /api/v1/indexer/categories: 200.OK (0 ms)
+2026-07-17 01:25:29.5|Debug|Api|[GET] /api/v1/indexer: 200.OK (1 ms)
+2026-07-17 01:25:29.5|Debug|Api|[GET] /api/v1/indexerStatus: 200.OK (1 ms)
+2026-07-17 01:25:29.5|Debug|Api|[GET] /api/v1/config/ui: 200.OK (0 ms)
+2026-07-17 01:25:29.5|Debug|Api|[GET] /api/v1/config/host: 200.OK (1 ms)
+2026-07-17 01:25:29.5|Debug|Api|[GET] /api/v1/system/status: 200.OK (1 ms)
+2026-07-17 01:25:29.5|Debug|Api|[GET] /api/v1/localization: 200.OK (3 ms)
+2026-07-17 01:25:29.5|Debug|Api|[GET] /api/v1/health: 200.OK (0 ms)
+2026-07-17 01:25:29.6|Debug|Api|[GET] /api/v1/indexer: 200.OK (0 ms)
+2026-07-17 01:25:29.6|Debug|Api|[GET] /api/v1/indexerStatus: 200.OK (0 ms)
+2026-07-17 01:25:32.5|Debug|Api|[GET] /api/v1/config/host: 200.OK (1 ms)
+2026-07-17 01:25:41.1|Debug|Api|[GET] /api/v1/system/status: 200.OK (1 ms)
+2026-07-17 01:25:41.1|Debug|Api|[GET] /api/v1/indexer: 200.OK (1 ms)
+2026-07-17 01:25:41.2|Debug|Api|[GET] /api/v1/indexer: 200.OK (8 ms)
+2026-07-17 01:26:16.5|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- : Failed to fetch Radarr version
+2026-07-17 01:26:16.5|Debug|Api|[POST] /api/v1/applications/test?forceTest=true: 400.BadRequest (55 ms)
+2026-07-17 01:26:17.0|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- : Failed to fetch Radarr version
+2026-07-17 01:26:17.0|Debug|Api|[POST] /api/v1/applications/test?forceTest=true: 400.BadRequest (16 ms)
+2026-07-17 01:26:17.1|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- : Failed to fetch Radarr version
+2026-07-17 01:26:17.1|Debug|Api|[POST] /api/v1/applications/test?forceTest=true: 400.BadRequest (12 ms)
+2026-07-17 01:26:17.9|Warn|ProwlarrErrorPipeline|Invalid request Validation failed: 
+ -- : Failed to fetch Radarr version
+2026-07-17 01:26:17.9|Debug|Api|[POST] /api/v1/applications: 400.BadRequest (27 ms)
+2026-07-17 01:30:12.6|Debug|Api|[GET] /api/v1/command: 200.OK (8 ms)
+2026-07-17 01:48:55.9|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-17 02:04:57.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 02:21:12.9|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 02:36:25.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 02:41:25.9|Debug|Api|[GET] /api/v1/command: 200.OK (5 ms)
+2026-07-17 02:46:46.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 03:04:43.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 03:21:26.0|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 03:28:23.6|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-17 03:46:35.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 03:51:49.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 04:09:45.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 04:20:39.4|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-17 04:41:45.4|Debug|Api|[GET] /api/v1/command: 200.OK (7 ms)
+2026-07-17 04:57:15.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 05:14:41.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 05:33:48.7|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-17 05:33:48.7|Debug|InstallUpdateService|Checking for updates
+2026-07-17 05:33:48.8|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-17 05:33:48.9|Debug|InstallUpdateService|No update available
+2026-07-17 05:33:48.9|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-17 05:33:49.0|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-17 05:33:50.0|Debug|Api|[GET] /api/v1/health: 200.OK (1 ms)
+2026-07-17 05:33:50.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 05:46:39.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 06:01:26.8|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-17 06:06:35.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 06:25:19.6|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 06:42:58.6|Debug|Api|[GET] /api/v1/command: 200.OK (5 ms)
+2026-07-17 06:57:23.0|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-17 07:11:30.0|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-17 07:28:38.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 07:35:12.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 07:52:06.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 07:58:55.6|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 08:18:43.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 08:37:13.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 08:43:17.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 08:49:24.3|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-17 08:57:03.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 09:02:39.3|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-17 09:20:03.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 09:39:00.6|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-17 09:44:20.0|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-17 10:03:17.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 10:13:04.3|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-17 10:31:05.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 10:44:43.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 10:51:40.6|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 10:57:57.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 11:04:37.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 11:24:39.2|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-17 11:40:28.2|Debug|InstallUpdateService|Checking for updates
+2026-07-17 11:40:28.2|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-17 11:40:28.5|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-17 11:40:28.7|Debug|InstallUpdateService|No update available
+2026-07-17 11:40:28.7|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-17 11:40:29.5|Debug|Api|[GET] /api/v1/health: 200.OK (1 ms)
+2026-07-17 11:40:29.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 11:45:28.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 11:50:28.3|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-17 11:55:28.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 12:00:28.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 12:05:28.4|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-17 12:10:28.7|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 12:19:36.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 12:37:54.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 12:50:12.4|Debug|Api|[GET] /api/v1/command: 200.OK (5 ms)
+2026-07-17 13:05:30.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 13:10:58.5|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 13:23:07.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 13:39:02.9|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-17 13:44:03.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 13:49:03.0|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 13:54:03.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 13:59:03.1|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 14:04:03.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 14:09:03.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 14:14:03.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 14:19:03.3|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 14:24:03.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 14:29:03.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 14:34:03.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 14:39:03.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 14:45:02.8|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 14:54:53.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 15:00:09.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 15:06:19.7|Debug|Api|[GET] /api/v1/command: 200.OK (9 ms)
+2026-07-17 15:27:44.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 15:44:18.5|Debug|Api|[GET] /api/v1/command: 200.OK (6 ms)
+2026-07-17 15:51:34.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 15:57:08.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 16:02:14.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 16:07:20.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 16:18:30.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 16:35:21.2|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-17 16:40:21.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 16:45:21.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 16:50:21.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 16:55:21.6|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-17 17:00:21.6|Debug|Api|[GET] /api/v1/command: 200.OK (5 ms)
+2026-07-17 17:05:21.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 17:10:21.7|Debug|Api|[GET] /api/v1/command: 200.OK (5 ms)
+2026-07-17 17:15:21.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 17:19:08.5|Info|Prowlarr.Http.Authentication.ApiKeyAuthenticationHandler|AuthenticationScheme: API was challenged.
+2026-07-17 17:19:08.6|Debug|Api|[GET] /api/v1/system/status: 401.Unauthorized (27 ms)
+2026-07-17 17:20:21.7|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 17:21:48.2|Info|Prowlarr.Http.Authentication.ApiKeyAuthenticationHandler|AuthenticationScheme: API was challenged.
+2026-07-17 17:21:48.2|Debug|Api|[GET] /api/v1/system/status: 401.Unauthorized (17 ms)
+2026-07-17 17:25:21.8|Debug|Api|[GET] /api/v1/command: 200.OK (5 ms)
+2026-07-17 17:28:15.6|Info|Microsoft.Hosting.Lifetime|Application is shutting down...
+2026-07-17 17:28:15.7|Info|ConsoleApp|Exiting main.
+2026-07-17 17:28:20.1|Debug|ProcessProvider|Found 0 processes with the name: Prowlarr.Console
+2026-07-17 17:28:20.1|Debug|ProcessProvider|Found 1 processes with the name: Prowlarr
+2026-07-17 17:28:20.1|Debug|ProcessProvider| - [152] Prowlarr
+2026-07-17 17:28:20.1|Info|MigrationController|*** Migrating data source=/config/prowlarr.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-17 17:28:20.2|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-17 17:28:20.2|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-17 17:28:20.2|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-17 17:28:20.3|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-17 17:28:20.3|Info|FluentMigrator.Runner.MigrationRunner|=> 0.1248906s
+2026-07-17 17:28:20.3|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-17 17:28:20.3|Info|FluentMigrator.Runner.MigrationRunner|=> 0.1344631s
+2026-07-17 17:28:20.3|Debug|MigrationController|Took: 00:00:00.2109409
+2026-07-17 17:28:20.3|Info|MigrationController|*** Migrating data source=/config/logs.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-17 17:28:20.4|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-17 17:28:20.4|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-17 17:28:20.4|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-17 17:28:20.4|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-17 17:28:20.4|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0223923s
+2026-07-17 17:28:20.4|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-17 17:28:20.4|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0279576s
+2026-07-17 17:28:20.4|Debug|MigrationController|Took: 00:00:00.0664408
+2026-07-17 17:28:20.5|Info|Microsoft.Hosting.Lifetime|Now listening on: http://[::]:9696
+2026-07-17 17:28:20.6|Debug|NotificationFactory|Initializing Providers. Count 20
+2026-07-17 17:28:20.6|Info|CommandExecutor|Starting 3 threads for tasks.
+2026-07-17 17:28:20.6|Debug|HttpClient|Downloading [https://indexers.prowlarr.com/master/11/package.zip] to [/config/Definitions/indexers.zip]
+2026-07-17 17:28:20.7|Info|ManagedHttpDispatcher|IPv4 is available: True, IPv6 will be disabled
+2026-07-17 17:28:20.9|Debug|HttpClient|Downloading Completed. took 0s
+2026-07-17 17:28:21.7|Debug|Api|[GET] /api/v1/health: 200.OK (27 ms)
+2026-07-17 17:28:21.8|Debug|Api|[GET] /api/v1/command: 200.OK (35 ms)
+2026-07-17 17:28:21.8|Debug|Api|[GET] /api/v1/indexer: 200.OK (93 ms)
+2026-07-17 17:28:22.0|Debug|Api|[GET] /api/v1/customFilter: 200.OK (10 ms)
+2026-07-17 17:28:22.0|Debug|Api|[GET] /api/v1/indexer/categories: 200.OK (4 ms)
+2026-07-17 17:28:22.0|Debug|Api|[GET] /api/v1/appprofile: 200.OK (18 ms)
+2026-07-17 17:28:22.0|Debug|Api|[GET] /api/v1/config/ui: 200.OK (5 ms)
+2026-07-17 17:28:22.0|Debug|Api|[GET] /api/v1/indexer: 200.OK (19 ms)
+2026-07-17 17:28:22.0|Debug|Api|[GET] /api/v1/indexerStatus: 200.OK (23 ms)
+2026-07-17 17:28:22.0|Debug|Api|[GET] /api/v1/tag: 200.OK (28 ms)
+2026-07-17 17:28:22.0|Debug|Api|[GET] /api/v1/localization: 200.OK (14 ms)
+2026-07-17 17:28:22.0|Debug|Api|[GET] /api/v1/system/status: 200.OK (28 ms)
+2026-07-17 17:28:22.0|Debug|Api|[GET] /api/v1/config/host: 200.OK (55 ms)
+2026-07-17 17:28:22.1|Debug|Api|[GET] /api/v1/health: 200.OK (1 ms)
+2026-07-17 17:28:22.1|Debug|Api|[GET] /api/v1/appprofile: 200.OK (2 ms)
+2026-07-17 17:28:22.1|Debug|Api|[GET] /api/v1/applications: 200.OK (19 ms)
+2026-07-17 17:28:23.8|Debug|IndexerDefinitionUpdateService|Updated indexer definitions
+2026-07-17 17:28:23.8|Debug|IndexerFactory|Initializing Providers. Count 67
+2026-07-17 17:28:23.8|Debug|IndexerProxyFactory|Initializing Providers. Count 4
+2026-07-17 17:28:23.8|Debug|DownloadClientFactory|Initializing Providers. Count 18
+2026-07-17 17:28:23.8|Debug|ApplicationFactory|Initializing Providers. Count 7
+2026-07-17 17:28:23.8|Info|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2026-07-17 17:28:23.8|Info|Microsoft.Hosting.Lifetime|Hosting environment: Production
+2026-07-17 17:28:23.8|Info|Microsoft.Hosting.Lifetime|Content root path: /app/prowlarr/bin
+2026-07-17 17:28:24.1|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-17 17:28:25.2|Debug|Api|[GET] /api/v1/health: 200.OK (2 ms)
+2026-07-17 17:30:50.7|Debug|Api|[GET] /api/v1/command: 200.OK (8 ms)
+2026-07-17 17:48:54.9|Debug|InstallUpdateService|Checking for updates
+2026-07-17 17:48:54.9|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-17 17:48:54.9|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 17:48:55.1|Debug|InstallUpdateService|No update available
+2026-07-17 17:48:55.1|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-17 17:48:55.1|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-17 17:48:55.9|Debug|Api|[GET] /api/v1/health: 200.OK (0 ms)
+2026-07-17 17:48:55.9|Debug|Api|[GET] /api/v1/health: 200.OK (0 ms)
+2026-07-17 17:48:55.9|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-17 18:00:40.5|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-17 18:17:12.3|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-17 18:34:40.3|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 18:39:40.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 18:44:40.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 18:49:40.4|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-17 18:54:40.4|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-17 19:00:36.9|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 19:11:14.4|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-17 19:29:31.1|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-17 19:34:55.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 19:49:42.6|Debug|Api|[GET] /api/v1/command: 200.OK (6 ms)
+2026-07-17 20:11:58.9|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-17 20:28:54.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 20:35:30.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 20:54:02.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 21:09:04.9|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-17 21:21:11.9|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-17 21:36:29.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 21:53:13.5|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 21:58:42.8|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-17 22:15:14.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 22:22:32.3|Debug|Api|[GET] /api/v1/command: 200.OK (9 ms)
+2026-07-17 22:37:30.6|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-17 22:54:07.5|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-17 23:08:46.9|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-17 23:15:31.1|Debug|Api|[GET] /api/v1/command: 200.OK (8 ms)
+2026-07-17 23:23:06.3|Info|HistoryService|Removing items older than 30 days from history
+2026-07-17 23:23:06.4|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-17 23:23:06.4|Debug|HistoryService|History has been cleaned up.
+2026-07-17 23:23:06.4|Info|HousekeepingService|Running housecleaning tasks
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Starting CleanupAdditionalUsers
+2026-07-17 23:23:06.4|Debug|HttpClient|Downloading [https://indexers.prowlarr.com/master/11/package.zip] to [/config/Definitions/indexers.zip]
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Completed CleanupAdditionalUsers
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Starting CleanupCommandQueue
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Completed CleanupCommandQueue
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Starting CleanupOrphanedApplicationStatus
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Completed CleanupOrphanedApplicationStatus
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Starting CleanupOrphanedDownloadClientStatus
+2026-07-17 23:23:06.4|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Completed CleanupOrphanedDownloadClientStatus
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Starting CleanupOrphanedHistoryItems
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Completed CleanupOrphanedHistoryItems
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Starting CleanupOrphanedIndexerStatus
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Completed CleanupOrphanedIndexerStatus
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Starting CleanupOrphanedNotificationStatus
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Completed CleanupOrphanedNotificationStatus
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Starting CleanupTemporaryUpdateFiles
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Completed CleanupTemporaryUpdateFiles
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Starting CleanupUnusedTags
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Completed CleanupUnusedTags
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Starting FixFutureApplicationStatusTimes
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Completed FixFutureApplicationStatusTimes
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Starting FixFutureDownloadClientStatusTimes
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Completed FixFutureDownloadClientStatusTimes
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Starting FixFutureIndexerStatusTimes
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Completed FixFutureIndexerStatusTimes
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Starting FixFutureNotificationStatusTimes
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Completed FixFutureNotificationStatusTimes
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Starting FixFutureRunScheduledTasks
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Completed FixFutureRunScheduledTasks
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Starting TrimLogDatabase
+2026-07-17 23:23:06.4|Info|Database|Vacuuming Log database
+2026-07-17 23:23:06.4|Info|Database|Log database compressed
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Completed TrimLogDatabase
+2026-07-17 23:23:06.4|Debug|HousekeepingService|Compressing main database after housekeeping
+2026-07-17 23:23:06.4|Info|Database|Vacuuming Main database
+2026-07-17 23:23:06.5|Info|Database|Main database compressed
+2026-07-17 23:23:06.5|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-17 23:23:07.5|Debug|HttpClient|Downloading Completed. took 1s
+2026-07-17 23:23:08.8|Debug|IndexerDefinitionUpdateService|Updated indexer definitions
+2026-07-17 23:23:08.8|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-17 23:36:32.7|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-17 23:52:14.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 23:52:14.8|Debug|InstallUpdateService|Checking for updates
+2026-07-17 23:52:14.8|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-17 23:52:15.1|Debug|InstallUpdateService|No update available
+2026-07-17 23:52:15.1|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-17 23:52:15.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-17 23:52:16.1|Debug|Api|[GET] /api/v1/health: 200.OK (1 ms)
+2026-07-17 23:52:16.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 00:10:54.5|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-18 00:30:26.4|Debug|Api|[GET] /api/v1/command: 200.OK (11 ms)
+2026-07-18 00:38:30.5|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 00:43:43.5|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-18 00:55:38.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 01:00:58.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 01:12:34.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 01:30:14.5|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-18 01:35:14.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 01:40:14.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 01:45:14.6|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 01:50:14.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 01:55:14.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 02:00:14.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 02:05:14.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 02:10:14.9|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-18 02:15:14.9|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 02:20:15.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 02:25:15.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 02:30:15.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 02:42:23.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 03:02:05.1|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-18 03:22:28.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 03:39:31.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 03:54:28.2|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-18 04:09:56.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 04:19:01.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 04:27:58.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 04:46:25.8|Debug|Api|[GET] /api/v1/command: 200.OK (5 ms)
+2026-07-18 05:03:58.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 05:21:25.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 05:34:38.0|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-18 05:49:54.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 05:59:51.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 05:59:51.8|Debug|InstallUpdateService|Checking for updates
+2026-07-18 05:59:51.8|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 05:59:52.0|Debug|InstallUpdateService|No update available
+2026-07-18 05:59:52.0|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-18 05:59:52.1|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 05:59:52.8|Debug|Api|[GET] /api/v1/health: 200.OK (1 ms)
+2026-07-18 05:59:52.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 06:18:34.8|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-18 06:26:09.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 06:31:15.2|Debug|Api|[GET] /api/v1/command: 200.OK (5 ms)
+2026-07-18 06:50:26.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 07:08:59.1|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-18 07:25:48.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 07:31:07.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 07:51:36.7|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-18 08:01:41.6|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 08:12:55.3|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 08:18:01.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 08:27:09.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 08:37:24.7|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-18 08:56:07.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 09:01:21.0|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-18 09:06:21.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 09:11:21.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 09:16:21.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 09:21:21.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 09:26:21.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 09:31:21.3|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-18 09:36:21.4|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 09:41:21.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 09:46:21.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 09:51:21.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 09:56:21.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 10:01:21.6|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-18 10:06:51.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 10:24:47.8|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-18 10:47:41.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 11:02:38.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 11:14:04.2|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-18 11:28:06.0|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-18 11:36:21.1|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-18 11:41:21.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 11:46:21.2|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 11:51:21.2|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 11:56:21.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 12:00:21.3|Debug|InstallUpdateService|Checking for updates
+2026-07-18 12:00:21.4|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 12:00:21.5|Debug|InstallUpdateService|No update available
+2026-07-18 12:00:21.5|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-18 12:00:21.5|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 12:00:22.2|Debug|Api|[GET] /api/v1/health: 200.OK (0 ms)
+2026-07-18 12:00:22.2|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 12:01:21.4|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-18 12:06:21.4|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 12:11:21.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 12:16:21.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 12:21:21.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 12:26:21.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 12:31:21.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 12:36:21.9|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 12:41:21.9|Debug|Api|[GET] /api/v1/command: 200.OK (7 ms)
+2026-07-18 12:46:22.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 13:03:28.3|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 13:22:31.2|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-18 13:41:53.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 13:48:18.0|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-18 13:55:53.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 14:03:01.4|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-18 14:08:37.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 14:28:49.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 14:35:29.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 14:52:10.0|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-18 15:00:47.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 15:20:16.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 15:32:09.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 15:37:43.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 15:43:35.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 15:49:11.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 16:05:11.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 16:10:37.7|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 16:17:24.3|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-18 16:24:45.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 16:40:11.5|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-18 16:57:06.3|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-18 17:05:20.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 17:11:00.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 17:18:33.4|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-18 17:23:44.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 17:33:27.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 17:38:42.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 17:44:05.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 17:49:06.0|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 17:54:52.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 18:00:40.2|Debug|InstallUpdateService|Checking for updates
+2026-07-18 18:00:40.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 18:00:40.2|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 18:00:40.4|Debug|InstallUpdateService|No update available
+2026-07-18 18:00:40.4|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-18 18:00:40.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 18:00:41.2|Debug|Api|[GET] /api/v1/health: 200.OK (0 ms)
+2026-07-18 18:00:41.2|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 18:06:11.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 18:18:04.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 18:26:34.5|Debug|Api|[GET] /api/v1/command: 200.OK (11 ms)
+2026-07-18 18:43:01.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 18:48:01.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 18:53:02.0|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 19:06:24.9|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-18 19:25:43.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 19:44:57.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 19:50:25.6|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 19:59:39.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 20:06:18.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 20:19:50.3|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-18 20:36:09.1|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 20:53:36.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 21:07:32.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 21:16:44.0|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-18 21:35:23.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 21:53:39.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 22:08:32.4|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-18 22:30:25.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 22:45:58.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 22:57:09.8|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-18 23:09:46.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 23:15:06.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-18 23:32:56.5|Info|HousekeepingService|Running housecleaning tasks
+2026-07-18 23:32:56.5|Info|HistoryService|Removing items older than 30 days from history
+2026-07-18 23:32:56.6|Debug|HttpClient|Downloading [https://indexers.prowlarr.com/master/11/package.zip] to [/config/Definitions/indexers.zip]
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Starting CleanupAdditionalUsers
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Completed CleanupAdditionalUsers
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Starting CleanupCommandQueue
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Completed CleanupCommandQueue
+2026-07-18 23:32:56.6|Debug|HistoryService|History has been cleaned up.
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Starting CleanupOrphanedApplicationStatus
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Completed CleanupOrphanedApplicationStatus
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Starting CleanupOrphanedDownloadClientStatus
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Completed CleanupOrphanedDownloadClientStatus
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Starting CleanupOrphanedHistoryItems
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Completed CleanupOrphanedHistoryItems
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Starting CleanupOrphanedIndexerStatus
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Completed CleanupOrphanedIndexerStatus
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Starting CleanupOrphanedNotificationStatus
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Completed CleanupOrphanedNotificationStatus
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Starting CleanupTemporaryUpdateFiles
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Completed CleanupTemporaryUpdateFiles
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Starting CleanupUnusedTags
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Completed CleanupUnusedTags
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Starting FixFutureApplicationStatusTimes
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Completed FixFutureApplicationStatusTimes
+2026-07-18 23:32:56.6|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Starting FixFutureDownloadClientStatusTimes
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Completed FixFutureDownloadClientStatusTimes
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Starting FixFutureIndexerStatusTimes
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Completed FixFutureIndexerStatusTimes
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Starting FixFutureNotificationStatusTimes
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Completed FixFutureNotificationStatusTimes
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Starting FixFutureRunScheduledTasks
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Completed FixFutureRunScheduledTasks
+2026-07-18 23:32:56.6|Debug|HousekeepingService|Starting TrimLogDatabase
+2026-07-18 23:32:56.6|Info|Database|Vacuuming Log database
+2026-07-18 23:32:56.6|Info|Database|Log database compressed
+2026-07-18 23:32:56.7|Debug|HousekeepingService|Completed TrimLogDatabase
+2026-07-18 23:32:56.7|Debug|HousekeepingService|Compressing main database after housekeeping
+2026-07-18 23:32:56.7|Info|Database|Vacuuming Main database
+2026-07-18 23:32:56.7|Info|Database|Main database compressed
+2026-07-18 23:32:56.7|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 23:32:57.5|Debug|HttpClient|Downloading Completed. took 0s
+2026-07-18 23:32:58.8|Debug|IndexerDefinitionUpdateService|Updated indexer definitions
+2026-07-18 23:32:58.8|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 23:39:51.1|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-18 23:51:11.1|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-18 23:56:38.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 00:02:09.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 00:02:09.1|Debug|InstallUpdateService|Checking for updates
+2026-07-19 00:02:09.1|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 00:02:09.4|Debug|InstallUpdateService|No update available
+2026-07-19 00:02:09.4|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-19 00:02:09.4|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 00:02:10.5|Debug|Api|[GET] /api/v1/health: 200.OK (2 ms)
+2026-07-19 00:02:10.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 00:10:43.7|Debug|Api|[GET] /api/v1/command: 200.OK (6 ms)
+2026-07-19 00:16:16.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 00:33:41.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 00:50:20.2|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-19 01:00:28.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 01:11:48.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 01:29:33.3|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-19 01:47:28.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 02:08:57.8|Debug|Api|[GET] /api/v1/command: 200.OK (5 ms)
+2026-07-19 02:24:15.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 02:41:34.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 02:59:44.2|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-19 03:19:14.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 03:36:14.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 03:54:58.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 04:12:32.2|Debug|Api|[GET] /api/v1/command: 200.OK (11 ms)
+2026-07-19 04:17:32.2|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 04:22:58.3|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-19 04:28:08.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 04:36:13.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 04:53:34.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 05:12:18.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 05:29:17.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 05:47:39.5|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-19 06:00:05.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 06:10:05.1|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 06:10:05.1|Debug|InstallUpdateService|Checking for updates
+2026-07-19 06:10:05.2|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 06:10:05.6|Debug|InstallUpdateService|No update available
+2026-07-19 06:10:05.6|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-19 06:10:05.6|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 06:10:06.5|Debug|Api|[GET] /api/v1/health: 200.OK (1 ms)
+2026-07-19 06:10:06.5|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 06:17:21.2|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-19 06:23:12.9|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 06:38:34.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 06:45:30.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 06:55:43.8|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-19 07:02:26.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 07:07:26.6|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 07:12:26.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 07:17:26.7|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 07:22:26.7|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-19 07:27:26.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 07:32:26.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 07:37:26.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 07:42:27.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 07:47:27.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 07:52:27.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 07:57:27.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 08:02:27.2|Debug|Api|[GET] /api/v1/command: 200.OK (6 ms)
+2026-07-19 08:10:07.7|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 08:15:37.1|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-19 08:33:14.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 08:51:13.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 08:56:24.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 09:10:21.4|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 09:31:00.9|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-19 09:48:52.0|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 10:01:28.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 10:16:28.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 10:21:44.2|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-19 10:27:51.2|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-19 10:33:34.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 10:41:09.4|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-19 10:48:36.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 10:56:17.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 11:01:18.1|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-19 11:06:51.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 11:13:55.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 11:18:59.2|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-19 11:30:20.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 11:45:26.7|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-19 11:50:26.8|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-19 11:55:26.8|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-19 12:00:26.9|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-19 12:05:26.9|Debug|Api|[GET] /api/v1/command: 200.OK (8 ms)
+2026-07-19 12:10:08.4|Debug|InstallUpdateService|Checking for updates
+2026-07-19 12:10:08.5|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 12:10:08.7|Debug|InstallUpdateService|No update available
+2026-07-19 12:10:08.7|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-19 12:10:08.7|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 12:10:09.8|Debug|Api|[GET] /api/v1/health: 200.OK (1 ms)
+2026-07-19 12:10:09.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 12:10:38.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 12:21:01.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 12:30:06.6|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-19 12:43:16.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 13:02:08.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 13:15:22.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 13:24:28.3|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-19 13:36:45.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 13:46:58.6|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-19 14:00:08.0|Debug|Api|[GET] /api/v1/command: 200.OK (5 ms)
+2026-07-19 14:09:36.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 14:14:53.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 14:23:56.0|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-19 14:33:36.1|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 14:43:06.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 14:58:09.1|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-19 15:04:08.4|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 15:17:14.2|Debug|Api|[GET] /api/v1/command: 200.OK (5 ms)
+2026-07-19 15:35:21.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 15:52:41.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 16:05:24.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 16:21:08.1|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-19 16:28:07.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 16:33:17.1|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-19 16:42:51.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 16:50:29.2|Debug|Api|[GET] /api/v1/command: 200.OK (5 ms)
+2026-07-19 17:06:08.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 17:24:12.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 17:34:15.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 17:44:04.1|Debug|Api|[GET] /api/v1/command: 200.OK (8 ms)
+2026-07-19 17:54:50.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 18:00:28.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 18:07:09.1|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-19 18:19:47.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 18:19:47.0|Debug|InstallUpdateService|Checking for updates
+2026-07-19 18:19:47.0|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 18:19:47.4|Debug|InstallUpdateService|No update available
+2026-07-19 18:19:47.5|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-19 18:19:47.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 18:19:48.4|Debug|Api|[GET] /api/v1/health: 200.OK (2 ms)
+2026-07-19 18:19:48.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 18:27:38.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 18:43:54.5|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-19 18:48:54.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 18:53:54.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 19:02:43.1|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-19 19:08:09.0|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 19:15:53.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 19:30:15.2|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-19 19:47:25.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 19:53:04.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 20:06:47.5|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-19 20:19:19.3|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 20:24:51.8|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 20:41:27.1|Debug|Api|[GET] /api/v1/command: 200.OK (5 ms)
+2026-07-19 20:58:58.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 21:09:09.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 21:25:45.9|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-19 21:35:33.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 21:42:41.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 22:00:06.9|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-19 22:10:09.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 22:27:48.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 22:45:36.8|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-19 23:03:12.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 23:08:39.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 23:22:57.4|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 23:39:49.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-19 23:39:49.0|Debug|HttpClient|Downloading [https://indexers.prowlarr.com/master/11/package.zip] to [/config/Definitions/indexers.zip]
+2026-07-19 23:39:49.0|Info|HousekeepingService|Running housecleaning tasks
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Starting CleanupAdditionalUsers
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Completed CleanupAdditionalUsers
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Starting CleanupCommandQueue
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Completed CleanupCommandQueue
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Starting CleanupOrphanedApplicationStatus
+2026-07-19 23:39:49.0|Info|HistoryService|Removing items older than 30 days from history
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Completed CleanupOrphanedApplicationStatus
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Starting CleanupOrphanedDownloadClientStatus
+2026-07-19 23:39:49.0|Debug|HistoryService|History has been cleaned up.
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Completed CleanupOrphanedDownloadClientStatus
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Starting CleanupOrphanedHistoryItems
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Completed CleanupOrphanedHistoryItems
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Starting CleanupOrphanedIndexerStatus
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Completed CleanupOrphanedIndexerStatus
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Starting CleanupOrphanedNotificationStatus
+2026-07-19 23:39:49.0|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Completed CleanupOrphanedNotificationStatus
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Starting CleanupTemporaryUpdateFiles
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Completed CleanupTemporaryUpdateFiles
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Starting CleanupUnusedTags
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Completed CleanupUnusedTags
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Starting FixFutureApplicationStatusTimes
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Completed FixFutureApplicationStatusTimes
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Starting FixFutureDownloadClientStatusTimes
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Completed FixFutureDownloadClientStatusTimes
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Starting FixFutureIndexerStatusTimes
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Completed FixFutureIndexerStatusTimes
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Starting FixFutureNotificationStatusTimes
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Completed FixFutureNotificationStatusTimes
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Starting FixFutureRunScheduledTasks
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Completed FixFutureRunScheduledTasks
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Starting TrimLogDatabase
+2026-07-19 23:39:49.0|Info|Database|Vacuuming Log database
+2026-07-19 23:39:49.0|Info|Database|Log database compressed
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Completed TrimLogDatabase
+2026-07-19 23:39:49.0|Debug|HousekeepingService|Compressing main database after housekeeping
+2026-07-19 23:39:49.0|Info|Database|Vacuuming Main database
+2026-07-19 23:39:49.1|Info|Database|Main database compressed
+2026-07-19 23:39:49.1|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 23:39:49.8|Debug|HttpClient|Downloading Completed. took 0s
+2026-07-19 23:39:51.1|Debug|IndexerDefinitionUpdateService|Updated indexer definitions
+2026-07-19 23:39:51.1|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-19 23:44:49.1|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-19 23:49:49.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 00:07:50.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 00:30:07.9|Debug|InstallUpdateService|Checking for updates
+2026-07-20 00:30:07.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 00:30:08.3|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-20 00:30:08.3|Debug|InstallUpdateService|No update available
+2026-07-20 00:30:08.5|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 00:30:09.2|Debug|Api|[GET] /api/v1/health: 200.OK (1 ms)
+2026-07-20 00:30:09.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 00:41:06.4|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 00:46:22.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 00:59:30.3|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 01:13:08.9|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-20 01:28:40.8|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 01:48:13.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 02:05:40.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 02:24:12.8|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-20 02:29:12.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 02:34:12.9|Debug|Api|[GET] /api/v1/command: 200.OK (9 ms)
+2026-07-20 02:39:13.0|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 02:44:13.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 02:49:13.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 02:54:13.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 02:59:13.3|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-20 03:04:13.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 03:09:13.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 03:14:13.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 03:19:13.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 03:24:13.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 03:41:16.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 03:47:44.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 04:05:49.8|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-20 04:21:39.3|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-20 04:36:47.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 04:57:03.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 05:02:13.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 05:19:38.6|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-20 05:36:26.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 05:55:24.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 06:00:43.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 06:17:36.1|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-20 06:35:10.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 06:35:10.8|Debug|InstallUpdateService|Checking for updates
+2026-07-20 06:35:10.8|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 06:35:11.1|Debug|InstallUpdateService|No update available
+2026-07-20 06:35:11.1|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-20 06:35:11.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 06:35:12.1|Debug|Api|[GET] /api/v1/health: 200.OK (1 ms)
+2026-07-20 06:35:12.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 06:51:25.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 06:59:07.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 07:17:07.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 07:35:02.8|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-20 07:57:20.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 08:04:15.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 08:20:27.8|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-20 08:38:51.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 08:54:06.9|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 09:00:24.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 09:20:15.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 09:37:29.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 09:45:34.0|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-20 10:02:28.6|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-20 10:22:31.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 10:39:20.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 10:58:29.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 11:03:31.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 11:20:59.3|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-20 11:27:10.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 11:33:30.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 11:38:44.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 11:43:44.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 11:48:45.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 11:53:45.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 12:00:20.9|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-20 12:05:36.5|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 12:20:27.6|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 12:39:09.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 12:39:09.7|Debug|InstallUpdateService|Checking for updates
+2026-07-20 12:39:09.7|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 12:39:10.1|Debug|InstallUpdateService|No update available
+2026-07-20 12:39:10.1|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-20 12:39:10.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 12:39:11.1|Debug|Api|[GET] /api/v1/health: 200.OK (3 ms)
+2026-07-20 12:39:11.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 12:48:32.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 13:04:28.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 13:09:38.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 13:25:23.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 13:36:56.8|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-20 13:55:57.6|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-20 14:01:11.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 14:06:12.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 14:11:58.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 14:18:24.8|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 14:24:36.9|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 14:32:48.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 14:37:56.1|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 14:46:54.9|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-20 15:04:51.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 15:23:31.7|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 15:35:20.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 15:52:09.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 15:58:00.0|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-20 16:06:39.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 16:23:05.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 16:28:14.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 16:40:08.0|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-20 16:53:57.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 17:07:06.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 17:20:00.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 17:39:08.0|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-20 17:57:25.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 18:08:06.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 18:25:02.7|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 18:44:19.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 18:44:19.4|Debug|InstallUpdateService|Checking for updates
+2026-07-20 18:44:19.5|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 18:44:19.8|Debug|InstallUpdateService|No update available
+2026-07-20 18:44:19.9|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-20 18:44:20.0|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-20 18:44:20.9|Debug|Api|[GET] /api/v1/health: 200.OK (0 ms)
+2026-07-20 18:44:20.9|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 18:49:19.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 18:54:19.6|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-20 19:09:21.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 19:24:16.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 19:42:41.8|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-20 19:49:44.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 19:56:45.3|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 20:10:04.1|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 20:25:57.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 20:43:30.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 20:53:19.3|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 21:10:45.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 21:27:51.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 21:45:44.7|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-20 22:03:21.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 22:11:45.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 22:16:45.5|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 22:21:45.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 22:26:45.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 22:31:45.7|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-20 22:36:45.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 22:41:45.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 22:46:45.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 22:51:45.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 22:56:46.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 23:01:46.0|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 23:06:46.1|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 23:11:46.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-20 23:28:15.8|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-20 23:45:20.9|Info|HistoryService|Removing items older than 30 days from history
+2026-07-20 23:45:20.9|Info|HousekeepingService|Running housecleaning tasks
+2026-07-20 23:45:20.9|Debug|HousekeepingService|Starting CleanupAdditionalUsers
+2026-07-20 23:45:20.9|Debug|HousekeepingService|Completed CleanupAdditionalUsers
+2026-07-20 23:45:20.9|Debug|HousekeepingService|Starting CleanupCommandQueue
+2026-07-20 23:45:20.9|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 23:45:20.9|Debug|HttpClient|Downloading [https://indexers.prowlarr.com/master/11/package.zip] to [/config/Definitions/indexers.zip]
+2026-07-20 23:45:20.9|Debug|HousekeepingService|Completed CleanupCommandQueue
+2026-07-20 23:45:20.9|Debug|HousekeepingService|Starting CleanupOrphanedApplicationStatus
+2026-07-20 23:45:20.9|Debug|HistoryService|History has been cleaned up.
+2026-07-20 23:45:20.9|Debug|HousekeepingService|Completed CleanupOrphanedApplicationStatus
+2026-07-20 23:45:20.9|Debug|HousekeepingService|Starting CleanupOrphanedDownloadClientStatus
+2026-07-20 23:45:20.9|Debug|HousekeepingService|Completed CleanupOrphanedDownloadClientStatus
+2026-07-20 23:45:20.9|Debug|HousekeepingService|Starting CleanupOrphanedHistoryItems
+2026-07-20 23:45:20.9|Debug|HousekeepingService|Completed CleanupOrphanedHistoryItems
+2026-07-20 23:45:20.9|Debug|HousekeepingService|Starting CleanupOrphanedIndexerStatus
+2026-07-20 23:45:20.9|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 23:45:20.9|Debug|HousekeepingService|Completed CleanupOrphanedIndexerStatus
+2026-07-20 23:45:21.0|Debug|HousekeepingService|Starting CleanupOrphanedNotificationStatus
+2026-07-20 23:45:21.0|Debug|HousekeepingService|Completed CleanupOrphanedNotificationStatus
+2026-07-20 23:45:21.0|Debug|HousekeepingService|Starting CleanupTemporaryUpdateFiles
+2026-07-20 23:45:21.0|Debug|HousekeepingService|Completed CleanupTemporaryUpdateFiles
+2026-07-20 23:45:21.0|Debug|HousekeepingService|Starting CleanupUnusedTags
+2026-07-20 23:45:21.0|Debug|HousekeepingService|Completed CleanupUnusedTags
+2026-07-20 23:45:21.0|Debug|HousekeepingService|Starting FixFutureApplicationStatusTimes
+2026-07-20 23:45:21.0|Debug|HousekeepingService|Completed FixFutureApplicationStatusTimes
+2026-07-20 23:45:21.0|Debug|HousekeepingService|Starting FixFutureDownloadClientStatusTimes
+2026-07-20 23:45:21.0|Debug|HousekeepingService|Completed FixFutureDownloadClientStatusTimes
+2026-07-20 23:45:21.0|Debug|HousekeepingService|Starting FixFutureIndexerStatusTimes
+2026-07-20 23:45:21.0|Debug|HousekeepingService|Completed FixFutureIndexerStatusTimes
+2026-07-20 23:45:21.0|Debug|HousekeepingService|Starting FixFutureNotificationStatusTimes
+2026-07-20 23:45:21.0|Debug|HousekeepingService|Completed FixFutureNotificationStatusTimes
+2026-07-20 23:45:21.0|Debug|HousekeepingService|Starting FixFutureRunScheduledTasks
+2026-07-20 23:45:21.0|Debug|HousekeepingService|Completed FixFutureRunScheduledTasks
+2026-07-20 23:45:21.0|Debug|HousekeepingService|Starting TrimLogDatabase
+2026-07-20 23:45:21.0|Info|Database|Vacuuming Log database
+2026-07-20 23:45:21.0|Info|Database|Log database compressed
+2026-07-20 23:45:21.0|Debug|HousekeepingService|Completed TrimLogDatabase
+2026-07-20 23:45:21.0|Debug|HousekeepingService|Compressing main database after housekeeping
+2026-07-20 23:45:21.0|Info|Database|Vacuuming Main database
+2026-07-20 23:45:21.1|Info|Database|Main database compressed
+2026-07-20 23:45:21.1|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 23:45:21.6|Debug|HttpClient|Downloading Completed. took 0s
+2026-07-20 23:45:22.9|Debug|IndexerDefinitionUpdateService|Updated indexer definitions
+2026-07-20 23:45:22.9|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-20 23:51:48.8|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-21 00:08:32.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 00:29:08.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 00:47:59.4|Debug|InstallUpdateService|Checking for updates
+2026-07-21 00:47:59.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 00:47:59.5|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 00:47:59.8|Debug|InstallUpdateService|No update available
+2026-07-21 00:47:59.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 00:47:59.9|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-21 00:48:00.8|Debug|Api|[GET] /api/v1/health: 200.OK (1 ms)
+2026-07-21 00:48:00.8|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 01:00:27.8|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-21 01:13:30.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 01:20:20.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 01:38:22.6|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-21 01:55:22.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 02:12:32.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 02:18:01.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 02:33:39.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 02:51:08.2|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-21 03:02:25.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 03:19:28.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 03:38:38.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 03:55:12.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 04:00:17.9|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-21 04:18:32.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 04:30:47.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 04:38:36.2|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-21 04:47:16.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 04:55:45.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 05:12:40.4|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 05:29:22.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 05:47:36.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 05:59:54.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 06:14:27.1|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-21 06:31:18.6|Debug|Api|[GET] /api/v1/command: 200.OK (8 ms)
+2026-07-21 06:49:25.0|Debug|InstallUpdateService|Checking for updates
+2026-07-21 06:49:25.0|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 06:49:25.1|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 06:49:25.4|Debug|InstallUpdateService|No update available
+2026-07-21 06:49:25.4|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-21 06:49:25.6|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 06:49:26.5|Debug|Api|[GET] /api/v1/health: 200.OK (1 ms)
+2026-07-21 06:49:26.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 07:07:33.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 07:26:27.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 07:44:39.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 08:00:24.5|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-21 08:07:34.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 08:20:39.4|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 08:33:47.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 08:48:57.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 08:54:47.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 09:00:27.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 09:17:27.6|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 09:33:07.5|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-21 09:52:03.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 10:01:28.0|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 10:06:35.0|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 10:25:42.0|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-21 10:42:16.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 11:01:44.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 11:06:48.4|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-21 11:23:55.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 11:40:28.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 11:56:50.1|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-21 12:01:50.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 12:06:50.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 12:11:50.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 12:16:50.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 12:32:28.2|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-21 12:50:06.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 12:50:06.4|Debug|InstallUpdateService|Checking for updates
+2026-07-21 12:50:06.5|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 12:50:06.8|Debug|InstallUpdateService|No update available
+2026-07-21 12:50:06.8|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-21 12:50:06.9|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 12:50:07.8|Debug|Api|[GET] /api/v1/health: 200.OK (1 ms)
+2026-07-21 12:50:07.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 13:02:47.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 13:10:28.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 13:26:57.5|Debug|Api|[GET] /api/v1/command: 200.OK (5 ms)
+2026-07-21 13:45:07.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 14:02:52.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 14:20:07.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 14:28:04.3|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-21 14:45:33.5|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 14:50:35.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 14:55:49.5|Debug|Api|[GET] /api/v1/command: 200.OK (4 ms)
+2026-07-21 15:01:05.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 15:21:42.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 15:39:40.9|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 15:59:42.2|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-21 16:04:54.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 16:22:23.7|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 16:39:26.2|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 16:50:57.4|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-21 16:56:00.5|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 17:05:55.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 17:22:39.8|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 17:27:39.9|Debug|Api|[GET] /api/v1/command: 200.OK (5 ms)
+2026-07-21 17:32:39.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 17:37:40.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 17:42:40.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 17:47:40.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 17:52:40.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 17:57:40.2|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 18:02:40.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 18:07:40.3|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-21 18:12:40.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 18:17:40.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 18:22:40.5|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 18:42:53.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 18:47:53.9|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 18:50:24.0|Debug|InstallUpdateService|Checking for updates
+2026-07-21 18:50:24.0|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-21 18:50:24.2|Debug|InstallUpdateService|No update available
+2026-07-21 18:50:24.2|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-21 18:50:24.2|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 18:50:25.0|Debug|Api|[GET] /api/v1/health: 200.OK (2 ms)
+2026-07-21 18:50:25.0|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 18:52:54.1|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 18:57:54.1|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 19:07:09.2|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 19:23:41.7|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 19:41:24.4|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 19:54:06.6|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 20:02:56.8|Debug|Api|[GET] /api/v1/command: 200.OK (2 ms)
+2026-07-21 20:11:46.7|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 20:18:48.2|Debug|Api|[GET] /api/v1/command: 200.OK (3 ms)
+2026-07-21 20:28:57.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 20:47:05.3|Debug|Api|[GET] /api/v1/command: 200.OK (1 ms)
+2026-07-21 20:59:45.3|Debug|Api|[GET] /api/v1/command: 200.OK (0 ms)
+2026-07-21 21:05:00.1|Debug|Api|[GET] /api/v1/command: 200.OK (5 ms)
+2026-07-21 21:05:31.4|Info|Microsoft.Hosting.Lifetime|Application is shutting down...
+2026-07-21 21:05:31.5|Info|ConsoleApp|Exiting main.
+2026-07-21 21:05:39.1|Debug|ProcessProvider|Found 0 processes with the name: Prowlarr.Console
+2026-07-21 21:05:39.2|Debug|ProcessProvider|Found 1 processes with the name: Prowlarr
+2026-07-21 21:05:39.2|Debug|ProcessProvider| - [149] Prowlarr
+2026-07-21 21:05:39.2|Info|MigrationController|*** Migrating data source=/config/prowlarr.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-21 21:05:39.2|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-21 21:05:39.2|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-21 21:05:39.2|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-21 21:05:39.3|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-21 21:05:39.3|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0506397s
+2026-07-21 21:05:39.3|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-21 21:05:39.3|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0564529s
+2026-07-21 21:05:39.3|Debug|MigrationController|Took: 00:00:00.1320033
+2026-07-21 21:05:39.3|Info|MigrationController|*** Migrating data source=/config/logs.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-21 21:05:39.3|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-21 21:05:39.3|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-21 21:05:39.3|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-21 21:05:39.3|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-21 21:05:39.3|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0168606s
+2026-07-21 21:05:39.3|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-21 21:05:39.4|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0196219s
+2026-07-21 21:05:39.4|Debug|MigrationController|Took: 00:00:00.0490155
+2026-07-21 21:05:39.5|Info|Microsoft.Hosting.Lifetime|Now listening on: http://[::]:9696
+2026-07-21 21:05:39.5|Debug|NotificationFactory|Initializing Providers. Count 20
+2026-07-21 21:05:39.6|Info|CommandExecutor|Starting 3 threads for tasks.
+2026-07-21 21:05:39.6|Debug|HttpClient|Downloading [https://indexers.prowlarr.com/master/11/package.zip] to [/config/Definitions/indexers.zip]
+2026-07-21 21:05:39.6|Info|ManagedHttpDispatcher|IPv4 is available: True, IPv6 will be disabled
+2026-07-21 21:05:39.8|Debug|HttpClient|Downloading Completed. took 0s
+2026-07-21 21:05:40.2|Debug|Api|[GET] /api/v1/health: 200.OK (30 ms)
+2026-07-21 21:05:40.2|Debug|Api|[GET] /api/v1/command: 200.OK (40 ms)
+2026-07-21 21:05:40.2|Debug|Api|[GET] /api/v1/indexer: 200.OK (63 ms)
+2026-07-21 21:05:41.7|Debug|IndexerDefinitionUpdateService|Updated indexer definitions
+2026-07-21 21:05:41.7|Debug|IndexerFactory|Initializing Providers. Count 67
+2026-07-21 21:05:41.7|Debug|IndexerProxyFactory|Initializing Providers. Count 4
+2026-07-21 21:05:41.7|Debug|DownloadClientFactory|Initializing Providers. Count 18
+2026-07-21 21:05:41.7|Debug|ApplicationFactory|Initializing Providers. Count 7
+2026-07-21 21:05:41.7|Info|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2026-07-21 21:05:41.7|Info|Microsoft.Hosting.Lifetime|Hosting environment: Production
+2026-07-21 21:05:41.7|Info|Microsoft.Hosting.Lifetime|Content root path: /app/prowlarr/bin
+2026-07-21 21:05:42.1|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-21 21:05:43.0|Debug|Api|[GET] /api/v1/health: 200.OK (2 ms)
+2026-07-21 21:10:09.7|Debug|Api|[GET] /api/v1/command: 200.OK (5 ms)

@@ -1,0 +1,33 @@
+# Drop-in Solarr service for an EXISTING media-stack docker-compose.yaml.
+# It replaces jellyseerr + radarr + sonarr + gameseerr with one service.
+#
+# Requirements:
+#   1. Put this repo (Dockerfile + app/) somewhere your compose can build from,
+#      e.g. ./config/solarr, and point `build:` at it.
+#   2. Give Solarr the SAME library mount your qBittorrent/Jellyfin/RomM use, so
+#      imports hardlink/move instead of copying across containers.
+#   3. Games: Solarr writes ROMs to <library>/roms/<platform>/. Mount that same
+#      path into RomM at /romm/library so its watcher auto-imports them.
+#
+# All service URLs/keys are entered in Solarr's setup wizard (nothing is baked in).
+# In-network addresses to use in the wizard:
+#   Prowlarr http://prowlarr:9696 · qBittorrent qbittorrent:8080
+#   Jellyfin http://jellyfin:8096 · RomM http://romm:8080
+
+  solarr:
+    build: ./config/solarr        # folder with this repo's Dockerfile + app/
+    image: solarr:local
+    container_name: solarr
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./config/solarr/config:/config
+      # >>> use the SAME host library path your other services mount <<<
+      - /media/chrisryan/InternalHDD/library:/library1
+      - /media/chrisryan/ExternalHDD/library:/library2
+    depends_on:
+      - prowlarr
+      - qbittorrent
+      - jellyfin
+      - romm

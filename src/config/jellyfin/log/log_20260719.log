@@ -1,0 +1,12 @@
+[2026-07-19 04:25:59.842 -07:00] [INF] [133] Emby.Server.Implementations.ScheduledTasks.TaskManager: "Generate Trickplay Images" Completed after 0 minute(s) and 0 seconds
+[2026-07-19 04:26:00.796 -07:00] [INF] [134] Emby.Server.Implementations.ScheduledTasks.TaskManager: Daily trigger for "Generate Trickplay Images" set to fire at 2026-07-20 03:00:00.000 -07:00, which is 22:33:59.2035067 from now.
+[2026-07-19 09:49:43.830 -07:00] [INF] [128] Emby.Server.Implementations.ScheduledTasks.TaskManager: "Extract Chapter Images" Completed after 0 minute(s) and 0 seconds
+[2026-07-19 09:49:44.801 -07:00] [INF] [163] Emby.Server.Implementations.ScheduledTasks.TaskManager: Daily trigger for "Extract Chapter Images" set to fire at 2026-07-20 02:00:00.000 -07:00, which is 16:10:15.1989950 from now.
+[2026-07-19 11:53:46.079 -07:00] [INF] [66] Emby.Server.Implementations.Library.LibraryManager: Validating media library
+[2026-07-19 11:53:46.124 -07:00] [INF] [67] Emby.Server.Implementations.ScheduledTasks.TaskManager: "Media Segment Scan" Completed after 0 minute(s) and 0 seconds
+[2026-07-19 11:53:46.189 -07:00] [WRN] [66] MediaBrowser.Controller.Entities.BaseItem: Library folder "/config/data/data/playlists" is inaccessible or empty, skipping
+[2026-07-19 11:53:46.200 -07:00] [WRN] [66] MediaBrowser.Controller.Entities.BaseItem: Library folder "/config/data/data/playlists" is inaccessible or empty, skipping
+[2026-07-19 11:53:46.300 -07:00] [INF] [66] Emby.Server.Implementations.ScheduledTasks.TaskManager: "Scan Media Library" Completed after 0 minute(s) and 0 seconds
+[2026-07-19 11:54:47.093 -07:00] [INF] [63] Emby.Server.Implementations.ScheduledTasks.Tasks.OptimizeDatabaseTask: Optimizing and vacuuming jellyfin.db...
+[2026-07-19 11:54:47.364 -07:00] [INF] [63] Jellyfin.Database.Providers.Sqlite.SqliteDatabaseProvider: jellyfin.db optimized successfully!
+[2026-07-19 11:54:47.364 -07:00] [INF] [63] Emby.Server.Implementations.ScheduledTasks.TaskManager: "Optimize database" Completed after 0 minute(s) and 0 seconds
