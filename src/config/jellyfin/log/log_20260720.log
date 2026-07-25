@@ -1,3 +1,0 @@
-[2026-07-20 13:55:43.596 -07:00] [INF] [136] Emby.Server.Implementations.ScheduledTasks.Tasks.OptimizeDatabaseTask: Optimizing and vacuuming jellyfin.db...
-[2026-07-20 13:55:43.900 -07:00] [INF] [136] Jellyfin.Database.Providers.Sqlite.SqliteDatabaseProvider: jellyfin.db optimized successfully!
-[2026-07-20 13:55:43.900 -07:00] [INF] [136] Emby.Server.Implementations.ScheduledTasks.TaskManager: "Optimize database" Completed after 0 minute(s) and 0 seconds
