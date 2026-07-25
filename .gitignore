@@ -1,3 +1,3 @@
-.env
-/workspaces/Solarr/src/config
-/workspaces/Solarr/library
+*.env
+/workspaces/Solarr/src/config/
+/workspaces/Solarr/library/
