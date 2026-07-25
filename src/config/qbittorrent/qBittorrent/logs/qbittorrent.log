@@ -285,3 +285,28 @@
 (N) 2026-07-25T15:16:04 - WebUI translation for selected locale (en) has been successfully loaded.
 (N) 2026-07-25T15:16:04 - WebUI: Now listening on IP: *, port: 8080
 (I) 2026-07-25T15:16:05 - Detected external IP. IP: "20.171.127.67"
+(N) 2026-07-25T15:32:35 - qBittorrent termination initiated
+(N) 2026-07-25T15:32:35 - Saving resume data completed.
+(N) 2026-07-25T15:32:35 - BitTorrent session successfully finished.
+(N) 2026-07-25T15:32:36 - qBittorrent is now ready to exit
+(N) 2026-07-25T15:32:44 - qBittorrent v5.2.3 started. Process ID: 150
+(N) 2026-07-25T15:32:44 - Using config directory: /config/qBittorrent
+(N) 2026-07-25T15:32:44 - Trying to listen on the following list of IP addresses: "0.0.0.0:6881,[::]:6881"
+(I) 2026-07-25T15:32:44 - Peer ID: "-qB5230-"
+(I) 2026-07-25T15:32:44 - HTTP User-Agent: "qBittorrent/5.2.3"
+(I) 2026-07-25T15:32:44 - Distributed Hash Table (DHT) support: ON
+(I) 2026-07-25T15:32:44 - Local Peer Discovery support: ON
+(I) 2026-07-25T15:32:44 - Peer Exchange (PeX) support: ON
+(I) 2026-07-25T15:32:44 - Anonymous mode: OFF
+(I) 2026-07-25T15:32:44 - Encryption support: ON
+(I) 2026-07-25T15:32:44 - Successfully listening on IP. IP: "127.0.0.1". Port: "TCP/6881"
+(I) 2026-07-25T15:32:44 - Successfully listening on IP. IP: "127.0.0.1". Port: "UTP/6881"
+(I) 2026-07-25T15:32:44 - Successfully listening on IP. IP: "172.18.0.3". Port: "TCP/6881"
+(I) 2026-07-25T15:32:44 - Successfully listening on IP. IP: "172.18.0.3". Port: "UTP/6881"
+(I) 2026-07-25T15:32:44 - Successfully listening on IP. IP: "::1". Port: "TCP/6881"
+(I) 2026-07-25T15:32:44 - Successfully listening on IP. IP: "::1". Port: "UTP/6881"
+(I) 2026-07-25T15:32:44 - IP geolocation database loaded. Type: DBIP-Country-Lite. Build time: Tue Jun 30 18:39:56 2026.
+(N) 2026-07-25T15:32:44 - Using built-in WebUI.
+(N) 2026-07-25T15:32:45 - WebUI translation for selected locale (en) has been successfully loaded.
+(N) 2026-07-25T15:32:45 - WebUI: Now listening on IP: *, port: 8080
+(I) 2026-07-25T15:32:45 - Detected external IP. IP: "20.171.127.67"
