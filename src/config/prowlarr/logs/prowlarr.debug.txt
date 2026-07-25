@@ -2149,3 +2149,92 @@ RequestUri: https://x1337x.cc/cat/Movies/1/;StatusCode: Forbidden;ContentType: t
 2026-07-21 21:05:42.1|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
 2026-07-21 21:05:43.0|Debug|Api|[GET] /api/v1/health: 200.OK (2 ms)
 2026-07-21 21:10:09.7|Debug|Api|[GET] /api/v1/command: 200.OK (5 ms)
+2026-07-25 15:16:09.2|Debug|ProcessProvider|Found 0 processes with the name: Prowlarr.Console
+2026-07-25 15:16:09.2|Debug|ProcessProvider|Found 1 processes with the name: Prowlarr
+2026-07-25 15:16:09.2|Debug|ProcessProvider| - [154] Prowlarr
+2026-07-25 15:16:09.3|Info|MigrationController|*** Migrating data source=/config/prowlarr.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-25 15:16:09.6|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-25 15:16:09.6|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-25 15:16:09.6|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-25 15:16:09.7|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-25 15:16:09.7|Info|FluentMigrator.Runner.MigrationRunner|=> 0.1147731s
+2026-07-25 15:16:09.7|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-25 15:16:09.7|Info|FluentMigrator.Runner.MigrationRunner|=> 0.1209316s
+2026-07-25 15:16:09.8|Debug|MigrationController|Took: 00:00:00.4798641
+2026-07-25 15:16:09.8|Info|MigrationController|*** Migrating data source=/config/logs.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-25 15:16:09.9|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-25 15:16:09.9|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-25 15:16:09.9|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-25 15:16:09.9|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-25 15:16:09.9|Info|FluentMigrator.Runner.MigrationRunner|=> 0.014731s
+2026-07-25 15:16:09.9|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-25 15:16:09.9|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0168707s
+2026-07-25 15:16:09.9|Debug|MigrationController|Took: 00:00:00.1324375
+2026-07-25 15:16:10.5|Info|Microsoft.Hosting.Lifetime|Now listening on: http://[::]:9696
+2026-07-25 15:16:11.0|Debug|NotificationFactory|Initializing Providers. Count 20
+2026-07-25 15:16:11.0|Info|CommandExecutor|Starting 3 threads for tasks.
+2026-07-25 15:16:11.1|Debug|HttpClient|Downloading [https://indexers.prowlarr.com/master/11/package.zip] to [/config/Definitions/indexers.zip]
+2026-07-25 15:16:11.9|Debug|HttpClient|Downloading Completed. took 0s
+2026-07-25 15:16:12.2|Debug|IndexerDefinitionUpdateService|Updated indexer definitions
+2026-07-25 15:16:12.2|Debug|IndexerFactory|Initializing Providers. Count 68
+2026-07-25 15:16:12.2|Debug|IndexerProxyFactory|Initializing Providers. Count 4
+2026-07-25 15:16:12.3|Debug|DownloadClientFactory|Initializing Providers. Count 18
+2026-07-25 15:16:12.3|Debug|ApplicationFactory|Initializing Providers. Count 7
+2026-07-25 15:16:12.3|Info|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2026-07-25 15:16:12.3|Info|Microsoft.Hosting.Lifetime|Hosting environment: Production
+2026-07-25 15:16:12.3|Info|Microsoft.Hosting.Lifetime|Content root path: /app/prowlarr/bin
+2026-07-25 15:16:13.6|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-25 15:16:41.1|Info|HistoryService|Removing items older than 30 days from history
+2026-07-25 15:16:41.1|Debug|HistoryService|History has been cleaned up.
+2026-07-25 15:16:41.1|Info|BackupService|Starting Backup
+2026-07-25 15:16:41.1|Debug|BackupService|Cleaning up backup files older than 28 days
+2026-07-25 15:16:41.1|Debug|BackupService|Finished cleaning up old backup files
+2026-07-25 15:16:41.1|Debug|BackupService|Backing up config.xml
+2026-07-25 15:16:41.1|Debug|DiskTransferService|Copy [/config/config.xml] > [/run/prowlarr-temp/prowlarr_backup/config.xml]
+2026-07-25 15:16:41.1|Debug|InstallUpdateService|Checking for updates
+2026-07-25 15:16:41.1|Info|HousekeepingService|Running housecleaning tasks
+2026-07-25 15:16:41.1|Debug|HousekeepingService|Starting CleanupAdditionalUsers
+2026-07-25 15:16:41.1|Debug|HousekeepingService|Completed CleanupAdditionalUsers
+2026-07-25 15:16:41.1|Debug|HousekeepingService|Starting CleanupCommandQueue
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Completed CleanupCommandQueue
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Starting CleanupOrphanedApplicationStatus
+2026-07-25 15:16:41.2|Debug|BackupService|Backing up database
+2026-07-25 15:16:41.2|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Completed CleanupOrphanedApplicationStatus
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Starting CleanupOrphanedDownloadClientStatus
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Completed CleanupOrphanedDownloadClientStatus
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Starting CleanupOrphanedHistoryItems
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Completed CleanupOrphanedHistoryItems
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Starting CleanupOrphanedIndexerStatus
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Completed CleanupOrphanedIndexerStatus
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Starting CleanupOrphanedNotificationStatus
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Completed CleanupOrphanedNotificationStatus
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Starting CleanupTemporaryUpdateFiles
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Completed CleanupTemporaryUpdateFiles
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Starting CleanupUnusedTags
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Completed CleanupUnusedTags
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Starting FixFutureApplicationStatusTimes
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Completed FixFutureApplicationStatusTimes
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Starting FixFutureDownloadClientStatusTimes
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Completed FixFutureDownloadClientStatusTimes
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Starting FixFutureIndexerStatusTimes
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Completed FixFutureIndexerStatusTimes
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Starting FixFutureNotificationStatusTimes
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Completed FixFutureNotificationStatusTimes
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Starting FixFutureRunScheduledTasks
+2026-07-25 15:16:41.2|Debug|BackupService|Creating backup zip
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Completed FixFutureRunScheduledTasks
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Starting TrimLogDatabase
+2026-07-25 15:16:41.2|Debug|ArchiveService|Creating archive /config/Backups/scheduled/prowlarr_backup_v2.5.2.5491_2026.07.25_15.16.41.zip
+2026-07-25 15:16:41.2|Info|Database|Vacuuming Log database
+2026-07-25 15:16:41.2|Debug|InstallUpdateService|No update available
+2026-07-25 15:16:41.2|Info|Database|Log database compressed
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Completed TrimLogDatabase
+2026-07-25 15:16:41.2|Debug|HousekeepingService|Compressing main database after housekeeping
+2026-07-25 15:16:41.2|Info|Database|Vacuuming Main database
+2026-07-25 15:16:41.3|Info|Database|Main database compressed
+2026-07-25 15:16:41.3|Debug|BackupService|Backup zip created
+2026-07-25 15:16:41.3|Debug|HttpClient|Downloading [https://indexers.prowlarr.com/master/11/package.zip] to [/config/Definitions/indexers.zip]
+2026-07-25 15:16:41.6|Debug|HttpClient|Downloading Completed. took 0s
+2026-07-25 15:16:41.9|Debug|IndexerDefinitionUpdateService|Updated indexer definitions
+2026-07-25 15:32:11.6|Debug|FlareSolverr|Cloudflare Detected, Applying FlareSolverr Proxy FlareSolverr to request https://prowlarr.servarr.com/v1/ping

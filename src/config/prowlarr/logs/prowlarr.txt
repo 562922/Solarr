@@ -1836,3 +1836,35 @@ RequestUri: https://x1337x.cc/cat/Movies/1/;StatusCode: Forbidden;ContentType: t
 2026-07-21 21:05:41.7|Info|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
 2026-07-21 21:05:41.7|Info|Microsoft.Hosting.Lifetime|Hosting environment: Production
 2026-07-21 21:05:41.7|Info|Microsoft.Hosting.Lifetime|Content root path: /app/prowlarr/bin
+2026-07-25 15:16:07.3|Info|Bootstrap|Starting Prowlarr - /app/prowlarr/bin/Prowlarr - Version 2.5.2.5491
+2026-07-25 15:16:07.6|Info|AppFolderInfo|Data directory is being overridden to [/config]
+2026-07-25 15:16:07.9|Info|AppFolderInfo|Data directory is being overridden to [/config]
+2026-07-25 15:16:09.0|Info|AppFolderInfo|Data directory is being overridden to [/config]
+2026-07-25 15:16:09.3|Info|MigrationController|*** Migrating data source=/config/prowlarr.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-25 15:16:09.6|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-25 15:16:09.6|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-25 15:16:09.6|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-25 15:16:09.7|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-25 15:16:09.7|Info|FluentMigrator.Runner.MigrationRunner|=> 0.1147731s
+2026-07-25 15:16:09.7|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-25 15:16:09.7|Info|FluentMigrator.Runner.MigrationRunner|=> 0.1209316s
+2026-07-25 15:16:09.8|Info|MigrationController|*** Migrating data source=/config/logs.db;cache size=-20000;datetimekind=Utc;journal mode=Wal;pooling=True;version=3;busytimeout=1000 ***
+2026-07-25 15:16:09.9|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrating
+2026-07-25 15:16:09.9|Info|FluentMigrator.Runner.MigrationRunner|PerformDBOperation 
+2026-07-25 15:16:09.9|Info|NzbDrone.Core.Datastore.Migration.Framework.NzbDroneSQLiteProcessor|Performing DB Operation
+2026-07-25 15:16:09.9|Info|DatabaseEngineVersionCheck|SQLite 3.50.4
+2026-07-25 15:16:09.9|Info|FluentMigrator.Runner.MigrationRunner|=> 0.014731s
+2026-07-25 15:16:09.9|Info|FluentMigrator.Runner.MigrationRunner|DatabaseEngineVersionCheck migrated
+2026-07-25 15:16:09.9|Info|FluentMigrator.Runner.MigrationRunner|=> 0.0168707s
+2026-07-25 15:16:10.5|Info|Microsoft.Hosting.Lifetime|Now listening on: http://[::]:9696
+2026-07-25 15:16:11.0|Info|CommandExecutor|Starting 3 threads for tasks.
+2026-07-25 15:16:12.3|Info|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2026-07-25 15:16:12.3|Info|Microsoft.Hosting.Lifetime|Hosting environment: Production
+2026-07-25 15:16:12.3|Info|Microsoft.Hosting.Lifetime|Content root path: /app/prowlarr/bin
+2026-07-25 15:16:41.1|Info|HistoryService|Removing items older than 30 days from history
+2026-07-25 15:16:41.1|Info|BackupService|Starting Backup
+2026-07-25 15:16:41.1|Info|HousekeepingService|Running housecleaning tasks
+2026-07-25 15:16:41.2|Info|Database|Vacuuming Log database
+2026-07-25 15:16:41.2|Info|Database|Log database compressed
+2026-07-25 15:16:41.2|Info|Database|Vacuuming Main database
+2026-07-25 15:16:41.3|Info|Database|Main database compressed

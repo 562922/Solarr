@@ -8,7 +8,7 @@ services:
       - ./solarr.env   # metadata API keys (TMDB, IGDB, etc.)
     volumes:
       - ./config/solarr:/config
-      - ./library:/library
+      - /workspaces/Solarr/library:/library
     ports:
       - "5001:5000"
     depends_on:
@@ -51,7 +51,7 @@ services:
       - WEBUI_PORT=8080
     volumes:
       - ./config/qbittorrent:/config
-      - ./library:/library
+      - /workspaces/Solarr/library:/library
     ports:
       - "8080:8080"
       - "6881:6881"
@@ -67,7 +67,7 @@ services:
       - TZ=America/Los_Angeles
     volumes:
       - ./config/jellyfin:/config
-      - ./library:/library
+      - /workspaces/Solarr/library:/library
     ports:
       - "8096:8096"
 
@@ -93,7 +93,7 @@ services:
       - ./config/romm/resources:/romm/resources
       - ./config/romm/config:/config
       - ./config/romm/romm_redis_data:/redis-data
-      - ./library:/library
+      - /workspaces/Solarr/library:/library
     ports:
       - "8082:8080"
     depends_on:
