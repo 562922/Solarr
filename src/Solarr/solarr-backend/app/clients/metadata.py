@@ -400,6 +400,17 @@ def _cache_set(key, data):
 def _tmdb_norm(it, kind):
     """Normalize a raw TMDB result dict into the Solarr card shape."""
     date = it.get("release_date") or it.get("first_air_date") or ""
+    # genre_ids from list endpoints — we map to names where possible
+    genre_map = {
+        28:"Action",12:"Adventure",16:"Animation",35:"Comedy",80:"Crime",
+        99:"Documentary",18:"Drama",10751:"Family",14:"Fantasy",36:"History",
+        27:"Horror",10402:"Music",9648:"Mystery",10749:"Romance",878:"Science Fiction",
+        10770:"TV Movie",53:"Thriller",10752:"War",37:"Western",
+        10759:"Action & Adventure",10762:"Kids",10763:"News",10764:"Reality",
+        10765:"Sci-Fi & Fantasy",10766:"Soap",10767:"Talk",10768:"War & Politics",
+    }
+    genre_ids = it.get("genre_ids") or []
+    genres = [genre_map[gid] for gid in genre_ids if gid in genre_map]
     return {
         "title": it.get("title") or it.get("name"),
         "external_id": str(it.get("id")),
@@ -410,6 +421,7 @@ def _tmdb_norm(it, kind):
         "overview": it.get("overview", ""),
         "score": round((it.get("vote_average") or 0) * 10),
         "votes": it.get("vote_count", 0),
+        "genres": genres,
         "status": "not_owned",
     }
 
@@ -667,22 +679,6 @@ def anilist_popular():
 
 def anilist_upcoming():
     return _anilist_fetch(_ANILIST_UPCOMING, "anilist_upcoming")
-    tvdb_key = _tvdb_key()
-    igdb_id, igdb_secret = _igdb_creds()
-    return [
-        {"id": "tmdb", "name": "TMDB", "scope": "Movies & Shows", "keyless": False,
-         "connected": bool(_tmdb_key()),
-         "fields": [{"key": "tmdb_api_key", "label": "API key", "secret": True, "value": bool(_tmdb_key())}]},
-        {"id": "tvdb", "name": "TheTVDB", "scope": "Shows", "keyless": False,
-         "connected": bool(tvdb_key),
-         "fields": [{"key": "tvdb_api_key", "label": "API key", "secret": True, "value": bool(tvdb_key)},
-                    {"key": "tvdb_pin", "label": "Subscriber PIN (optional)", "secret": False, "value": bool(db.get_setting("tvdb_pin", ""))}]},
-        {"id": "igdb", "name": "IGDB", "scope": "Games", "keyless": False,
-         "connected": bool(igdb_id and igdb_secret),
-         "fields": [{"key": "igdb_client_id", "label": "Client ID", "secret": False, "value": bool(igdb_id)},
-                    {"key": "igdb_client_secret", "label": "Client secret", "secret": True, "value": bool(igdb_secret)}]},
-        {"id": "anilist", "name": "AniList", "scope": "Anime", "keyless": True, "connected": True, "fields": []},
-    ]
 
 
 # ---- unified dispatch ---------------------------------------------------
