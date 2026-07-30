@@ -130,9 +130,9 @@ def init():
         -- unified catalogue (synced from Jellyfin/RomM + created by requests)
         CREATE TABLE IF NOT EXISTS media(
             id INTEGER PRIMARY KEY,
-            media_type TEXT,      -- movie | show | game
+            media_type TEXT,      -- movie | show | game | anime
             title TEXT,
-            external_id TEXT,     -- tmdb/igdb id
+            external_id TEXT,     -- tmdb/tvdb/igdb id
             year INTEGER,
             platform TEXT,        -- games
             cover_url TEXT,

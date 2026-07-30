@@ -34,10 +34,13 @@ def _auto_bootstrap():
 
     # ---- metadata / API keys -----------------------------------------------
     tmdb_key = (os.getenv("TMDB_API_KEY") or "2ac1b7e46405df210c7ad89bacd9ea10").strip()
-    igdb_client_id = os.getenv("IGDB_CLIENT_ID", "91487550546044879ab2e4fa51d60abc")
-    igdb_client_secret = os.getenv("IGDB_CLIENT_SECRET", "91487550546044879ab2e4fa51d60abc")
+    tmdb_token = (os.getenv("TMDB_API_READ_ACCESS_TOKEN") or "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYWMxYjdlNDY0MDVkZjIxMGM3YWQ4OWJhY2Q5ZWExMCIsIm5iZiI6MTc4NDI3Mzg4Ny4xMzUsInN1YiI6IjZhNTlkYmRmN2RlYjM4MTQxNWVhNmI3MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Jw75JZiC8BEo8_ZAzJSmwhFOaKTNQj-ueG19DxBxHyw").strip()
+    tvdb_key = (os.getenv("TVDB_API_KEY") or "cf672297-3ec0-4be0-ad04-d1f85d9e5e2e").strip()
+    igdb_client_id = (os.getenv("IGDB_CLIENT_ID") or "nwxjqjj76r1rdvyivg0553pcd7ksl8").strip()
+    igdb_client_secret = (os.getenv("IGDB_CLIENT_SECRET") or "vlopp4m8mzd7s034uegdorr4buugp5").strip()
 
     db.set_setting("tmdb_api_key", tmdb_key)
+    db.set_setting("tmdb_api_read_token", tmdb_token)
     db.set_setting("igdb_client_id", igdb_client_id)
     db.set_setting("igdb_client_secret", igdb_client_secret)
     db.set_setting("app_title", "Solarr")

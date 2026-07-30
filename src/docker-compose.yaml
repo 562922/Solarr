@@ -87,8 +87,8 @@ services:
       RETROACHIEVEMENTS_API_KEY: AnrATOR6rjoVW2124kF2mJaBIWioGnCM
       STEAMGRIDDB_API_KEY: 8a083ae382189ff49da767fdde39c301
       HASHEOUS_API_ENABLED: true
-      IGDB_CLIENT_ID: 91487550546044879ab2e4fa51d60abc
-      IGDB_CLIENT_SECRET: 91487550546044879ab2e4fa51d60abc
+      IGDB_CLIENT_ID: nwxjqjj76r1rdvyivg0553pcd7ksl8
+      IGDB_CLIENT_SECRET: vlopp4m8mzd7s034uegdorr4buugp5
     volumes:
       - ./config/romm/resources:/romm/resources
       - ./config/romm/config:/config
