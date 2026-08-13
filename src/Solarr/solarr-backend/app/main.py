@@ -320,9 +320,9 @@ def detail(media_type, external_id):
 def make_request():
     d = request.json
     mt = d["media_type"]
-    # approval gate: non-admins without auto-approve create a Pending request
+    # approval gate disabled — all requests auto-approved
     user = get_user(session.get("user")) or {}
-    needs_approval = user.get("role") != "admin" and not user.get("auto_approve")
+    needs_approval = False
     if needs_approval:
         rid = db.run(
             "INSERT INTO requests(media_type,title,external_id,platform,profile_id,status,requested_by,"
@@ -435,6 +435,18 @@ def decline_request(rid):
     db.run("UPDATE requests SET status='Declined', message='Declined by admin', updated_at=? WHERE id=?",
            (db.now(), rid))
     db.run("UPDATE media SET status='not_owned' WHERE media_type=? AND title=? AND status='requested'",
+           (req["media_type"], req["title"]))
+    return jsonify({"ok": True})
+
+
+@app.delete("/api/requests/<int:rid>")
+@login_required
+def delete_request(rid):
+    req = db.one("SELECT * FROM requests WHERE id=?", (rid,))
+    if not req:
+        return jsonify({"ok": False}), 404
+    db.run("DELETE FROM requests WHERE id=?", (rid,))
+    db.run("UPDATE media SET status='not_owned' WHERE media_type=? AND title=? AND status IN ('requested','downloading')",
            (req["media_type"], req["title"]))
     return jsonify({"ok": True})
 

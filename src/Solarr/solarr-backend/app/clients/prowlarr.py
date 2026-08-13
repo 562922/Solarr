@@ -55,6 +55,26 @@ def list_indexers():
         return []
 
 
+def _resolve_magnet(url, api_key):
+    """Follow a Prowlarr download redirect to extract the magnet URI."""
+    if not url:
+        return None
+    if url.startswith("magnet:"):
+        return url
+    try:
+        r = requests.get(url, headers={"X-Api-Key": api_key},
+                         allow_redirects=False, timeout=10)
+        location = r.headers.get("Location", "")
+        if location.startswith("magnet:"):
+            return location
+        # Some Prowlarr versions return the magnet in the body
+        if r.text.strip().startswith("magnet:"):
+            return r.text.strip()
+    except requests.RequestException:
+        pass
+    return None
+
+
 def search(query, media_type):
     """Query Prowlarr's search API, scoped to the media type's categories."""
     url, key = _cfg()
@@ -73,7 +93,7 @@ def search(query, media_type):
                 "title": item.get("title"),
                 "seeders": item.get("seeders", 0) or 0,
                 "size": item.get("size", 0) or 0,
-                "magnet": item.get("magnetUrl"),
+                "magnet": item.get("magnetUrl") or _resolve_magnet(item.get("downloadUrl") or item.get("link"), key),
                 "download_url": item.get("downloadUrl") or item.get("link"),
                 "indexer": item.get("indexer"),
                 "protocol": item.get("protocol", "torrent"),

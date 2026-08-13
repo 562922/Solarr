@@ -1,789 +1,838 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Solarr</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js" crossorigin referrerpolicy="no-referrer"></script>
-<style>
-html,body{background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:0}
-::-webkit-scrollbar{height:6px;width:6px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:#30363d;border-radius:6px}
-select option{background:#161b22}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Solarr</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin
+    referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin
+    referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js" crossorigin
+    referrerpolicy="no-referrer"></script>
+  <style>
+    html,
+    body {
+      background: #0d1117;
+      color: #e6edf3;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      margin: 0
+    }
+
+    ::-webkit-scrollbar {
+      height: 6px;
+      width: 6px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #30363d;
+      border-radius: 6px
+    }
+
+    select option {
+      background: #161b22
+    }
+  </style>
 </head>
+
 <body>
-<div id="root"></div>
-<script type="text/babel" data-presets="react">
-const {useState,useEffect,useRef,useCallback,useMemo}=React;
+  <div id="root"></div>
+  <script type="text/babel" data-presets="react">
+    const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-/* ── API ─────────────────────────────────────────────────────────────── */
-const api={
-  async req(method,path,body){
-    const opt={method,credentials:"same-origin",headers:{}};
-    if(body!==undefined){opt.headers["Content-Type"]="application/json";opt.body=JSON.stringify(body);}
-    const r=await fetch(path,opt);
-    const txt=await r.text();
-    const data=txt?JSON.parse(txt):{};
-    if(!r.ok)throw Object.assign(new Error(data.message||data.error||"HTTP "+r.status),{status:r.status,data});
-    return data;
-  },
-  get(p){return this.req("GET",p)},
-  post(p,b){return this.req("POST",p,b===undefined?{}:b)},
-  put(p,b){return this.req("PUT",p,b)},
-  del(p){return this.req("DELETE",p)},
-};
+    /* ── API ─────────────────────────────────────────────────────────────── */
+    const api = {
+      async req(method, path, body) {
+        const opt = { method, credentials: "same-origin", headers: {} };
+        if (body !== undefined) { opt.headers["Content-Type"] = "application/json"; opt.body = JSON.stringify(body); }
+        const r = await fetch(path, opt);
+        const txt = await r.text();
+        const data = txt ? JSON.parse(txt) : {};
+        if (!r.ok) throw Object.assign(new Error(data.message || data.error || "HTTP " + r.status), { status: r.status, data });
+        return data;
+      },
+      get(p) { return this.req("GET", p) },
+      post(p, b) { return this.req("POST", p, b === undefined ? {} : b) },
+      put(p, b) { return this.req("PUT", p, b) },
+      del(p) { return this.req("DELETE", p) },
+    };
 
-/* ── Hooks ───────────────────────────────────────────────────────────── */
-function useAsync(fn,deps=[]){
-  const[state,setState]=useState({data:null,loading:true,error:null});
-  const run=useCallback(()=>{
-    setState(s=>({...s,loading:true,error:null}));
-    fn().then(data=>setState({data,loading:false,error:null}))
-       .catch(error=>setState({data:null,loading:false,error}));
-  },deps);
-  useEffect(()=>{run();},[run]);
-  return{...state,reload:run};
-}
+    /* ── Hooks ───────────────────────────────────────────────────────────── */
+    function useAsync(fn, deps = []) {
+      const [state, setState] = useState({ data: null, loading: true, error: null });
+      const run = useCallback(() => {
+        setState(s => ({ ...s, loading: true, error: null }));
+        fn().then(data => setState({ data, loading: false, error: null }))
+          .catch(error => setState({ data: null, loading: false, error }));
+      }, deps);
+      useEffect(() => { run(); }, [run]);
+      return { ...state, reload: run };
+    }
 
-/* ── Tiny icon set (inline SVG) ──────────────────────────────────────── */
-const ICONS={
-  compass:'<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
-  film:'<rect x="2" y="3" width="20" height="18" rx="2"/><path d="M7 3v18M17 3v18M2 8h5M2 16h5M17 8h5M17 16h5"/>',
-  tv:'<rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/>',
-  star:'<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
-  gamepad:'<line x1="6" y1="11" x2="10" y2="11"/><line x1="8" y1="9" x2="8" y2="13"/><line x1="15" y1="12" x2="15.01" y2="12"/><line x1="18" y1="10" x2="18.01" y2="10"/><rect x="2" y="6" width="20" height="12" rx="2"/>',
-  settings:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
-  search:'<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
-  x:'<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
-  check:'<polyline points="20 6 9 17 4 12"/>',
-  chevronR:'<polyline points="9 18 15 12 9 6"/>',
-  chevronL:'<polyline points="15 18 9 12 15 6"/>',
-  filter:'<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>',
-  sort:'<path d="M11 5h10M11 9h7M11 13h4M3 17l3 3 3-3M6 18V4"/>',
-  info:'<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
-  checkCircle:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
-  alertCircle:'<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
-  wifi:'<path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/>',
-  download:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>',
-};
-function Ic({n,s=18,c=""}){
-  return <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor"
-    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={c}
-    dangerouslySetInnerHTML={{__html:ICONS[n]||""}}/>;
-}
+    /* ── Tiny icon set (inline SVG) ──────────────────────────────────────── */
+    const ICONS = {
+      compass: '<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
+      film: '<rect x="2" y="3" width="20" height="18" rx="2"/><path d="M7 3v18M17 3v18M2 8h5M2 16h5M17 8h5M17 16h5"/>',
+      tv: '<rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/>',
+      star: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+      gamepad: '<line x1="6" y1="11" x2="10" y2="11"/><line x1="8" y1="9" x2="8" y2="13"/><line x1="15" y1="12" x2="15.01" y2="12"/><line x1="18" y1="10" x2="18.01" y2="10"/><rect x="2" y="6" width="20" height="12" rx="2"/>',
+      settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+      search: '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
+      x: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+      check: '<polyline points="20 6 9 17 4 12"/>',
+      chevronR: '<polyline points="9 18 15 12 9 6"/>',
+      chevronL: '<polyline points="15 18 9 12 15 6"/>',
+      filter: '<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>',
+      sort: '<path d="M11 5h10M11 9h7M11 13h4M3 17l3 3 3-3M6 18V4"/>',
+      info: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
+      checkCircle: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
+      alertCircle: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
+      wifi: '<path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/>',
+      download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>',
+    };
+    function Ic({ n, s = 18, c = "" }) {
+      return <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={c}
+        dangerouslySetInnerHTML={{ __html: ICONS[n] || "" }} />;
+    }
 
-/* ── Status badge ────────────────────────────────────────────────────── */
-const STATUS_MAP={
-  available:{label:"Available",cls:"bg-green-500/20 text-green-400 ring-1 ring-green-500/30"},
-  downloading:{label:"Downloading",cls:"bg-blue-500/20 text-blue-400 ring-1 ring-blue-500/30"},
-  requested:{label:"Requested",cls:"bg-amber-500/20 text-amber-400 ring-1 ring-amber-500/30"},
-  not_owned:{label:"",cls:""},
-};
-function Badge({status}){
-  const s=STATUS_MAP[status]||STATUS_MAP.not_owned;
-  if(!s.label)return null;
-  return <span className={"text-[10px] font-semibold px-1.5 py-0.5 rounded-full "+s.cls}>{s.label}</span>;
-}
+    /* ── Status badge ────────────────────────────────────────────────────── */
+    const STATUS_MAP = {
+      available: { label: "Available", cls: "bg-green-500/20 text-green-400 ring-1 ring-green-500/30" },
+      downloading: { label: "Downloading", cls: "bg-blue-500/20 text-blue-400 ring-1 ring-blue-500/30" },
+      requested: { label: "Requested", cls: "bg-amber-500/20 text-amber-400 ring-1 ring-amber-500/30" },
+      not_owned: { label: "", cls: "" },
+    };
+    function Badge({ status }) {
+      const s = STATUS_MAP[status] || STATUS_MAP.not_owned;
+      if (!s.label) return null;
+      return <span className={"text-[10px] font-semibold px-1.5 py-0.5 rounded-full " + s.cls}>{s.label}</span>;
+    }
 
-/* ── Poster placeholder (gradient from title hash) ───────────────────── */
-function posterGrad(title){
-  let h=0;for(const c of(title||""))h=(h*31+c.charCodeAt(0))%360;
-  return{backgroundImage:`linear-gradient(160deg,hsl(${h}deg 40% 28%),hsl(${(h+50)%360}deg 45% 14%))`};
-}
+    /* ── Poster placeholder (gradient from title hash) ───────────────────── */
+    function posterGrad(title) {
+      let h = 0; for (const c of (title || "")) h = (h * 31 + c.charCodeAt(0)) % 360;
+      return { backgroundImage: `linear-gradient(160deg,hsl(${h}deg 40% 28%),hsl(${(h + 50) % 360}deg 45% 14%))` };
+    }
 
-/* ── Media Card ──────────────────────────────────────────────────────── */
-function Card({item,onClick}){
-  const[imgErr,setImgErr]=useState(false);
-  const hasCover=item.cover_url&&!imgErr;
-  return(
-    <button onClick={()=>onClick(item)}
-      className="group w-[140px] shrink-0 text-left focus:outline-none">
-      <div className="relative w-[140px] h-[200px] rounded-lg overflow-hidden shadow-lg
+    /* ── Media Card ──────────────────────────────────────────────────────── */
+    function Card({ item, onClick }) {
+      const [imgErr, setImgErr] = useState(false);
+      const hasCover = item.cover_url && !imgErr;
+      return (
+        <button onClick={() => onClick(item)}
+          className="group w-[140px] shrink-0 text-left focus:outline-none">
+          <div className="relative w-[140px] h-[200px] rounded-lg overflow-hidden shadow-lg
           ring-1 ring-white/5 transition-transform duration-200 group-hover:scale-[1.04]
           group-hover:ring-indigo-500/60 group-hover:shadow-indigo-900/40 group-hover:shadow-xl">
-        {hasCover
-          ?<img src={item.cover_url} alt={item.title} className="w-full h-full object-cover"
-              onError={()=>setImgErr(true)}/>
-          :<div className="w-full h-full flex items-end p-2" style={posterGrad(item.title)}>
-            <span className="text-[11px] text-white/70 font-medium leading-tight">{item.title}</span>
-           </div>}
-        {item.status&&item.status!=="not_owned"&&(
-          <div className="absolute top-1.5 left-1.5">
-            <Badge status={item.status}/>
-          </div>
-        )}
-        {item.score>0&&(
-          <div className="absolute bottom-1.5 right-1.5 bg-black/70 text-[10px] font-bold
-              text-amber-400 px-1.5 py-0.5 rounded-md backdrop-blur-sm">
-            {item.score}%
-          </div>
-        )}
-      </div>
-      <p className="mt-2 text-[12px] text-gray-200 truncate leading-snug">{item.title}</p>
-      <p className="text-[11px] text-gray-500">{item.year||""}</p>
-    </button>
-  );
-}
-
-/* ── Scrollable row ──────────────────────────────────────────────────── */
-function Row({title,items,onCard}){
-  const ref=useRef();
-  if(!items||items.length===0)return null;
-  const scroll=d=>ref.current&&(ref.current.scrollLeft+=d);
-  return(
-    <div className="mb-8">
-      <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">{title}</h3>
-      <div className="relative group/row">
-        <button onClick={()=>scroll(-480)}
-          className="hidden group-hover/row:flex absolute left-0 top-1/2 -translate-y-1/2 z-10
-              w-8 h-full items-center justify-center bg-gradient-to-r from-[#0d1117] to-transparent
-              text-gray-400 hover:text-white">
-          <Ic n="chevronL" s={20}/>
-        </button>
-        <div ref={ref} className="flex gap-4 overflow-x-auto pb-2 scroll-smooth" style={{scrollbarWidth:"none"}}>
-          {items.map((it,i)=><Card key={it.external_id||it.id||i} item={it} onClick={onCard}/>)}
-        </div>
-        <button onClick={()=>scroll(480)}
-          className="hidden group-hover/row:flex absolute right-0 top-1/2 -translate-y-1/2 z-10
-              w-8 h-full items-center justify-center bg-gradient-to-l from-[#0d1117] to-transparent
-              text-gray-400 hover:text-white">
-          <Ic n="chevronR" s={20}/>
-        </button>
-      </div>
-    </div>
-  );
-}
-
-/* ── Section header (Discover page blocks) ───────────────────────────── */
-function SectionHead({icon,label,tab,setTab}){
-  return(
-    <div className="flex items-center gap-3 mb-4 mt-8">
-      <div className="w-8 h-8 rounded-lg bg-indigo-600/20 flex items-center justify-center">
-        <Ic n={icon} s={16} c="text-indigo-400"/>
-      </div>
-      <h2 className="text-lg font-bold text-white">{label}</h2>
-      <button onClick={()=>setTab(tab)}
-        className="ml-auto text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
-        Browse all <Ic n="chevronR" s={13}/>
-      </button>
-    </div>
-  );
-}
-
-/* ── Detail modal ────────────────────────────────────────────────────── */
-function DetailModal({item,onClose,onRequested}){
-  const{data,loading,error}=useAsync(
-    ()=>api.get(`/api/detail/${item.media_type}/${item.external_id||item.id}`),
-    [item.external_id,item.media_type]
-  );
-  const[reqState,setReqState]=useState(null); // null | 'loading' | 'ok' | 'err'
-  const[reqMsg,setReqMsg]=useState("");
-
-  const d=data||item;
-  const status=item.status||"not_owned";
-
-  async function request(){
-    setReqState("loading");
-    try{
-      const res=await api.post("/api/request",{
-        media_type:item.media_type,
-        title:d.title,
-        external_id:item.external_id||String(item.id||""),
-        cover_url:d.cover_url||"",
-        platform:d.platform||"",
-      });
-      setReqState("ok");
-      setReqMsg(res.message||res.release||"Request submitted!");
-      onRequested&&onRequested();
-    }catch(e){
-      setReqState("err");
-      setReqMsg(e.data?.message||e.message||"Request failed");
-    }
-  }
-
-  const canRequest=status==="not_owned"&&reqState!=="ok";
-  const TYPE_LABEL={movie:"Movie",show:"TV Show",anime:"Anime",game:"Game"};
-
-  return(
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{background:"rgba(0,0,0,.75)",backdropFilter:"blur(4px)"}}>
-      <div className="relative bg-[#161b22] rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto
-          shadow-2xl ring-1 ring-white/10">
-        {/* Backdrop */}
-        {d.backdrop_url&&(
-          <div className="absolute inset-x-0 top-0 h-48 rounded-t-2xl overflow-hidden">
-            <img src={d.backdrop_url} className="w-full h-full object-cover opacity-30"/>
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#161b22]"/>
-          </div>
-        )}
-        <button onClick={onClose}
-          className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/50
-              flex items-center justify-center text-gray-400 hover:text-white">
-          <Ic n="x" s={15}/>
-        </button>
-        <div className="relative p-6 flex gap-5">
-          {/* Poster */}
-          <div className="shrink-0 w-[120px] h-[175px] rounded-lg overflow-hidden shadow-xl ring-1 ring-white/10 mt-6">
-            {d.cover_url
-              ?<img src={d.cover_url} className="w-full h-full object-cover"/>
-              :<div className="w-full h-full" style={posterGrad(d.title)}/>}
-          </div>
-          {/* Meta */}
-          <div className="flex-1 min-w-0 mt-6">
-            <div className="flex flex-wrap gap-2 items-center mb-1">
-              <span className="text-xs text-gray-500 bg-gray-800 px-2 py-0.5 rounded-full">
-                {TYPE_LABEL[item.media_type]||item.media_type}
-              </span>
-              {d.content_rating&&<span className="text-xs text-gray-500 bg-gray-800 px-2 py-0.5 rounded-full">{d.content_rating}</span>}
-              <Badge status={status}/>
-            </div>
-            <h2 className="text-xl font-bold text-white leading-tight">{d.title}</h2>
-            <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-400 mt-1">
-              {d.year&&<span>{d.year}</span>}
-              {d.runtime>0&&<span>{d.runtime} min</span>}
-              {d.studio&&<span>{d.studio}</span>}
-              {d.score>0&&<span className="text-amber-400 font-semibold">{d.score}%</span>}
-            </div>
-            {(d.genres||[]).length>0&&(
-              <div className="flex flex-wrap gap-1.5 mt-2">
-                {d.genres.slice(0,5).map(g=>(
-                  <span key={g} className="text-[11px] text-indigo-300 bg-indigo-500/10 px-2 py-0.5 rounded-full ring-1 ring-indigo-500/20">{g}</span>
-                ))}
+            {hasCover
+              ? <img src={item.cover_url} alt={item.title} className="w-full h-full object-cover"
+                onError={() => setImgErr(true)} />
+              : <div className="w-full h-full flex items-end p-2" style={posterGrad(item.title)}>
+                <span className="text-[11px] text-white/70 font-medium leading-tight">{item.title}</span>
+              </div>}
+            {item.status && item.status !== "not_owned" && (
+              <div className="absolute top-1.5 left-1.5">
+                <Badge status={item.status} />
               </div>
             )}
-            {loading&&<p className="text-sm text-gray-500 mt-3 animate-pulse">Loading details…</p>}
-            {d.overview&&<p className="text-sm text-gray-300 mt-3 leading-relaxed line-clamp-5">{d.overview}</p>}
+            {item.score > 0 && (
+              <div className="absolute bottom-1.5 right-1.5 bg-black/70 text-[10px] font-bold
+              text-amber-400 px-1.5 py-0.5 rounded-md backdrop-blur-sm">
+                {item.score}%
+              </div>
+            )}
+          </div>
+          <p className="mt-2 text-[12px] text-gray-200 truncate leading-snug">{item.title}</p>
+          <p className="text-[11px] text-gray-500">{item.year || ""}</p>
+        </button>
+      );
+    }
+
+    /* ── Scrollable row ──────────────────────────────────────────────────── */
+    function Row({ title, items, onCard }) {
+      const ref = useRef();
+      if (!items || items.length === 0) return null;
+      const scroll = d => ref.current && (ref.current.scrollLeft += d);
+      return (
+        <div className="mb-8">
+          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">{title}</h3>
+          <div className="relative group/row">
+            <button onClick={() => scroll(-480)}
+              className="hidden group-hover/row:flex absolute left-0 top-1/2 -translate-y-1/2 z-10
+              w-8 h-full items-center justify-center bg-gradient-to-r from-[#0d1117] to-transparent
+              text-gray-400 hover:text-white">
+              <Ic n="chevronL" s={20} />
+            </button>
+            <div ref={ref} className="flex gap-4 overflow-x-auto pb-2 scroll-smooth" style={{ scrollbarWidth: "none" }}>
+              {items.map((it, i) => <Card key={it.external_id || it.id || i} item={it} onClick={onCard} />)}
+            </div>
+            <button onClick={() => scroll(480)}
+              className="hidden group-hover/row:flex absolute right-0 top-1/2 -translate-y-1/2 z-10
+              w-8 h-full items-center justify-center bg-gradient-to-l from-[#0d1117] to-transparent
+              text-gray-400 hover:text-white">
+              <Ic n="chevronR" s={20} />
+            </button>
           </div>
         </div>
-        {/* Seasons (shows/anime) */}
-        {(d.seasons||[]).length>0&&(
-          <div className="px-6 pb-2">
-            <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Seasons</h4>
-            <div className="flex flex-wrap gap-2">
-              {d.seasons.map(s=>(
-                <div key={s.season_number} className="text-xs bg-gray-800 text-gray-300 px-2 py-1 rounded-lg">
-                  S{s.season_number} · {s.episode_count} ep
+      );
+    }
+
+    /* ── Section header (Discover page blocks) ───────────────────────────── */
+    function SectionHead({ icon, label, tab, setTab }) {
+      return (
+        <div className="flex items-center gap-3 mb-4 mt-8">
+          <div className="w-8 h-8 rounded-lg bg-indigo-600/20 flex items-center justify-center">
+            <Ic n={icon} s={16} c="text-indigo-400" />
+          </div>
+          <h2 className="text-lg font-bold text-white">{label}</h2>
+          <button onClick={() => setTab(tab)}
+            className="ml-auto text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
+            Browse all <Ic n="chevronR" s={13} />
+          </button>
+        </div>
+      );
+    }
+
+    /* ── Detail modal ────────────────────────────────────────────────────── */
+    function DetailModal({ item, onClose, onRequested }) {
+      const { data, loading, error } = useAsync(
+        () => api.get(`/api/detail/${item.media_type}/${item.external_id || item.id}`),
+        [item.external_id, item.media_type]
+      );
+      const [reqState, setReqState] = useState(null); // null | 'loading' | 'ok' | 'err'
+      const [reqMsg, setReqMsg] = useState("");
+      const [delState, setDelState] = useState(null); // null | 'loading' | 'ok'
+
+      const d = data || item;
+      const status = item.status || "not_owned";
+
+      async function request() {
+        setReqState("loading");
+        try {
+          const res = await api.post("/api/request", {
+            media_type: item.media_type,
+            title: d.title,
+            external_id: item.external_id || String(item.id || ""),
+            cover_url: d.cover_url || "",
+            platform: d.platform || "",
+          });
+          setReqState("ok");
+          setReqMsg(res.message || res.release || "Request submitted!");
+          onRequested && onRequested();
+        } catch (e) {
+          setReqState("err");
+          setReqMsg(e.data?.message || e.message || "Request failed");
+        }
+      }
+
+      const request_id = item.request_id || item.id || null;
+
+      async function deleteRequest() {
+        if (!request_id) return;
+        setDelState("loading");
+        try {
+          await api.del(`/api/requests/${request_id}`);
+          setDelState("ok");
+          onRequested && onRequested();
+          setTimeout(onClose, 800);
+        } catch (e) {
+          setDelState(null);
+        }
+      }
+
+      const canRequest = status === "not_owned" && reqState !== "ok";
+      const TYPE_LABEL = { movie: "Movie", show: "TV Show", anime: "Anime", game: "Game" };
+
+      return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,.75)", backdropFilter: "blur(4px)" }}>
+          <div className="relative bg-[#161b22] rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto
+          shadow-2xl ring-1 ring-white/10">
+            {/* Backdrop */}
+            {d.backdrop_url && (
+              <div className="absolute inset-x-0 top-0 h-48 rounded-t-2xl overflow-hidden">
+                <img src={d.backdrop_url} className="w-full h-full object-cover opacity-30" />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#161b22]" />
+              </div>
+            )}
+            <button onClick={onClose}
+              className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/50
+              flex items-center justify-center text-gray-400 hover:text-white">
+              <Ic n="x" s={15} />
+            </button>
+            <div className="relative p-6 flex gap-5">
+              {/* Poster */}
+              <div className="shrink-0 w-[120px] h-[175px] rounded-lg overflow-hidden shadow-xl ring-1 ring-white/10 mt-6">
+                {d.cover_url
+                  ? <img src={d.cover_url} className="w-full h-full object-cover" />
+                  : <div className="w-full h-full" style={posterGrad(d.title)} />}
+              </div>
+              {/* Meta */}
+              <div className="flex-1 min-w-0 mt-6">
+                <div className="flex flex-wrap gap-2 items-center mb-1">
+                  <span className="text-xs text-gray-500 bg-gray-800 px-2 py-0.5 rounded-full">
+                    {TYPE_LABEL[item.media_type] || item.media_type}
+                  </span>
+                  {d.content_rating && <span className="text-xs text-gray-500 bg-gray-800 px-2 py-0.5 rounded-full">{d.content_rating}</span>}
+                  <Badge status={status} />
                 </div>
+                <h2 className="text-xl font-bold text-white leading-tight">{d.title}</h2>
+                <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-400 mt-1">
+                  {d.year && <span>{d.year}</span>}
+                  {d.runtime > 0 && <span>{d.runtime} min</span>}
+                  {d.studio && <span>{d.studio}</span>}
+                  {d.score > 0 && <span className="text-amber-400 font-semibold">{d.score}%</span>}
+                </div>
+                {(d.genres || []).length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 mt-2">
+                    {d.genres.slice(0, 5).map(g => (
+                      <span key={g} className="text-[11px] text-indigo-300 bg-indigo-500/10 px-2 py-0.5 rounded-full ring-1 ring-indigo-500/20">{g}</span>
+                    ))}
+                  </div>
+                )}
+                {loading && <p className="text-sm text-gray-500 mt-3 animate-pulse">Loading details…</p>}
+                {d.overview && <p className="text-sm text-gray-300 mt-3 leading-relaxed line-clamp-5">{d.overview}</p>}
+              </div>
+            </div>
+            {/* Seasons (shows/anime) */}
+            {(d.seasons || []).length > 0 && (
+              <div className="px-6 pb-2">
+                <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Seasons</h4>
+                <div className="flex flex-wrap gap-2">
+                  {d.seasons.map(s => (
+                    <div key={s.season_number} className="text-xs bg-gray-800 text-gray-300 px-2 py-1 rounded-lg">
+                      S{s.season_number} · {s.episode_count} ep
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {/* Actions */}
+            <div className="px-6 py-4 border-t border-white/5 flex items-center gap-3">
+              {status === "available" && (
+                <div className="flex items-center gap-2 text-sm text-green-400">
+                  <Ic n="checkCircle" s={16} /> In your library
+                </div>
+              )}
+              {status === "downloading" && (
+                <div className="flex items-center gap-2 text-sm text-blue-400">
+                  <Ic n="download" s={16} /> Downloading…
+                </div>
+              )}
+              {status === "requested" && (
+                <div className="flex items-center gap-2 text-sm text-amber-400">
+                  <Ic n="info" s={16} /> Already requested
+                </div>
+              )}
+              {canRequest && (
+                <button onClick={request} disabled={reqState === "loading"}
+                  className="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold
+                  transition-colors disabled:opacity-60 flex items-center gap-2">
+                  {reqState === "loading" ? <span className="animate-spin inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full" /> :
+                    <Ic n="download" s={15} />}
+                  {reqState === "loading" ? "Requesting…" : "Request"}
+                </button>
+              )}
+              {reqState === "ok" && <span className="text-sm text-green-400 flex items-center gap-1.5"><Ic n="check" s={14} />{reqMsg}</span>}
+              {reqState === "err" && <span className="text-sm text-red-400">{reqMsg}</span>}
+              {(status === "requested" || status === "downloading") && request_id && (
+                <button onClick={deleteRequest} disabled={delState === "loading"}
+                  className="ml-auto px-3 py-2 rounded-lg bg-red-600/20 hover:bg-red-600/40 text-red-400 text-sm font-semibold transition-colors disabled:opacity-60 flex items-center gap-2">
+                  {delState === "loading" ? <span className="animate-spin inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full" /> : <Ic n="trash" s={15} />}
+                  {delState === "loading" ? "Removing..." : delState === "ok" ? "Removed!" : "Remove Request"}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ── Search bar ──────────────────────────────────────────────────────── */
+    function SearchBar({ onOpen }) {
+      const [q, setQ] = useState("");
+      const [res, setRes] = useState([]);
+      const [open, setOpen] = useState(false);
+      const [loading, setLoading] = useState(false);
+      const ref = useRef();
+      useEffect(() => {
+        const handler = e => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+        document.addEventListener("mousedown", handler);
+        return () => document.removeEventListener("mousedown", handler);
+      }, []);
+      useEffect(() => {
+        if (q.length < 2) { setRes([]); setOpen(false); return; }
+        const t = setTimeout(async () => {
+          setLoading(true);
+          try { const d = await api.get(`/api/search?q=${encodeURIComponent(q)}`); setRes(d); setOpen(true); }
+          catch { } finally { setLoading(false); }
+        }, 350);
+        return () => clearTimeout(t);
+      }, [q]);
+      return (
+        <div ref={ref} className="relative w-72">
+          <div className="flex items-center gap-2 bg-[#21262d] border border-[#30363d] rounded-lg px-3 py-2">
+            <Ic n="search" s={15} c="text-gray-500" />
+            <input value={q} onChange={e => setQ(e.target.value)} placeholder="Search movies, shows, games…"
+              className="bg-transparent text-sm text-gray-200 placeholder-gray-600 outline-none flex-1 w-full" />
+            {q && <button onClick={() => { setQ(""); setOpen(false); }} className="text-gray-600 hover:text-gray-400"><Ic n="x" s={13} /></button>}
+          </div>
+          {open && res.length > 0 && (
+            <div className="absolute top-full mt-1 left-0 right-0 bg-[#161b22] border border-[#30363d]
+            rounded-xl shadow-2xl z-50 overflow-hidden max-h-80 overflow-y-auto">
+              {res.map((m, i) => (
+                <button key={i} onClick={() => { onOpen(m); setOpen(false); setQ(""); }}
+                  className="flex items-center gap-3 w-full px-3 py-2.5 hover:bg-[#21262d] text-left transition-colors">
+                  <div className="w-8 h-11 rounded shrink-0 overflow-hidden">
+                    {m.cover_url ? <img src={m.cover_url} className="w-full h-full object-cover" />
+                      : <div className="w-full h-full" style={posterGrad(m.title)} />}
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-100">{m.title}</p>
+                    <p className="text-[11px] text-gray-500 capitalize">{m.media_type}·{m.year || ""}</p>
+                  </div>
+                </button>
               ))}
             </div>
-          </div>
-        )}
-        {/* Actions */}
-        <div className="px-6 py-4 border-t border-white/5 flex items-center gap-3">
-          {status==="available"&&(
-            <div className="flex items-center gap-2 text-sm text-green-400">
-              <Ic n="checkCircle" s={16}/> In your library
-            </div>
           )}
-          {status==="downloading"&&(
-            <div className="flex items-center gap-2 text-sm text-blue-400">
-              <Ic n="download" s={16}/> Downloading…
-            </div>
-          )}
-          {status==="requested"&&(
-            <div className="flex items-center gap-2 text-sm text-amber-400">
-              <Ic n="info" s={16}/> Already requested
-            </div>
-          )}
-          {canRequest&&(
-            <button onClick={request} disabled={reqState==="loading"}
-              className="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold
-                  transition-colors disabled:opacity-60 flex items-center gap-2">
-              {reqState==="loading"?<span className="animate-spin inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full"/>:
-               <Ic n="download" s={15}/>}
-              {reqState==="loading"?"Requesting…":"Request"}
-            </button>
-          )}
-          {reqState==="ok"&&<span className="text-sm text-green-400 flex items-center gap-1.5"><Ic n="check" s={14}/>{reqMsg}</span>}
-          {reqState==="err"&&<span className="text-sm text-red-400">{reqMsg}</span>}
         </div>
-      </div>
-    </div>
-  );
-}
-
-/* ── Search bar ──────────────────────────────────────────────────────── */
-function SearchBar({onOpen}){
-  const[q,setQ]=useState("");
-  const[res,setRes]=useState([]);
-  const[open,setOpen]=useState(false);
-  const[loading,setLoading]=useState(false);
-  const ref=useRef();
-  useEffect(()=>{
-    const handler=e=>{if(ref.current&&!ref.current.contains(e.target))setOpen(false);};
-    document.addEventListener("mousedown",handler);
-    return()=>document.removeEventListener("mousedown",handler);
-  },[]);
-  useEffect(()=>{
-    if(q.length<2){setRes([]);setOpen(false);return;}
-    const t=setTimeout(async()=>{
-      setLoading(true);
-      try{const d=await api.get(`/api/search?q=${encodeURIComponent(q)}`);setRes(d);setOpen(true);}
-      catch{}finally{setLoading(false);}
-    },350);
-    return()=>clearTimeout(t);
-  },[q]);
-  return(
-    <div ref={ref} className="relative w-72">
-      <div className="flex items-center gap-2 bg-[#21262d] border border-[#30363d] rounded-lg px-3 py-2">
-        <Ic n="search" s={15} c="text-gray-500"/>
-        <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Search movies, shows, games…"
-          className="bg-transparent text-sm text-gray-200 placeholder-gray-600 outline-none flex-1 w-full"/>
-        {q&&<button onClick={()=>{setQ("");setOpen(false);}} className="text-gray-600 hover:text-gray-400"><Ic n="x" s={13}/></button>}
-      </div>
-      {open&&res.length>0&&(
-        <div className="absolute top-full mt-1 left-0 right-0 bg-[#161b22] border border-[#30363d]
-            rounded-xl shadow-2xl z-50 overflow-hidden max-h-80 overflow-y-auto">
-          {res.map((m,i)=>(
-            <button key={i} onClick={()=>{onOpen(m);setOpen(false);setQ("");}}
-              className="flex items-center gap-3 w-full px-3 py-2.5 hover:bg-[#21262d] text-left transition-colors">
-              <div className="w-8 h-11 rounded shrink-0 overflow-hidden">
-                {m.cover_url?<img src={m.cover_url} className="w-full h-full object-cover"/>
-                  :<div className="w-full h-full" style={posterGrad(m.title)}/>}
-              </div>
-              <div>
-                <p className="text-sm text-gray-100">{m.title}</p>
-                <p className="text-[11px] text-gray-500 capitalize">{m.media_type}·{m.year||""}</p>
-              </div>
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-/* ── Nav sidebar ─────────────────────────────────────────────────────── */
-const TABS=[
-  {id:"discover",label:"Discover",icon:"compass"},
-  {id:"movies",label:"Movies",icon:"film"},
-  {id:"shows",label:"Shows",icon:"tv"},
-  {id:"anime",label:"Anime",icon:"star"},
-  {id:"games",label:"Games",icon:"gamepad"},
-  {id:"settings",label:"Settings",icon:"settings"},
-];
-function Sidebar({tab,setTab}){
-  return(
-    <aside className="w-[220px] shrink-0 bg-[#0d1117] border-r border-[#21262d] min-h-screen flex flex-col py-4">
-      {/* Logo */}
-      <div className="px-5 mb-6 flex items-center gap-2.5">
-        <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center shadow-lg">
-          <span className="text-white font-black text-sm">S</span>
-        </div>
-        <span className="text-lg font-bold text-white tracking-tight">Solarr</span>
-      </div>
-      {/* Nav */}
-      <nav className="flex flex-col gap-0.5 px-3 flex-1">
-        {TABS.map(t=>(
-          <button key={t.id} onClick={()=>setTab(t.id)}
-            className={"flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors "+
-              (tab===t.id?"bg-indigo-600/20 text-indigo-300":"text-gray-400 hover:bg-[#21262d] hover:text-gray-200")}>
-            <Ic n={t.icon} s={17} c={tab===t.id?"text-indigo-400":"text-gray-500"}/>
-            {t.label}
-          </button>
-        ))}
-      </nav>
-    </aside>
-  );
-}
-
-/* ── Top header ──────────────────────────────────────────────────────── */
-function Header({tab,onOpen}){
-  const labels={discover:"Discover",movies:"Movies",shows:"Shows",anime:"Anime",games:"Games",settings:"Settings"};
-  return(
-    <header className="h-14 border-b border-[#21262d] bg-[#0d1117]/80 backdrop-blur-sm
-        flex items-center px-6 gap-4 sticky top-0 z-30">
-      <h1 className="text-base font-semibold text-white">{labels[tab]||tab}</h1>
-      <div className="ml-auto"><SearchBar onOpen={onOpen}/></div>
-    </header>
-  );
-}
-
-/* ── DISCOVER page ───────────────────────────────────────────────────── */
-function DiscoverPage({setTab,onOpen}){
-  const{data,loading,error,reload}=useAsync(()=>api.get("/api/discover"),[]);
-
-  if(loading)return(
-    <div className="flex items-center justify-center h-64">
-      <div className="flex flex-col items-center gap-3 text-gray-500">
-        <div className="w-8 h-8 border-2 border-indigo-500/40 border-t-indigo-500 rounded-full animate-spin"/>
-        <span className="text-sm">Loading…</span>
-      </div>
-    </div>
-  );
-  if(error)return(
-    <div className="flex items-center justify-center h-64">
-      <div className="text-center">
-        <p className="text-gray-400 mb-3">Couldn't load discover data</p>
-        <p className="text-xs text-gray-600 mb-4">{error.message}</p>
-        <button onClick={reload} className="text-indigo-400 text-sm hover:text-indigo-300">Retry</button>
-      </div>
-    </div>
-  );
-
-  const d=data||{};
-  const available=(d.recentlyAdded||[]).map(m=>({...m,status:"available"}));
-  const requested=(d.requests||[]).map(r=>({...r,external_id:r.external_id||String(r.id),status:"requested"}));
-
-  return(
-    <div className="px-6 py-6 max-w-[1600px]">
-      {/* Available */}
-      {available.length>0&&<Row title="Available" items={available} onCard={onOpen}/>}
-      {/* Requested */}
-      {requested.length>0&&<Row title="Requested" items={requested} onCard={onOpen}/>}
-
-      {/* Movies */}
-      {((d.movie?.popular||[]).length>0||(d.movie?.trending||[]).length>0)&&(
-        <>
-          <SectionHead icon="film" label="Movies" tab="movies" setTab={setTab}/>
-          <Row title="Popular" items={d.movie?.popular||[]} onCard={onOpen}/>
-          <Row title="New Releases" items={d.movie?.upcoming||[]} onCard={onOpen}/>
-          <GenreRow items={[...(d.movie?.popular||[]),...(d.movie?.trending||[])]} onCard={onOpen}/>
-        </>
-      )}
-
-      {/* Shows */}
-      {((d.show?.popular||[]).length>0||(d.show?.trending||[]).length>0)&&(
-        <>
-          <SectionHead icon="tv" label="Shows" tab="shows" setTab={setTab}/>
-          <Row title="Popular" items={d.show?.popular||[]} onCard={onOpen}/>
-          <Row title="New & Airing" items={d.show?.upcoming||[]} onCard={onOpen}/>
-          <GenreRow items={[...(d.show?.popular||[]),...(d.show?.trending||[])]} onCard={onOpen}/>
-        </>
-      )}
-
-      {/* Anime */}
-      {((d.anime?.popular||[]).length>0||(d.anime?.trending||[]).length>0)&&(
-        <>
-          <SectionHead icon="star" label="Anime" tab="anime" setTab={setTab}/>
-          <Row title="Popular" items={d.anime?.popular||[]} onCard={onOpen}/>
-          <Row title="New & Airing" items={d.anime?.upcoming||[]} onCard={onOpen}/>
-          <GenreRow items={[...(d.anime?.popular||[]),...(d.anime?.trending||[])]} onCard={onOpen}/>
-        </>
-      )}
-
-      {/* Games */}
-      {((d.game?.popular||[]).length>0||(d.game?.upcoming||[]).length>0)&&(
-        <>
-          <SectionHead icon="gamepad" label="Games" tab="games" setTab={setTab}/>
-          <Row title="Popular" items={d.game?.popular||[]} onCard={onOpen}/>
-          <Row title="Upcoming" items={d.game?.upcoming||[]} onCard={onOpen}/>
-          <GenreRow items={d.game?.popular||[]} onCard={onOpen}/>
-        </>
-      )}
-    </div>
-  );
-}
-
-/* Inline genre chips row */
-function GenreRow({items,onCard}){
-  const genres=useMemo(()=>{
-    const map={};
-    for(const it of items)for(const g of(it.genres||[]))map[g]=(map[g]||[]).concat(it);
-    return Object.entries(map).sort((a,b)=>b[1].length-a[1].length).slice(0,8);
-  },[items]);
-  if(genres.length===0)return null;
-  const[active,setActive]=useState(null);
-  const filtered=active?items.filter(it=>(it.genres||[]).includes(active)):[];
-  return(
-    <div className="mb-6">
-      <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Genres</h3>
-      <div className="flex flex-wrap gap-2 mb-3">
-        {genres.map(([g,its])=>(
-          <button key={g} onClick={()=>setActive(active===g?null:g)}
-            className={"text-xs px-3 py-1.5 rounded-full font-medium transition-colors border "+
-              (active===g?"bg-indigo-600 border-indigo-500 text-white":"bg-[#21262d] border-[#30363d] text-gray-400 hover:text-gray-200")}>
-            {g} <span className="opacity-60">({its.length})</span>
-          </button>
-        ))}
-      </div>
-      {active&&filtered.length>0&&(
-        <div className="flex gap-4 overflow-x-auto pb-2" style={{scrollbarWidth:"none"}}>
-          {filtered.map((it,i)=><Card key={it.external_id||i} item={it} onClick={onCard}/>)}
-        </div>
-      )}
-    </div>
-  );
-}
-
-/* ── LIBRARY page (Movies/Shows/Anime/Games) ─────────────────────────── */
-const SORT_OPTS=[
-  {val:"title_asc",label:"Title (A–Z)"},
-  {val:"title_desc",label:"Title (Z–A)"},
-  {val:"year_desc",label:"Year (Newest)"},
-  {val:"year_asc",label:"Year (Oldest)"},
-  {val:"score_desc",label:"Rating (High–Low)"},
-];
-const FILTER_FIELDS={
-  movies:["genre","year","score"],
-  shows:["genre","year","score"],
-  anime:["genre","year","studio"],
-  games:["genre","year","platform"],
-};
-
-function LibraryPage({mediaType,onOpen}){
-  const apiType=mediaType;
-  // We load discover data and pick the right sections since there's no separate "browse all" endpoint for metadata
-  const{data,loading,error}=useAsync(()=>api.get("/api/discover"),[mediaType]);
-  const[sort,setSort]=useState("score_desc");
-  const[genreFilter,setGenreFilter]=useState("");
-  const[yearFilter,setYearFilter]=useState("");
-  const[showFilters,setShowFilters]=useState(false);
-
-  const typeKey={movies:"movie",shows:"show",anime:"anime",games:"game"}[mediaType];
-
-  const rawItems=useMemo(()=>{
-    if(!data)return[];
-    const sec=data[typeKey]||{};
-    const seen=new Set();
-    const out=[];
-    for(const arr of Object.values(sec)){
-      for(const it of(arr||[])){
-        const k=it.external_id||it.id;
-        if(!seen.has(k)){seen.add(k);out.push(it);}
-      }
+      );
     }
-    return out;
-  },[data,typeKey]);
 
-  const genres=useMemo(()=>{
-    const s=new Set();for(const it of rawItems)for(const g of(it.genres||[]))s.add(g);
-    return [...s].sort();
-  },[rawItems]);
-
-  const years=useMemo(()=>{
-    const s=new Set();for(const it of rawItems)if(it.year)s.add(it.year);
-    return [...s].sort((a,b)=>b-a);
-  },[rawItems]);
-
-  const items=useMemo(()=>{
-    let out=[...rawItems];
-    if(genreFilter)out=out.filter(it=>(it.genres||[]).includes(genreFilter));
-    if(yearFilter)out=out.filter(it=>String(it.year)===yearFilter);
-    const[field,dir]=sort.split("_");
-    out.sort((a,b)=>{
-      const va=field==="score"?(a.score||0):(field==="year"?(a.year||0):(a.title||"").toLowerCase());
-      const vb=field==="score"?(b.score||0):(field==="year"?(b.year||0):(b.title||"").toLowerCase());
-      return dir==="asc"?(va>vb?1:va<vb?-1:0):(va<vb?1:va>vb?-1:0);
-    });
-    return out;
-  },[rawItems,genreFilter,yearFilter,sort]);
-
-  const LABEL={movies:"Movies",shows:"Shows",anime:"Anime",games:"Games"};
-
-  if(loading)return(
-    <div className="flex items-center justify-center h-64">
-      <div className="w-8 h-8 border-2 border-indigo-500/40 border-t-indigo-500 rounded-full animate-spin"/>
-    </div>
-  );
-  if(error)return <div className="p-8 text-gray-500 text-sm">Error: {error.message}</div>;
-
-  return(
-    <div className="px-6 py-6">
-      {/* Controls */}
-      <div className="flex items-center gap-3 mb-6">
-        <span className="text-sm text-gray-400">{items.length} title{items.length!==1?"s":""}</span>
-        <div className="ml-auto flex items-center gap-2">
-          {/* Sort */}
-          <div className="flex items-center gap-1.5 bg-[#21262d] border border-[#30363d] rounded-lg px-3 py-1.5">
-            <Ic n="sort" s={13} c="text-gray-500"/>
-            <select value={sort} onChange={e=>setSort(e.target.value)}
-              className="bg-transparent text-xs text-gray-300 outline-none cursor-pointer">
-              {SORT_OPTS.map(o=><option key={o.val} value={o.val}>{o.label}</option>)}
-            </select>
+    /* ── Nav sidebar ─────────────────────────────────────────────────────── */
+    const TABS = [
+      { id: "discover", label: "Discover", icon: "compass" },
+      { id: "movies", label: "Movies", icon: "film" },
+      { id: "shows", label: "Shows", icon: "tv" },
+      { id: "anime", label: "Anime", icon: "star" },
+      { id: "games", label: "Games", icon: "gamepad" },
+      { id: "settings", label: "Settings", icon: "settings" },
+    ];
+    function Sidebar({ tab, setTab }) {
+      return (
+        <aside className="w-[220px] shrink-0 bg-[#0d1117] border-r border-[#21262d] min-h-screen flex flex-col py-4">
+          {/* Logo */}
+          <div className="px-5 mb-6 flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center shadow-lg">
+              <span className="text-white font-black text-sm">S</span>
+            </div>
+            <span className="text-lg font-bold text-white tracking-tight">Solarr</span>
           </div>
-          {/* Filter toggle */}
-          <button onClick={()=>setShowFilters(v=>!v)}
-            className={"flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border transition-colors "+
-              (showFilters?"bg-indigo-600/20 border-indigo-500/50 text-indigo-300":"bg-[#21262d] border-[#30363d] text-gray-400 hover:text-gray-200")}>
-            <Ic n="filter" s={13}/> Filter
-            {(genreFilter||yearFilter)&&<span className="w-1.5 h-1.5 rounded-full bg-indigo-400 ml-0.5"/>}
-          </button>
+          {/* Nav */}
+          <nav className="flex flex-col gap-0.5 px-3 flex-1">
+            {TABS.map(t => (
+              <button key={t.id} onClick={() => setTab(t.id)}
+                className={"flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors " +
+                  (tab === t.id ? "bg-indigo-600/20 text-indigo-300" : "text-gray-400 hover:bg-[#21262d] hover:text-gray-200")}>
+                <Ic n={t.icon} s={17} c={tab === t.id ? "text-indigo-400" : "text-gray-500"} />
+                {t.label}
+              </button>
+            ))}
+          </nav>
+        </aside>
+      );
+    }
+
+    /* ── Top header ──────────────────────────────────────────────────────── */
+    function Header({ tab, onOpen }) {
+      const labels = { discover: "Discover", movies: "Movies", shows: "Shows", anime: "Anime", games: "Games", settings: "Settings" };
+      return (
+        <header className="h-14 border-b border-[#21262d] bg-[#0d1117]/80 backdrop-blur-sm
+        flex items-center px-6 gap-4 sticky top-0 z-30">
+          <h1 className="text-base font-semibold text-white">{labels[tab] || tab}</h1>
+          <div className="ml-auto"><SearchBar onOpen={onOpen} /></div>
+        </header>
+      );
+    }
+
+    /* ── DISCOVER page ───────────────────────────────────────────────────── */
+    function DiscoverPage({ setTab, onOpen }) {
+      const { data, loading, error, reload } = useAsync(() => api.get("/api/discover"), []);
+
+      if (loading) return (
+        <div className="flex items-center justify-center h-64">
+          <div className="flex flex-col items-center gap-3 text-gray-500">
+            <div className="w-8 h-8 border-2 border-indigo-500/40 border-t-indigo-500 rounded-full animate-spin" />
+            <span className="text-sm">Loading…</span>
+          </div>
         </div>
-      </div>
-      {/* Filter panel */}
-      {showFilters&&(
-        <div className="flex flex-wrap gap-3 mb-6 p-4 bg-[#161b22] rounded-xl border border-[#21262d]">
-          {genres.length>0&&(
-            <div>
-              <label className="block text-xs text-gray-500 mb-1.5">Genre</label>
-              <select value={genreFilter} onChange={e=>setGenreFilter(e.target.value)}
-                className="bg-[#21262d] border border-[#30363d] rounded-lg text-xs text-gray-300 px-2.5 py-1.5 outline-none">
-                <option value="">All genres</option>
-                {genres.map(g=><option key={g} value={g}>{g}</option>)}
-              </select>
+      );
+      if (error) return (
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <p className="text-gray-400 mb-3">Couldn't load discover data</p>
+            <p className="text-xs text-gray-600 mb-4">{error.message}</p>
+            <button onClick={reload} className="text-indigo-400 text-sm hover:text-indigo-300">Retry</button>
+          </div>
+        </div>
+      );
+
+      const d = data || {};
+      const available = (d.recentlyAdded || []).map(m => ({ ...m, status: "available" }));
+      const requested = (d.requests || []).map(r => ({ ...r, external_id: r.external_id || String(r.id), status: "requested" }));
+
+      return (
+        <div className="px-6 py-6 max-w-[1600px]">
+          {/* Available */}
+          {available.length > 0 && <Row title="Available" items={available} onCard={onOpen} />}
+          {/* Requested */}
+          {requested.length > 0 && <Row title="Requested" items={requested} onCard={onOpen} />}
+
+          {/* Movies */}
+          {((d.movie?.popular || []).length > 0 || (d.movie?.trending || []).length > 0) && (
+            <>
+              <SectionHead icon="film" label="Movies" tab="movies" setTab={setTab} />
+              <Row title="Popular" items={d.movie?.popular || []} onCard={onOpen} />
+              <Row title="New Releases" items={d.movie?.upcoming || []} onCard={onOpen} />
+              <GenreRow items={[...(d.movie?.popular || []), ...(d.movie?.trending || [])]} onCard={onOpen} />
+            </>
+          )}
+
+          {/* Shows */}
+          {((d.show?.popular || []).length > 0 || (d.show?.trending || []).length > 0) && (
+            <>
+              <SectionHead icon="tv" label="Shows" tab="shows" setTab={setTab} />
+              <Row title="Popular" items={d.show?.popular || []} onCard={onOpen} />
+              <Row title="New & Airing" items={d.show?.upcoming || []} onCard={onOpen} />
+              <GenreRow items={[...(d.show?.popular || []), ...(d.show?.trending || [])]} onCard={onOpen} />
+            </>
+          )}
+
+          {/* Anime */}
+          {((d.anime?.popular || []).length > 0 || (d.anime?.trending || []).length > 0) && (
+            <>
+              <SectionHead icon="star" label="Anime" tab="anime" setTab={setTab} />
+              <Row title="Popular" items={d.anime?.popular || []} onCard={onOpen} />
+              <Row title="New & Airing" items={d.anime?.upcoming || []} onCard={onOpen} />
+              <GenreRow items={[...(d.anime?.popular || []), ...(d.anime?.trending || [])]} onCard={onOpen} />
+            </>
+          )}
+
+          {/* Games */}
+          {((d.game?.popular || []).length > 0 || (d.game?.upcoming || []).length > 0) && (
+            <>
+              <SectionHead icon="gamepad" label="Games" tab="games" setTab={setTab} />
+              <Row title="Popular" items={d.game?.popular || []} onCard={onOpen} />
+              <Row title="Upcoming" items={d.game?.upcoming || []} onCard={onOpen} />
+              <GenreRow items={d.game?.popular || []} onCard={onOpen} />
+            </>
+          )}
+        </div>
+      );
+    }
+
+    /* Inline genre chips row */
+    function GenreRow({ items, onCard }) {
+      const genres = useMemo(() => {
+        const map = {};
+        for (const it of items) for (const g of (it.genres || [])) map[g] = (map[g] || []).concat(it);
+        return Object.entries(map).sort((a, b) => b[1].length - a[1].length).slice(0, 8);
+      }, [items]);
+      if (genres.length === 0) return null;
+      const [active, setActive] = useState(null);
+      const filtered = active ? items.filter(it => (it.genres || []).includes(active)) : [];
+      return (
+        <div className="mb-6">
+          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Genres</h3>
+          <div className="flex flex-wrap gap-2 mb-3">
+            {genres.map(([g, its]) => (
+              <button key={g} onClick={() => setActive(active === g ? null : g)}
+                className={"text-xs px-3 py-1.5 rounded-full font-medium transition-colors border " +
+                  (active === g ? "bg-indigo-600 border-indigo-500 text-white" : "bg-[#21262d] border-[#30363d] text-gray-400 hover:text-gray-200")}>
+                {g} <span className="opacity-60">({its.length})</span>
+              </button>
+            ))}
+          </div>
+          {active && filtered.length > 0 && (
+            <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: "none" }}>
+              {filtered.map((it, i) => <Card key={it.external_id || i} item={it} onClick={onCard} />)}
             </div>
           )}
-          {years.length>0&&(
-            <div>
-              <label className="block text-xs text-gray-500 mb-1.5">Year</label>
-              <select value={yearFilter} onChange={e=>setYearFilter(e.target.value)}
-                className="bg-[#21262d] border border-[#30363d] rounded-lg text-xs text-gray-300 px-2.5 py-1.5 outline-none">
-                <option value="">All years</option>
-                {years.map(y=><option key={y} value={y}>{y}</option>)}
-              </select>
+        </div>
+      );
+    }
+
+    /* ── LIBRARY page (Movies/Shows/Anime/Games) ─────────────────────────── */
+    const SORT_OPTS = [
+      { val: "title_asc", label: "Title (A–Z)" },
+      { val: "title_desc", label: "Title (Z–A)" },
+      { val: "year_desc", label: "Year (Newest)" },
+      { val: "year_asc", label: "Year (Oldest)" },
+      { val: "score_desc", label: "Rating (High–Low)" },
+    ];
+    const FILTER_FIELDS = {
+      movies: ["genre", "year", "score"],
+      shows: ["genre", "year", "score"],
+      anime: ["genre", "year", "studio"],
+      games: ["genre", "year", "platform"],
+    };
+
+    function LibraryPage({ mediaType, onOpen }) {
+      const apiType = mediaType;
+      // We load discover data and pick the right sections since there's no separate "browse all" endpoint for metadata
+      const { data, loading, error } = useAsync(() => api.get("/api/discover"), [mediaType]);
+      const [sort, setSort] = useState("score_desc");
+      const [genreFilter, setGenreFilter] = useState("");
+      const [yearFilter, setYearFilter] = useState("");
+      const [showFilters, setShowFilters] = useState(false);
+
+      const typeKey = { movies: "movie", shows: "show", anime: "anime", games: "game" }[mediaType];
+
+      const rawItems = useMemo(() => {
+        if (!data) return [];
+        const sec = data[typeKey] || {};
+        const seen = new Set();
+        const out = [];
+        for (const arr of Object.values(sec)) {
+          for (const it of (arr || [])) {
+            const k = it.external_id || it.id;
+            if (!seen.has(k)) { seen.add(k); out.push(it); }
+          }
+        }
+        return out;
+      }, [data, typeKey]);
+
+      const genres = useMemo(() => {
+        const s = new Set(); for (const it of rawItems) for (const g of (it.genres || [])) s.add(g);
+        return [...s].sort();
+      }, [rawItems]);
+
+      const years = useMemo(() => {
+        const s = new Set(); for (const it of rawItems) if (it.year) s.add(it.year);
+        return [...s].sort((a, b) => b - a);
+      }, [rawItems]);
+
+      const items = useMemo(() => {
+        let out = [...rawItems];
+        if (genreFilter) out = out.filter(it => (it.genres || []).includes(genreFilter));
+        if (yearFilter) out = out.filter(it => String(it.year) === yearFilter);
+        const [field, dir] = sort.split("_");
+        out.sort((a, b) => {
+          const va = field === "score" ? (a.score || 0) : (field === "year" ? (a.year || 0) : (a.title || "").toLowerCase());
+          const vb = field === "score" ? (b.score || 0) : (field === "year" ? (b.year || 0) : (b.title || "").toLowerCase());
+          return dir === "asc" ? (va > vb ? 1 : va < vb ? -1 : 0) : (va < vb ? 1 : va > vb ? -1 : 0);
+        });
+        return out;
+      }, [rawItems, genreFilter, yearFilter, sort]);
+
+      const LABEL = { movies: "Movies", shows: "Shows", anime: "Anime", games: "Games" };
+
+      if (loading) return (
+        <div className="flex items-center justify-center h-64">
+          <div className="w-8 h-8 border-2 border-indigo-500/40 border-t-indigo-500 rounded-full animate-spin" />
+        </div>
+      );
+      if (error) return <div className="p-8 text-gray-500 text-sm">Error: {error.message}</div>;
+
+      return (
+        <div className="px-6 py-6">
+          {/* Controls */}
+          <div className="flex items-center gap-3 mb-6">
+            <span className="text-sm text-gray-400">{items.length} title{items.length !== 1 ? "s" : ""}</span>
+            <div className="ml-auto flex items-center gap-2">
+              {/* Sort */}
+              <div className="flex items-center gap-1.5 bg-[#21262d] border border-[#30363d] rounded-lg px-3 py-1.5">
+                <Ic n="sort" s={13} c="text-gray-500" />
+                <select value={sort} onChange={e => setSort(e.target.value)}
+                  className="bg-transparent text-xs text-gray-300 outline-none cursor-pointer">
+                  {SORT_OPTS.map(o => <option key={o.val} value={o.val}>{o.label}</option>)}
+                </select>
+              </div>
+              {/* Filter toggle */}
+              <button onClick={() => setShowFilters(v => !v)}
+                className={"flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border transition-colors " +
+                  (showFilters ? "bg-indigo-600/20 border-indigo-500/50 text-indigo-300" : "bg-[#21262d] border-[#30363d] text-gray-400 hover:text-gray-200")}>
+                <Ic n="filter" s={13} /> Filter
+                {(genreFilter || yearFilter) && <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 ml-0.5" />}
+              </button>
+            </div>
+          </div>
+          {/* Filter panel */}
+          {showFilters && (
+            <div className="flex flex-wrap gap-3 mb-6 p-4 bg-[#161b22] rounded-xl border border-[#21262d]">
+              {genres.length > 0 && (
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1.5">Genre</label>
+                  <select value={genreFilter} onChange={e => setGenreFilter(e.target.value)}
+                    className="bg-[#21262d] border border-[#30363d] rounded-lg text-xs text-gray-300 px-2.5 py-1.5 outline-none">
+                    <option value="">All genres</option>
+                    {genres.map(g => <option key={g} value={g}>{g}</option>)}
+                  </select>
+                </div>
+              )}
+              {years.length > 0 && (
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1.5">Year</label>
+                  <select value={yearFilter} onChange={e => setYearFilter(e.target.value)}
+                    className="bg-[#21262d] border border-[#30363d] rounded-lg text-xs text-gray-300 px-2.5 py-1.5 outline-none">
+                    <option value="">All years</option>
+                    {years.map(y => <option key={y} value={y}>{y}</option>)}
+                  </select>
+                </div>
+              )}
+              {(genreFilter || yearFilter) && (
+                <button onClick={() => { setGenreFilter(""); setYearFilter(""); }}
+                  className="self-end text-xs text-red-400 hover:text-red-300 px-2 py-1.5">Clear</button>
+              )}
             </div>
           )}
-          {(genreFilter||yearFilter)&&(
-            <button onClick={()=>{setGenreFilter("");setYearFilter("");}}
-              className="self-end text-xs text-red-400 hover:text-red-300 px-2 py-1.5">Clear</button>
-          )}
+          {/* Grid */}
+          {items.length === 0
+            ? <div className="flex flex-col items-center justify-center h-48 text-gray-600">
+              <Ic n={{ movies: "film", shows: "tv", anime: "star", games: "gamepad" }[mediaType]} s={32} c="mb-3 opacity-30" />
+              <p className="text-sm">No {LABEL[mediaType].toLowerCase()} found</p>
+            </div>
+            : <div className="flex flex-wrap gap-4">
+              {items.map((it, i) => <Card key={it.external_id || it.id || i} item={it} onClick={onOpen} />)}
+            </div>
+          }
         </div>
-      )}
-      {/* Grid */}
-      {items.length===0
-        ?<div className="flex flex-col items-center justify-center h-48 text-gray-600">
-           <Ic n={{movies:"film",shows:"tv",anime:"star",games:"gamepad"}[mediaType]} s={32} c="mb-3 opacity-30"/>
-           <p className="text-sm">No {LABEL[mediaType].toLowerCase()} found</p>
-         </div>
-        :<div className="flex flex-wrap gap-4">
-           {items.map((it,i)=><Card key={it.external_id||it.id||i} item={it} onClick={onOpen}/>)}
-         </div>
+      );
+    }
+
+    /* ── SETTINGS page ───────────────────────────────────────────────────── */
+    function SettingsPage() {
+      const { data: pData } = useAsync(() => api.get("/api/settings/prowlarr").catch(() => ({})), []);
+      const { data: msData } = useAsync(() => api.get("/api/settings/media-servers").catch(() => []), []);
+      const { data: dcData } = useAsync(() => api.get("/api/settings/download-clients").catch(() => []), []);
+      const { data: provData } = useAsync(() => api.get("/api/settings/providers").catch(() => ({})), []);
+
+      function StatusDot({ ok }) {
+        return <span className={"inline-block w-2 h-2 rounded-full " + (ok ? "bg-green-400" : "bg-red-400")} />;
       }
-    </div>
-  );
-}
+      function Card2({ title, children }) {
+        return (
+          <div className="bg-[#161b22] border border-[#21262d] rounded-xl p-5">
+            <h3 className="text-sm font-semibold text-gray-300 mb-4">{title}</h3>
+            {children}
+          </div>
+        );
+      }
+      function Row2({ label, value, ok }) {
+        return (
+          <div className="flex items-center gap-3 py-2 border-b border-[#21262d] last:border-0">
+            <span className="text-xs text-gray-500 w-28 shrink-0">{label}</span>
+            <span className="text-xs text-gray-300 flex-1 truncate font-mono">{value || "—"}</span>
+            {ok !== undefined && <StatusDot ok={ok} />}
+          </div>
+        );
+      }
 
-/* ── SETTINGS page ───────────────────────────────────────────────────── */
-function SettingsPage(){
-  const{data:pData}=useAsync(()=>api.get("/api/settings/prowlarr").catch(()=>({})),[]);
-  const{data:msData}=useAsync(()=>api.get("/api/settings/media-servers").catch(()=>[]),[]);
-  const{data:dcData}=useAsync(()=>api.get("/api/settings/download-clients").catch(()=>[]),[]);
-  const{data:provData}=useAsync(()=>api.get("/api/settings/providers").catch(()=>({})),[]);
+      const prowlarr = pData?.prowlarr || {};
+      const indexers = pData?.indexers || [];
+      const servers = Array.isArray(msData) ? msData : [];
+      const clients = Array.isArray(dcData) ? dcData : [];
+      const providers = (provData?.providers) || [];
 
-  function StatusDot({ok}){
-    return<span className={"inline-block w-2 h-2 rounded-full "+(ok?"bg-green-400":"bg-red-400")}/>;
-  }
-  function Card2({title,children}){
-    return(
-      <div className="bg-[#161b22] border border-[#21262d] rounded-xl p-5">
-        <h3 className="text-sm font-semibold text-gray-300 mb-4">{title}</h3>
-        {children}
-      </div>
-    );
-  }
-  function Row2({label,value,ok}){
-    return(
-      <div className="flex items-center gap-3 py-2 border-b border-[#21262d] last:border-0">
-        <span className="text-xs text-gray-500 w-28 shrink-0">{label}</span>
-        <span className="text-xs text-gray-300 flex-1 truncate font-mono">{value||"—"}</span>
-        {ok!==undefined&&<StatusDot ok={ok}/>}
-      </div>
-    );
-  }
+      return (
+        <div className="px-6 py-6 max-w-3xl">
+          <p className="text-sm text-gray-500 mb-6">
+            All connections are auto-configured from your Docker config files. This page shows their current status.
+          </p>
+          <div className="grid gap-4">
+            {/* Prowlarr */}
+            <Card2 title="Prowlarr">
+              <Row2 label="URL" value={prowlarr.url} ok={prowlarr.connected} />
+              <Row2 label="Status" value={prowlarr.connected ? "Connected" : "Disconnected"} ok={prowlarr.connected} />
+              {indexers.length > 0 && (
+                <div className="mt-3">
+                  <p className="text-xs text-gray-500 mb-2">{indexers.length} indexer{indexers.length !== 1 ? "s" : ""} synced</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {indexers.map(ix => (
+                      <span key={ix.name} className="text-[11px] bg-[#21262d] text-gray-400 px-2 py-0.5 rounded-full">
+                        {ix.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </Card2>
 
-  const prowlarr=pData?.prowlarr||{};
-  const indexers=pData?.indexers||[];
-  const servers=Array.isArray(msData)?msData:[];
-  const clients=Array.isArray(dcData)?dcData:[];
-  const providers=(provData?.providers)||[];
+            {/* Download clients */}
+            <Card2 title="Download Clients">
+              {clients.length === 0
+                ? <p className="text-xs text-gray-600">No download clients configured</p>
+                : clients.map(c => (
+                  <div key={c.id}>
+                    <Row2 label="Name" value={c.name} ok={!!c.enabled} />
+                    <Row2 label="Host" value={`${c.host}:${c.port}`} />
+                    <Row2 label="Type" value={c.type} />
+                  </div>
+                ))
+              }
+            </Card2>
 
-  return(
-    <div className="px-6 py-6 max-w-3xl">
-      <p className="text-sm text-gray-500 mb-6">
-        All connections are auto-configured from your Docker config files. This page shows their current status.
-      </p>
-      <div className="grid gap-4">
-        {/* Prowlarr */}
-        <Card2 title="Prowlarr">
-          <Row2 label="URL" value={prowlarr.url} ok={prowlarr.connected}/>
-          <Row2 label="Status" value={prowlarr.connected?"Connected":"Disconnected"} ok={prowlarr.connected}/>
-          {indexers.length>0&&(
-            <div className="mt-3">
-              <p className="text-xs text-gray-500 mb-2">{indexers.length} indexer{indexers.length!==1?"s":""} synced</p>
-              <div className="flex flex-wrap gap-1.5">
-                {indexers.map(ix=>(
-                  <span key={ix.name} className="text-[11px] bg-[#21262d] text-gray-400 px-2 py-0.5 rounded-full">
-                    {ix.name}
-                  </span>
-                ))}
-              </div>
-            </div>
+            {/* Media servers */}
+            <Card2 title="Media Servers">
+              {servers.length === 0
+                ? <p className="text-xs text-gray-600">No media servers configured</p>
+                : servers.map(s => (
+                  <div key={s.id}>
+                    <Row2 label={s.kind === "jellyfin" ? "Jellyfin" : "RomM"} value={s.url} ok={true} />
+                  </div>
+                ))
+              }
+            </Card2>
+
+            {/* Metadata */}
+            <Card2 title="Metadata Sources">
+              {providers.length === 0
+                ? <p className="text-xs text-gray-600">Loading…</p>
+                : providers.map(p => (
+                  <Row2 key={p.id} label={p.name} value={p.scope} ok={p.connected} />
+                ))
+              }
+            </Card2>
+          </div>
+        </div>
+      );
+    }
+
+    /* ── App shell ───────────────────────────────────────────────────────── */
+    function App() {
+      const [tab, setTab] = useState("discover");
+      const [modal, setModal] = useState(null);
+      const [, forceUpdate] = useState(0);
+
+      function openModal(item) {
+        // Ensure media_type is set (search results may have it at top level)
+        setModal(item);
+      }
+
+      return (
+        <div className="flex min-h-screen" style={{ background: "#0d1117" }}>
+          <Sidebar tab={tab} setTab={setTab} />
+          <div className="flex-1 min-w-0 flex flex-col">
+            <Header tab={tab} onOpen={openModal} />
+            <main className="flex-1 overflow-y-auto">
+              {tab === "discover" && <DiscoverPage setTab={setTab} onOpen={openModal} />}
+              {tab === "movies" && <LibraryPage mediaType="movies" onOpen={openModal} />}
+              {tab === "shows" && <LibraryPage mediaType="shows" onOpen={openModal} />}
+              {tab === "anime" && <LibraryPage mediaType="anime" onOpen={openModal} />}
+              {tab === "games" && <LibraryPage mediaType="games" onOpen={openModal} />}
+              {tab === "settings" && <SettingsPage />}
+            </main>
+          </div>
+          {modal && (
+            <DetailModal
+              item={modal}
+              onClose={() => setModal(null)}
+              onRequested={() => forceUpdate(v => v + 1)}
+            />
           )}
-        </Card2>
+        </div>
+      );
+    }
 
-        {/* Download clients */}
-        <Card2 title="Download Clients">
-          {clients.length===0
-            ?<p className="text-xs text-gray-600">No download clients configured</p>
-            :clients.map(c=>(
-              <div key={c.id}>
-                <Row2 label="Name" value={c.name} ok={!!c.enabled}/>
-                <Row2 label="Host" value={`${c.host}:${c.port}`}/>
-                <Row2 label="Type" value={c.type}/>
-              </div>
-            ))
-          }
-        </Card2>
-
-        {/* Media servers */}
-        <Card2 title="Media Servers">
-          {servers.length===0
-            ?<p className="text-xs text-gray-600">No media servers configured</p>
-            :servers.map(s=>(
-              <div key={s.id}>
-                <Row2 label={s.kind==="jellyfin"?"Jellyfin":"RomM"} value={s.url} ok={true}/>
-              </div>
-            ))
-          }
-        </Card2>
-
-        {/* Metadata */}
-        <Card2 title="Metadata Sources">
-          {providers.length===0
-            ?<p className="text-xs text-gray-600">Loading…</p>
-            :providers.map(p=>(
-              <Row2 key={p.id} label={p.name} value={p.scope} ok={p.connected}/>
-            ))
-          }
-        </Card2>
-      </div>
-    </div>
-  );
-}
-
-/* ── App shell ───────────────────────────────────────────────────────── */
-function App(){
-  const[tab,setTab]=useState("discover");
-  const[modal,setModal]=useState(null);
-  const[, forceUpdate]=useState(0);
-
-  function openModal(item){
-    // Ensure media_type is set (search results may have it at top level)
-    setModal(item);
-  }
-
-  return(
-    <div className="flex min-h-screen" style={{background:"#0d1117"}}>
-      <Sidebar tab={tab} setTab={setTab}/>
-      <div className="flex-1 min-w-0 flex flex-col">
-        <Header tab={tab} onOpen={openModal}/>
-        <main className="flex-1 overflow-y-auto">
-          {tab==="discover"&&<DiscoverPage setTab={setTab} onOpen={openModal}/>}
-          {tab==="movies"&&<LibraryPage mediaType="movies" onOpen={openModal}/>}
-          {tab==="shows"&&<LibraryPage mediaType="shows" onOpen={openModal}/>}
-          {tab==="anime"&&<LibraryPage mediaType="anime" onOpen={openModal}/>}
-          {tab==="games"&&<LibraryPage mediaType="games" onOpen={openModal}/>}
-          {tab==="settings"&&<SettingsPage/>}
-        </main>
-      </div>
-      {modal&&(
-        <DetailModal
-          item={modal}
-          onClose={()=>setModal(null)}
-          onRequested={()=>forceUpdate(v=>v+1)}
-        />
-      )}
-    </div>
-  );
-}
-
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
-</script>
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
 </body>
+
 </html>
